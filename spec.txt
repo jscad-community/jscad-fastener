@@ -1,0 +1,29 @@
+
+When an engineer writes a specification callout for bolt combinations,
+a single line of text is instantly parsed into three distinct engineering requirements.
+
+" 1/2" - 13 UNC x 2" Heavy Hex Bolt with F436 Washer "
+    └──┬──┘ └─┬─┘      └──────┬──────┘          └─┬┘
+       │      │               │                   │
+    [ UTS ] [ UTS ]        [ ASME ]             [ ASTM ]
+   Diameter  Pitch       Head Geometry         Metallurgy
+
+
+ISO 8991
+
+ASME B18.24 (The PIN System)
+
+ASME B18 product designation sequences
+  ASME B18.2.1 for standard hex bolts
+  ASME B18.2.6 for heavy structural fasteners
+
+\text{[Product Name]} \rightarrow \text{[ASME Dimension Standard]} \rightarrow \text{[Nominal Size & UTS Thread Pitch]} \times \text{[Product Length]} \rightarrow \text{[ASTM Material Grade/Type]} \rightarrow \text{[Protective Coating]}
+
+This block breaks down logically for procurement databases:
+
+Product Name: Heavy Hex Structural Bolt — Instantly tells the machinist the shape class.
+ASME Dimension Spec: ASME B18.2.6 — Dictates the exact envelope tolerances, hex wrench sizes across flats, and head heights.
+Nominal Size & UTS Thread Pitch: he Core Unified Thread Standard (UTS) input.
+Product Length: The physical length in inches measured from the underside of the head to the tip.
+ASTM Material Grade: Tied to structural material benchmarks (medium carbon or alloy steel hardened to high-tensile specifications)
+Protective Coating: Identifies the anti-corrosion layer and its specific thickness standard

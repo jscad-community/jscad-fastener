@@ -1,0 +1,31 @@
+Category 	Specification 	Description
+ 	ASTM A193 	Alloy steel and stainless steel bolting materials for high temperature or high pressure service.
+	ASTM A307 	Carbon steel bolts and studs, 60,000 psi tensile strength.
+	ASTM A320 	Alloy steel and stainless steel bolting materials for low temperature service.
+	ASTM A325 	Structural bolts, steel, heat-treated, 120/105 ksi minimum tensile strength. Replaced by ASTM F3125.
+	ASTM A354 	Quenched and tempered alloy bolts, studs, and other externally threaded fasteners.
+	ASTM A449 	Quenched and tempered steel bolts and studs for general use.
+	ASTM A490 	Structural bolts, alloy steel, heat-treated, 150 ksi minimum tensile strength. Replaced by ASTM F3125.
+	ASTM F593 	Stainless steel bolts, hex cap screws, and studs.
+	ASTM F1554 	Anchor bolts designed to anchor structural supports to concrete foundations.
+	ASTM F3125 	New, unified structural bolt specification replacing A325, A325M, A490, A490M, F1852, and F2280.
+Casting/Forging Specifications 	ASTM A47 	Ferritic malleable castings intended for general use.
+	ASTM A48 	Gray iron castings intended for general use.
+	ASTM A536 	Castings made of ductile iron, also called spheroidal or nodular iron.
+	ASTM A668 	Untreated and heat-treated carbon and alloy steel forging for general industrial use.
+Nut Specifications 	ASTM A194 	Carbon and alloy steel nuts for bolts for high pressure and high temperature service.
+	ASTM A563 	Standard specification for carbon and alloy steel nuts.
+	ASTM F594 	Stainless steel nuts.
+Plating Specifications 	ASTM A153 	Zinc coating (hot dip) on iron and steel hardware.
+	ASTM B695 	Mechanically deposited zinc coatings on iron and steel.
+	ASTM F1941 	Electrodeposited coatings on threaded fasteners (Zinc plating).
+	ASTM F2329 	Zinc coating, hot dip, for bolts, screws, washers, nuts, and special threaded fasteners.
+Rebar Specifications 	ASTM A615 	Deformed and plain carbon steel bars for concrete reinforcement.
+	ASTM A706 	Deformed and plain low alloy steel bars for concrete reinforcement with enhanced weldability.
+Steel Specifications 	ASTM A36 	Carbon steel shapes, plates, and bars in general structural purposes.
+	ASTM A572 	High strength, low-alloy structural steel shapes, plates, and bars.
+	ASTM A588 	High strength, low-alloy structural steel improved atmospheric corrosion resistance.
+Washer Specifications 	ASTM F844 	Unhardened, general purpose, flat washers.
+	ASTM F436 	Hardened steel washers.
+	ASTM F959 	Compressible washer type direct tension indicators (DTIs) in diameters 1/2 to 1-1/2 inches.
+	ASTM F2437 	Compressible washer type direct tension indicators (DTIs) in diameters 1/4 to 2-1/2 inches.
