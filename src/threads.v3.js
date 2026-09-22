@@ -11,25 +11,51 @@ export const COARSE_TPI = 1
 export const FINE_TPI = 1
 
 /**
- * ISO Standard Thread Dimensions (millimeters)
- * @see https://www.engineeringtoolbox.com/metric-threads-d_777.html
- * Key: Nominal major diameter in mm
- * Values: [major, minor, coarse_pitch_mm, fine_pitch_mm]
+ * Master Registry for ISO Metric Threads (ISO 261 / ISO 724)
+ * Schema Format: "Designation": [Major_Diameter_mm, Coarse_Pitch_mm, Primary_Fine_Pitch_mm]
+ * Note: If an ultra-small profile size has no official standard Fine series definition, it maps to null.
  */
-export const ISO_THREADS = {
-  1:   [ 1.0, 0.729, 0.25, 0.20 ],
-  2:   [ 2.0, 1.567, 0.40, 0.25 ],
-  3:   [ 3.0, 2.459, 0.50, 0.35 ],
-  4:   [ 4.0, 3.242, 0.70, 0.50 ],
-  5:   [ 5.0, 4.134, 0.80, 0.50 ],
-  6:   [ 6.0, 4.917, 1.00, 0.75 ],
-  8:   [ 8.0, 6.647, 1.25, 1.00 ],
-  10:  [ 10.0, 8.376, 1.50, 1.25 ],
-  12:  [ 12.0, 10.106, 1.75, 1.50 ],
-  14:  [ 14.0, 11.835, 2.00, 1.50 ],
-  16:  [ 16.0, 13.835, 2.00, 1.50 ],
-  20:  [ 20.0, 17.294, 2.50, 2.00 ]
-  // ... feel free to append your remaining ISO sizes here
+const ISO_THREAD_REGISTRY = {
+  "M1":    [1.0,  0.25,  0.2   ],
+  "M1.1":  [1.1,  0.25,  0.2   ],
+  "M1.2":  [1.2,  0.25,  0.2   ],
+  "M1.4":  [1.4,  0.3,   0.2   ],
+  "M1.6":  [1.6,  0.35,  0.2   ],
+  "M1.8":  [1.8,  0.35,  0.2   ],
+  "M2":    [2.0,  0.4,   0.25  ],
+  "M2.2":  [2.2,  0.45,  0.25  ],
+  "M2.5":  [2.5,  0.45,  0.35  ],
+  "M3":    [3.0,  0.5,   0.35  ],
+  "M3.5":  [3.5,  0.6,   0.35  ],
+  "M4":    [4.0,  0.7,   0.5   ],
+  "M4.5":  [4.5,  0.75,  0.5   ],
+  "M5":    [5.0,  0.8,   0.5   ],
+  "M6":    [6.0,  1.0,   0.75  ],
+  "M7":    [7.0,  1.0,   0.75  ],
+  "M8":    [8.0,  1.25,  1.0   ],
+  "M9":    [9.0,  1.25,  1.0   ],
+  "M10":   [10.0, 1.5,   1.25  ], // 1.0 also exist, 1.25 is primary fine
+  "M11":   [11.0, 1.5,   1.0   ],
+  "M12":   [12.0, 1.75,  1.25  ], // 1.5 also exist, 1.25 is primary fine
+  "M14":   [14.0, 2.0,   1.5   ],
+  "M16":   [16.0, 2.0,   1.5   ],
+  "M18":   [18.0, 2.5,   1.5   ],
+  "M20":   [20.0, 2.5,   1.5   ],
+  "M22":   [22.0, 2.5,   1.5   ],
+  "M24":   [24.0, 3.0,   2.0   ],
+  "M27":   [27.0, 3.0,   2.0   ],
+  "M30":   [30.0, 3.5,   2.0   ],
+  "M33":   [33.0, 3.5,   2.0   ],
+  "M36":   [36.0, 4.0,   3.0   ], // 2.0 and 1.5 also exist
+  "M39":   [39.0, 4.0,   3.0   ],
+  "M42":   [42.0, 4.5,   3.0   ],
+  "M45":   [45.0, 4.5,   3.0   ],
+  "M48":   [48.0, 5.0,   3.0   ],
+  "M52":   [52.0, 5.0,   4.0   ],
+  "M56":   [56.0, 5.5,   4.0   ],
+  "M60":   [60.0, 5.5,   4.0   ],
+  "M64":   [64.0, 6.0,   4.0   ],
+  "M68":   [68.0, 6.0,   4.0   ]
 }
 
 /**
@@ -92,7 +118,7 @@ const INCH_TO_MM = 25.4
  * @param {boolean} options.isInternal - False for bolt/external, True for nut/internal
  * @param {boolean} options.isFine - True to look up Fine pitch (UNF/Metric Fine), False for Coarse pitch (UNC/Metric Coarse)
  * @param {number} options.tolerance - Radial offset value in mm (e.g. 0.15 for 3D prints)
- * @param {number} options.segmentsPerTurn - Level of radial detail
+ * @param {number} options.segments - Segments per full rotation
  */
 export function createThread(size, length, options = {}) {
   const {
@@ -100,7 +126,7 @@ export function createThread(size, length, options = {}) {
     isInternal = false,
     isFine = false,
     tolerance = 0.0,
-    segmentsPerTurn = 32
+    segments = 32
   } = options
 
   let majorDiameterMm = 0
@@ -148,7 +174,7 @@ export function createThread(size, length, options = {}) {
   const totalAngle = totalTurns * 2 * Math.PI
   
   // 3. Define 60-degree V-profile 2D cross-section
-  const sagitta = minorRadius * (1 - Math.cos(Math.PI / segmentsPerTurn))
+  const sagitta = minorRadius * (1 - Math.cos(Math.PI / segments))
   const profileMinorRadius = minorRadius - sagitta
 
   const profilePoints = [
@@ -165,7 +191,7 @@ export function createThread(size, length, options = {}) {
     angle: totalAngle,
     pitch: pitchMm,
     endAngle: totalAngle,
-    segments: segmentsPerTurn
+    segments: segments
   }, ridge2D)
 
   // 5. Shift the thread up to correct the baseline start phase
@@ -178,7 +204,7 @@ export function createThread(size, length, options = {}) {
       startRadius: [majorRadius + 1, majorRadius + 1], 
       endRadius: [majorRadius + 1, majorRadius + 1], 
       height: length, 
-      segments: segmentsPerTurn 
+      segments: segments
     })
   )
   
@@ -193,7 +219,7 @@ export function createThread(size, length, options = {}) {
         startRadius: [minorRadius, minorRadius], 
         endRadius: [minorRadius, minorRadius], 
         height: length, 
-        segments: segmentsPerTurn 
+        segments: segments
       })
     )
     finalThreadedObject = union(shiftedCore, trimmedHelix)
@@ -204,7 +230,7 @@ export function createThread(size, length, options = {}) {
         startRadius: [majorRadius, majorRadius], 
         endRadius: [majorRadius, majorRadius], 
         height: length, 
-        segments: segmentsPerTurn 
+        segments: segments
       })
     )
     finalThreadedObject = union(shiftedOuter, trimmedHelix)
@@ -217,7 +243,7 @@ export function createThread(size, length, options = {}) {
       startRadius: [majorRadius + 2, majorRadius + 2], 
       endRadius: [majorRadius + 2, majorRadius + 2], 
       height: chamferHeight + 0.1, 
-      segments: segmentsPerTurn 
+      segments: segments
     })
   )
   
@@ -228,7 +254,7 @@ export function createThread(size, length, options = {}) {
       startRadius: [majorRadius, majorRadius], 
       endRadius: [cRadius2, cRadius2],         
       height: chamferHeight + 0.1,
-      segments: segmentsPerTurn
+      segments: segments
     })
   )
 

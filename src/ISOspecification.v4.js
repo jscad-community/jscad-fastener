@@ -92,7 +92,7 @@ function parseISOBolt(str) {
 
   return {
     size,
-    pitch,
+    // TBD REMOVE pitch,
     threadSeries,
     threadTolerance,
     propertyClass: propertyClassMatch ? propertyClassMatch[1] : (material.includes('Stainless') ? 'A2-70' : '8.8'),

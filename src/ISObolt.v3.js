@@ -7,7 +7,7 @@ const { translate } = transforms;
 /**
  * Calculates ISO 4014 Standard Thread Length (b)
  */
-function calculateISO4014ThreadLength(d, l) {
+const calculateISO4014ThreadLength = (d, l) => {
   if (l <= 125) return (2 * d) + 6;
   if (l <= 200) return (2 * d) + 12;
   return (2 * d) + 25;
@@ -20,7 +20,7 @@ function calculateISO4014ThreadLength(d, l) {
  * @param {Object} params - Sizing parameters passed from your ISO parsers
  * @param {Function} createThread - Your external thread generation module
  */
-export function generateISOBolt(params, createThread) {
+export const generateISOBolt = (params, createThread) => {
   const {
     nominalDiameter,  // 'd' (e.g., 12)
     totalLength,      // 'l' (e.g., 50)
@@ -28,7 +28,8 @@ export function generateISOBolt(params, createThread) {
     headHeight,       // 'k' (e.g., 7.5)
     standard,         // String: "ISO 4017" or "ISO 4014"
     threadSeries,     // String: "Coarse" or "Fine"
-    threadTolerance   // String: "6g"
+    threadTolerance,  // String: "6g"
+    segments = 32
   } = params;
 
   // 1. GENERATE THE BASE HEX HEAD
@@ -59,7 +60,7 @@ export function generateISOBolt(params, createThread) {
     radiusStart: coneBaseRadius, // Wide base at Z=0
     radiusEnd: 0,                // Pointed vertex at the top
     height: totalConeHeight,
-    segments: 64,                // High segment resolution for smooth beveling
+    segments,
     center: [0, 0, totalConeHeight / 2] // Bottom of cone flush with bottom of head (Z=0)
   });
 
@@ -97,7 +98,7 @@ export function generateISOBolt(params, createThread) {
     const smoothShank = cylinder({
       radius: shaftRadius,
       height: unthreadedLength,
-      segments: 32,
+      segments,
       center: [0, 0, -unthreadedLength / 2]
     });
     assemblyParts.push(smoothShank);
@@ -112,7 +113,7 @@ export function generateISOBolt(params, createThread) {
       isInternal: false,
       isFine: (threadSeries === 'Fine'),
       tolerance: toleranceOffset,
-      segmentsPerTurn: 32
+      segments
     });
 
     const positionedThread = translate(

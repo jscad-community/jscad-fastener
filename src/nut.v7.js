@@ -63,46 +63,54 @@ export const UTS_NUTS = {
 }
 
 /**
- * ISO Hex Nut Dimensions (millimeters)
- *
- * Array Mapping per size: [ widthAcrossFlats, standardHeight, thinHeight, lockHeight ]
- * Lock dimensions map standard ISO 7040 regular/high lock heights
+ * Master Registry for ISO Hexagon Nut Dimensions (millimeters)
+ * Schema Format: "Designation": [widthAcrossFlats, standardHeight, thinHeight, lockHeight]
+ * Standards: 
+ *   - widthAcrossFlats & standardHeight: ISO 4032
+ *   - thinHeight: ISO 4035
+ *   - lockHeight: ISO 7040 plus DIN 934 / 439 / 985
  */
-export const ISO_NUTS = {
-  "M1":    [2.5,   0.8,   0.55,  1.2],
-  "M1.2":  [3.0,   1.0,   0.60,  1.5],
-  "M1.4":  [3.0,   1.2,   0.70,  1.8],
-  "M1.6":  [3.2,   1.3,   1.00,  2.0],
-  "M2":    [4.0,   1.6,   1.20,  2.5],
-  "M2.5":  [5.0,   2.0,   1.60,  3.0],
-  "M3":    [5.5,   2.4,   1.80,  4.0],
-  "M3.5":  [6.0,   2.8,   2.00,  4.5],
-  "M4":    [7.0,   3.2,   2.20,  5.0],
-  "M5":    [8.0,   4.7,   2.70,  6.3],
-  "M6":    [10.0,  5.2,   3.20,  8.0],
-  "M7":    [11.0,  5.5,   3.50,  8.5],
-  "M8":    [13.0,  6.8,   4.00,  9.5],
-  "M10":   [16.0,  8.4,   5.00,  11.5],
-  "M12":   [18.0,  10.8,  6.00,  14.0],
-  "M14":   [21.0,  12.8,  7.00,  16.0],
-  "M16":   [24.0,  14.8,  8.00,  18.0],
-  "M18":   [27.0,  15.8,  9.00,  20.0],
-  "M20":   [30.0,  18.0,  10.00, 22.0],
-  "M22":   [32.0,  19.4,  11.00, 25.0],
-  "M24":   [36.0,  21.5,  12.00, 28.0],
-  "M27":   [41.0,  23.8,  13.50, 31.0],
-  "M30":   [46.0,  25.6,  15.00, 34.0],
-  "M33":   [50.0,  28.7,  16.50, 37.0],
-  "M36":   [55.0,  31.0,  18.00, 41.5],
-  "M39":   [60.0,  33.4,  19.50, 45.0],
-  "M42":   [65.0,  34.0,  21.00, 48.0],
-  "M45":   [70.0,  36.0,  22.50, 51.5],
-  "M48":   [75.0,  38.0,  24.00, 55.0],
-  "M52":   [80.0,  42.0,  26.00, 59.5],
-  "M56":   [85.0,  45.0,  28.00, 64.0],
-  "M60":   [90.0,  48.0,  30.00, 68.5],
-  "M64":   [95.0,  51.0,  32.00, 73.0],
-  "M68":   [100.0, 54.0,  34.00, 77.5]
+const ISO_NUTS = {
+  "M1":    [2.5,   0.8,   0.55,  1.2 ], // Safe sub-millimeter DIN limits applied
+  "M1.1":  [2.5,   0.8,   0.55,  1.2 ],
+  "M1.2":  [3.0,   1.0,   0.6,   1.4 ],
+  "M1.4":  [3.0,   1.2,   0.7,   1.4 ],
+  "M1.6":  [3.2,   1.3,   1.0,   1.7 ], // DIN 985 low-profile lock height
+  "M1.8":  [3.5,   1.4,   1.0,   2.0 ],
+  "M2":    [4.0,   1.6,   1.2,   3.0 ], // DIN 985 standard M2 lock form
+  "M2.2":  [4.5,   1.8,   1.3,   3.3 ],
+  "M2.5":  [5.0,   2.0,   1.6,   3.5 ],
+  "M3":    [5.5,   2.4,   1.8,   4.0 ], // Standard ISO 7040 structural line begins
+  "M3.5":  [6.0,   2.8,   2.0,   4.5 ],
+  "M4":    [7.0,   3.2,   2.2,   5.0 ],
+  "M4.5":  [8.0,   3.6,   2.2,   5.0 ],
+  "M5":    [8.0,   4.7,   2.7,   5.0 ],
+  "M6":    [10.0,  5.2,   3.2,   6.0 ],
+  "M7":    [11.0,  5.5,   3.5,   7.5 ],
+  "M8":    [13.0,  6.8,   4.0,   8.0 ],
+  "M9":    [13.0,  7.2,   4.5,   8.0 ],
+  "M10":   [16.0,  8.4,   5.0,   10.0],
+  "M11":   [17.0,  8.8,   5.5,   10.0],
+  "M12":   [18.0,  10.8,  6.0,   12.0],
+  "M14":   [21.0,  12.8,  7.0,   14.0],
+  "M16":   [24.0,  14.8,  8.0,   16.0],
+  "M18":   [27.0,  15.8,  9.0,   18.5],
+  "M20":   [30.0,  18.0,  10.0,  20.0],
+  "M22":   [34.0,  19.4,  11.0,  22.0],
+  "M24":   [36.0,  21.5,  12.0,  22.0],
+  "M27":   [41.0,  23.8,  13.5,  27.0],
+  "M30":   [46.0,  25.6,  15.0,  30.0],
+  "M33":   [50.0,  28.7,  16.5,  33.0],
+  "M36":   [55.0,  31.0,  18.0,  36.0],
+  "M39":   [60.0,  33.4,  20.0,  39.0],
+  "M42":   [65.0,  34.0,  21.0,  null], // Poly-locking limits cap at M39
+  "M45":   [70.0,  36.0,  22.0,  null],
+  "M48":   [75.0,  38.0,  24.0,  null],
+  "M52":   [80.0,  42.0,  26.0,  null],
+  "M56":   [85.0,  45.0,  28.0,  null],
+  "M60":   [90.0,  48.0,  30.0,  null],
+  "M64":   [95.0,  51.0,  32.0,  null],
+  "M68":   [100.0, 54.0,  34.0,  null]
 }
 
 /**
@@ -117,7 +125,7 @@ export const ISO_NUTS = {
  * @param {Number} [options.heightOffset=0] - clearance for oversized cutouts
  * @returns {Object} hex nut dimensions; widthAcrossFlats, totalHeight, baseHeight
  */
-export const hexNutDimensions = (options = {}) => {
+export const getHexNutDimensions = (options = {}) => {
   let {
     size = 'M4',
     standard = 'ISO',
@@ -161,28 +169,31 @@ export const hexNutDimensions = (options = {}) => {
 /**
  * Internal Helper: Generates a double-beveled hex block centered on Z = 0
  */
-function createBeveledHex(outerCornerRadius, widthAcrossFlats, targetHeight, centerZ = 0) {
+const createBeveledHex = (options = {}) => {
+  const { outerRadius, widthAcrossFlats, targetHeight, zOffset, segments } = options
+  console.log(outerRadius, widthAcrossFlats, targetHeight, zOffset, segments)
+
   // 1. Raw sharp Hex prism
   const rawHex = cylinder({
-    radius: outerCornerRadius,
+    radius: outerRadius,
     height: targetHeight,
     segments: 6,
-    center: [0, 0, centerZ]
+    center: [0, 0, zOffset]
   });
 
   // 2. Precision Chamfer Geometry Math (30-degree target angle from face plane)
   const chamferRadiusStart = widthAcrossFlats / 2;
-  const deltaRadius = outerCornerRadius - chamferRadiusStart;
+  const deltaRadius = outerRadius - chamferRadiusStart;
   const chamferDepth = deltaRadius / Math.sqrt(3); 
-  const overshootRadius = outerCornerRadius + 1;
+  const overshootRadius = outerRadius + 1;
 
   // 3. Top Tapered Cone Cutter (Tapers INWARD toward the top face)
   const topCutter = cylinderElliptic({
     startRadius: [overshootRadius, overshootRadius],
     endRadius: [chamferRadiusStart, chamferRadiusStart],
     height: chamferDepth,
-    segments: 32,
-    center: [0, 0, centerZ + (targetHeight / 2) - (chamferDepth / 2)]
+    segments,
+    center: [0, 0, zOffset + (targetHeight / 2) - (chamferDepth / 2)]
   });
 
   // 4. Bottom Tapered Cone Cutter (Tapers OUTWARD away from the bottom face)
@@ -191,8 +202,8 @@ function createBeveledHex(outerCornerRadius, widthAcrossFlats, targetHeight, cen
     startRadius: [chamferRadiusStart, chamferRadiusStart],
     endRadius: [overshootRadius, overshootRadius],
     height: chamferDepth,
-    segments: 32,
-    center: [0, 0, centerZ - (targetHeight / 2) + (chamferDepth / 2)]
+    segments,
+    center: [0, 0, zOffset - (targetHeight / 2) + (chamferDepth / 2)]
   });
 
   // 5. Middle Cylindrical Core Mask
@@ -201,24 +212,20 @@ function createBeveledHex(outerCornerRadius, widthAcrossFlats, targetHeight, cen
     startRadius: [overshootRadius, overshootRadius],
     endRadius: [overshootRadius, overshootRadius],
     height: middleCylinderHeight > 0 ? middleCylinderHeight : 0.01,
-    segments: 32,
-    center: [0, 0, centerZ]
+    segments,
+    center: [0, 0, zOffset]
   });
 
   // 6. Combine boundaries into lathe geometry mask
   const masterLatheMask = union(topCutter, middleCore, bottomCutter);
 
+  // 7. Intersect the hex with BOTH cutters sequentially to cleanly taper both ends
   return intersect(rawHex, masterLatheMask);
-
-  return [topCutter, bottomCutter, middleCore]
-
-  // Intersect the hex with BOTH cutters sequentially to cleanly taper both ends
-  return intersect(rawHex, topCutter, bottomCutter);
 }
 
 
 /**
- * Construct a Hex Nut from the given options.
+ * Create a Hex Nut from the given standard and size options.
  *
  * @param {Object} options - options for construction
  * @param {String} [options.size='M4'] - size of ISO / UTS nut, see lists above.
@@ -229,12 +236,12 @@ function createBeveledHex(outerCornerRadius, widthAcrossFlats, targetHeight, cen
  * @param {Number} [options.heightOffset=0] - clearance for oversized cutouts
  *
  * @example
- * hexNut({size: 'M4'})
- * hexNut({size: 'M30', isLocknut: true})
- * hexNut({size: '#8', standard: 'UTS'})
- * hexNut({size: '1', standard: 'UTS', isThin: true})
+ * createHexNut({size: 'M4'})
+ * createHexNut({size: 'M30', isLocknut: true})
+ * createHexNut({size: '#8', standard: 'UTS'})
+ * createHexNut({size: '1', standard: 'UTS', isThin: true})
  */
-export const hexNut = (options = {}) => {
+export const createHexNut = (options = {}) => {
   let {
     size = 'M4',
     standard = 'ISO',
@@ -242,36 +249,38 @@ export const hexNut = (options = {}) => {
     isLocknut = false,
     flatOffset = 0,
     heightOffset = 0,
-    segments = 32, // for locknut collar
+    segments = 36, // for locknut collar
   } = options
 
-  const dim = hexNutDimensions(options)
+  const dim = getHexNutDimensions(options)
   if (!dim) throw new Error(`Size ${size} not found within ${standard} dictionaries.`)
 
+  const { widthAcrossFlats, totalHeight, baseHeight } = dim
+
   // Computes vertex corner bounds from flat width parameter constraints
-  const outerRadius = (dim.widthAcrossFlats / 2) / Math.cos(Math.PI / 6)
+  const outerRadius = (widthAcrossFlats / 2) / Math.cos(Math.PI / 6)
+  let zOffset = 0
   
   // Case 1: standard / thin nuts are symmetrical hexagonal prisms
   if (!isLocknut) {
-    return createBeveledHex(outerRadius, dim.widthAcrossFlats, dim.totalHeight)
+    return createBeveledHex({outerRadius, widthAcrossFlats, targetHeight: totalHeight, zOffset, segments})
   }
 
   // Case 2: symmetrical compound nylon lock nut
-  const baseHeight = dim.baseHeight
-  const collarHeight = dim.totalHeight - baseHeight
+  const collarHeight = totalHeight - baseHeight
   
   // calculate total bounds to center the geometry
-  const halfTotalHeight = dim.totalHeight / 2
+  const halfTotalHeight = totalHeight / 2
 
   // base hex goes from bottom to the hex split line
-  const zOffset = -halfTotalHeight + (baseHeight / 2)
-  const hexBase = createBeveledHex(outerRadius, dim.widthAcrossFlats, baseHeight, zOffset)
+  zOffset = -halfTotalHeight + (baseHeight / 2)
+  const hexBase = createBeveledHex({outerRadius, widthAcrossFlats, targetHeight: baseHeight, zOffset, segments})
 
   // round collar stacks above the base hex
   const roundRadius = collarHeight * 0.25
   const roundCollar = roundedCylinder({
     roundRadius,
-    radius: dim.widthAcrossFlats / 2,
+    radius: widthAcrossFlats / 2,
     height: collarHeight + roundRadius,
     segments,
     center: [0, 0, -halfTotalHeight + baseHeight + (collarHeight / 2) - roundRadius]
@@ -281,8 +290,8 @@ export const hexNut = (options = {}) => {
 }
 
 export const main = () => {
-  //return hexNut({size: 'M4'})
-  //return hexNut({size: 'M30', isLocknut: true})
-  //return hexNut({size: '#8', standard: 'UTS'})
-  return hexNut({size: '1', standard: 'UTS', isThin: true})
+  //return createHexNut({size: 'M4'})
+  //return createHexNut({size: 'M30', isLocknut: true})
+  //return createHexNut({size: '#8', standard: 'UTS'})
+  return createHexNut({size: '1', standard: 'UTS', isThin: true})
 }
