@@ -46,6 +46,13 @@ function extractMaterialAndCoating(str) {
  * Dynamically appends ISO 273 clearance hole guidelines based on the nominal size.
  */
 function parseISOBolt(str) {
+  // 1. Extract the Bolt Standard / Specification (e.g., ISO 4014, ISO 4017, DIN 931)
+  const standardRegex = /(ISO|DIN)\s*\d+/i;
+  const standardMatch = str.match(standardRegex);
+  // Normalize formatting (e.g., "iso 4014" -> "ISO 4014")
+  let standard = standardMatch ? standardMatch[0].toUpperCase().replace(/\s+/g, ' ') : 'ISO 4017';
+
+  // 2. Parse Thread Parameters
   const threadRegex = /M(\d+(?:\.\d+)?)(?:\s*x\s*(\d+(?:\.\d+)?))?(?:\s*x\s*(\d+))?/i;
   const threadMatch = str.match(threadRegex);
   if (!threadMatch) throw new Error("Failed to extract Metric Thread parameters from Bolt string.");
@@ -53,11 +60,11 @@ function parseISOBolt(str) {
   const nominalDiameter = parseFloat(threadMatch[1]);
   const size = `M${nominalDiameter}`;
   let pitch = null;
-  let threadSeries = 'Coarse';
+  let threadSeries = 'COARSE'; // Kept intact!
 
   if (threadMatch[2] && threadMatch[3]) {
     pitch = parseFloat(threadMatch[2]);
-    threadSeries = 'Fine';
+    threadSeries = 'FINE';      // Kept intact!
   } else {
     pitch = lookupCoarsePitch(size);
   }
@@ -69,7 +76,6 @@ function parseISOBolt(str) {
   const { material, coating } = extractMaterialAndCoating(str);
 
   // --- ISO 273 Clearance Hole Matrix ---
-  // Calculates fine, medium, and coarse clearance drill diameters dynamically
   let fineHole, mediumHole, coarseHole;
 
   if (nominalDiameter <= 1) {
@@ -86,22 +92,23 @@ function parseISOBolt(str) {
     fineHole = nominalDiameter + 1.0;   mediumHole = nominalDiameter + 2.0;   coarseHole = nominalDiameter + 3.0;
   } else if (nominalDiameter <= 42) {
     fineHole = nominalDiameter + 2.0;   mediumHole = nominalDiameter + 3.0;   coarseHole = nominalDiameter + 5.0;
-  } else { // Sizes above M42 up to M68
+  } else { 
     fineHole = nominalDiameter + 3.0;   mediumHole = nominalDiameter + 4.0;   coarseHole = nominalDiameter + 6.0;
   }
 
   return {
     size,
-    // TBD REMOVE pitch,
-    threadSeries,
+    pitch,
+    threadSeries, // "Coarse" or "Fine" preserved perfectly
+    standard,
     threadTolerance,
     propertyClass: propertyClassMatch ? propertyClassMatch[1] : (material.includes('Stainless') ? 'A2-70' : '8.8'),
     material,
     coating,
     clearanceSpecifications: {
-      standardBody: "ISO 273",
+      standard: "ISO 273",
       fineFitHole: Number(fineHole.toFixed(1)),
-      mediumFitHole: Number(mediumHole.toFixed(1)), // Most common shop floor standard
+      mediumFitHole: Number(mediumHole.toFixed(1)), 
       coarseFitHole: Number(coarseHole.toFixed(1))
     }
   };

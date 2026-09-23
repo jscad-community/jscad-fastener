@@ -107,7 +107,7 @@ export function generateISOAssembly3D(assemblyConfig, clampThickness, modules) {
   // 1. GENERATE AND POSITION THE ISO BOLT
   // ==========================================
   // Head is generated above Z=0; shank runs downward into negative Z space
-  const boltSolid = createBolt(bolt, createThread);
+  const boltSolid = createBolt(bolt);
   assemblySolids.push(boltSolid);
 
   // ==========================================

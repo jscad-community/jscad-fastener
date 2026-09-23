@@ -1,8 +1,7 @@
-import { primitives, booleans, transforms } from '@jscad/modeling';
+import { cylinder, torus, union, intersect, translate } from '@jscad/modeling';
 
-const { cylinder, torus } = primitives;
-const { union, intersect } = booleans;
-const { translate } = transforms;
+import { createThread } from './threads.v3.js'
+
 
 /**
  * Calculates ISO 4014 Standard Thread Length (b)
@@ -14,23 +13,23 @@ const calculateISO4014ThreadLength = (d, l) => {
 }
 
 /**
- * Main Generator for Standard Hex Metric Bolts using JSCAD V3 with a 30-degree Top Chamfer
- * Workspace: All calculations and outputs are natively in Millimeters (mm).
+ * Generator for ISO Hex Metric Bolts.
+ *
+ * NOTE: All calculations and outputs are natively in millimeters (mm).
  * 
  * @param {Object} params - Sizing parameters passed from your ISO parsers
- * @param {Function} createThread - Your external thread generation module
  */
-export const generateISOBolt = (params, createThread) => {
+export const generateISOBolt = (options = {}) => {
   const {
     nominalDiameter,  // 'd' (e.g., 12)
     totalLength,      // 'l' (e.g., 50)
     widthAcrossFlats, // 's' (e.g., 18)
     headHeight,       // 'k' (e.g., 7.5)
     standard,         // String: "ISO 4017" or "ISO 4014"
-    threadSeries,     // String: "Coarse" or "Fine"
-    threadTolerance,  // String: "6g"
+  +  threadSeries,     // String: "Coarse" or "Fine"
+  +  threadTolerance,  // String: "6g"
     segments = 32
-  } = params;
+  } = options
 
   // 1. GENERATE THE BASE HEX HEAD
   // Circumscribed Radius = Inscribed Radius (s/2) / cos(30 deg)
@@ -43,6 +42,7 @@ export const generateISOBolt = (params, createThread) => {
     segments: 6,
     center: [0, 0, headHeight / 2] // Bottom of head sits right at Z=0
   });
+return rawHexHead
 
   // 2. APPLY THE 30-DEGREE TOP CHAMFER CONE INTERSECTION
   // The cutting cone's surface must touch the inscribed flat boundary (s/2) at the very top plane (Z = headHeight)
