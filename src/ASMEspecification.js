@@ -98,6 +98,15 @@ export const parseASMENut = (spec) => {
     standard = "ASME_B18_2_2_JAM";
   }
 
+  // 1.5 Resolve Lock Nut Names
+  if (spec.includes("LOCK NUT") || spec.includes("B18.16.6")) {
+    if (spec.includes("THIN") || spec.includes("NTE")) {
+      standard = "ASME_B18_16_6_LOCK_THIN"
+    } else {
+      standard = "ASME_B18_16_6_LOCK_STANDARD"
+    }
+  }
+
   // 2. Structural Regex Thread Extraction
   const nutRegex = /(?:#)?(\d+(?:\/\d+)?)(?:\s*INCH|\s*IN|\")?(?:\s*-\s*|\s+)(\d+)\s*(UNC|UNF)?/i;
   const match = spec.match(nutRegex);
@@ -123,16 +132,21 @@ export const parseASMENut = (spec) => {
   if (spec.includes("ZINC")) coating = "Zinc Plated";
   else if (spec.includes("GALVANIZED") || spec.includes("HDG")) coating = "Hot Dip Galvanized";
 
-  // 4. Calculate ASME B1.1 Tapped Hole Limits (Converted to mm)
+  // 4. Calculate ASME B1.1 Tapped Hole Limits
   // Convert fractional or gauge sizes to numerical decimal inches first
   let dInches = 0;
   if (size.includes("/")) {
     const parts = size.split("/");
     dInches = parseFloat(parts[0]) / parseFloat(parts[1]);
   } else {
-    // If it's a machine number size (#2 to #12)
-    const gaugeNum = parseInt(size, 10);
-    dInches = (gaugeNum * 0.013) + 0.060;
+    if (standard === "ASME_B18_2_2_HEAVY") {
+      // for this standard, sizes start from 1 inch
+      dInches = parseInt(size, 10);
+    } else {
+      // a machine number size (#2 to #12)
+      const gaugeNum = parseInt(size, 10);
+      dInches = (gaugeNum * 0.013) + 0.060;
+    }
   }
 
   // Apply ASME B1.1 foundational thread geometry constant paths (in inches)
@@ -140,15 +154,16 @@ export const parseASMENut = (spec) => {
   const theoreticalMin         = dInches - (1.08253 / tpi); // 100% minor diameter bounds
   const theoreticalMax         = dInches - (0.64951 / tpi); // Loose structural minimum shelf limit
 
-  // Scale the complete dimensional spectrum to millimeters (mm)
-  const recommendedDrill = Number((theoreticalRecommended * 25.4).toFixed(2));
-  const drillHoleMin     = Number((theoreticalMin * 25.4).toFixed(2));
-  const drillHoleMax     = Number((theoreticalMax * 25.4).toFixed(2));
+  // Scale the complete dimensional spectrum to millimeters (inches)
+  const recommendedDrill = Number((theoreticalRecommended).toFixed(2));
+  const drillHoleMin     = Number((theoreticalMin).toFixed(2));
+  const drillHoleMax     = Number((theoreticalMax).toFixed(2));
 
   // 5. Output Unified Component Token Structure
   return {
     size,
     pitch: tpi,             // TPI serves as the pitch descriptor for imperial
+    threadSeries,
     threadTolerance,        // "2B"
     material,               // "Hardened Carbon Steel"
     coating,                // "Zinc Plated"

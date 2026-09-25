@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { parseASMEBolt } from './src/ASMEspecification.js'
+import { parseASMEBolt, parseASMENut } from './src/ASMEspecification.js'
 
 test('parseASMEBolt parsing', () => {
   // error cases
@@ -394,6 +394,328 @@ test('parseASMEBolt parsing', () => {
     "standard": "ASME_B18_2_1_CAP_SCREW",
     "threadSeries": "UNC",
     "threadTolerance": "2A",
+  }
+  )
+})
+
+test('parseASMENut parsing', () => {
+  // error cases
+  expect(() => parseASMENut()).toThrow()
+  expect(() => parseASMENut('')).toThrow()
+
+  // --- 1. ASME B18.2.2 Standard Finished Hex Nuts ---
+  expect(parseASMENut("Hex Nut, ASME B18.2.2, 1/4-20 UNC, Grade 5 Zinc Plated")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.22,
+      "allowableHoleMinimum": 0.2,
+      "recommendedDrillBitSize": 0.19,
+    },
+    "material": "Carbon Steel",
+    "pitch": 20,
+    "size": "1/4",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("Finished Hex Nut 5/16-18 UNC, Grade 8, Yellow Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.28,
+      "allowableHoleMinimum": 0.25,
+      "recommendedDrillBitSize": 0.24,
+    },
+    "material": "Carbon Steel",
+    "pitch": 18,
+    "size": "5/16",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("Hex Nut 3/8-16 UNC, Stainless Steel 316, Passivated")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.33,
+      "allowableHoleMinimum": 0.31,
+      "recommendedDrillBitSize": 0.29,
+    },
+    "material": "Stainless Steel",
+    "pitch": 16,
+    "size": "3/8",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("ASME B18.2.2 Finished Hex Nut 1/2-13 UNC, Grade 2, Bare Metal")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.45,
+      "allowableHoleMinimum": 0.42,
+      "recommendedDrillBitSize": 0.4,
+    },
+    "material": "Carbon Steel",
+    "pitch": 13,
+    "size": "1/2",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("Hex Nut 5/8-11 UNC, Grade 8, Black Oxide")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.57,
+      "allowableHoleMinimum": 0.53,
+      "recommendedDrillBitSize": 0.51,
+    },
+    "material": "Carbon Steel",
+    "pitch": 11,
+    "size": "5/8",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+
+  // --- 2. ASME B18.2.2 Fine Thread Options (UNF) ---
+  expect(parseASMENut("Hex Nut 5/16-24 UNF, Grade 5 Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.29,
+      "allowableHoleMinimum": 0.27,
+      "recommendedDrillBitSize": 0.26,
+    },
+    "material": "Carbon Steel",
+    "pitch": 24,
+    "size": "5/16",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "threadSeries": "UNF",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("ASME B18.2.2 Finished Hex Head Nut, 1/2-20 UNF, Grade 8, Bare")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.47,
+      "allowableHoleMinimum": 0.45,
+      "recommendedDrillBitSize": 0.44,
+    },
+    "material": "Carbon Steel",
+    "pitch": 20,
+    "size": "1/2",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "threadSeries": "UNF",
+    "threadTolerance": "2B",
+  }
+  )
+
+  // --- 3. ASME B18.2.2 Thin / Jam Nuts ---
+  expect(parseASMENut("Hex Jam Nut, ASME B18.2.2, 3/8-16 UNC, Grade 2 Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.33,
+      "allowableHoleMinimum": 0.31,
+      "recommendedDrillBitSize": 0.29,
+    },
+    "material": "Carbon Steel",
+    "pitch": 16,
+    "size": "3/8",
+    "standard": "ASME_B18_2_2_JAM",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("Finished Hex Jam Nut 1/2-13 UNC, Stainless Steel, Plain")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.45,
+      "allowableHoleMinimum": 0.42,
+      "recommendedDrillBitSize": 0.4,
+    },
+    "material": "Stainless Steel",
+    "pitch": 13,
+    "size": "1/2",
+    "standard": "ASME_B18_2_2_JAM",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("ASME B18.2.2 Hex Jam Nut 3/4-10 UNC, Grade 5, Black Oxide")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.69,
+      "allowableHoleMinimum": 0.64,
+      "recommendedDrillBitSize": 0.62,
+    },
+    "material": "Carbon Steel",
+    "pitch": 10,
+    "size": "3/4",
+    "standard": "ASME_B18_2_2_JAM",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+
+  // --- 4. ASME B18.2.2 Heavy Hex Nuts ---
+  expect(parseASMENut("Heavy Hex Nut, ASME B18.2.2, 1/2-13 UNC, Grade 8, Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.45,
+      "allowableHoleMinimum": 0.42,
+      "recommendedDrillBitSize": 0.4,
+    },
+    "material": "Carbon Steel",
+    "pitch": 13,
+    "size": "1/2",
+    "standard": "ASME_B18_2_2_HEAVY",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("Heavy Hex Nut 5/8-11 UNC, ASTM A563 Grade DH, Hot Dip Galvanized")).toStrictEqual(
+  {
+    "coating": "Hot Dip Galvanized",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.57,
+      "allowableHoleMinimum": 0.53,
+      "recommendedDrillBitSize": 0.51,
+    },
+    "material": "Hardened Carbon Steel",
+    "pitch": 11,
+    "size": "5/8",
+    "standard": "ASME_B18_2_2_HEAVY",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("ASME B18.2.2 Heavy Hex Nut 1-8 UNC, Grade 2, Plain Finish")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.92,
+      "allowableHoleMinimum": 0.86,
+      "recommendedDrillBitSize": 0.84,
+    },
+    "material": "Carbon Steel",
+    "pitch": 8,
+    "size": "1",
+    "standard": "ASME_B18_2_2_HEAVY",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+
+  // --- 5. ASME B18.2.6 Heavy Hex Structural Nuts ---
+  expect(parseASMENut("Heavy Hex Structural Nut, ASME B18.2.6, 1/2-13 UNC, Zinc Plated")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.45,
+      "allowableHoleMinimum": 0.42,
+      "recommendedDrillBitSize": 0.4,
+    },
+    "material": "Hardened Carbon Steel",
+    "pitch": 13,
+    "size": "1/2",
+    "standard": "ASME_B18_2_6_STRUCTURAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("Heavy Hex Structural Nut 3/4-10 UNC, ASTM A563 Grade DH, HDG")).toStrictEqual(
+  {
+    "coating": "Hot Dip Galvanized",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.69,
+      "allowableHoleMinimum": 0.64,
+      "recommendedDrillBitSize": 0.62,
+    },
+    "material": "Hardened Carbon Steel",
+    "pitch": 10,
+    "size": "3/4",
+    "standard": "ASME_B18_2_6_STRUCTURAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("ASME B18.2.6 Structural Nut - 7/8-9 UNC - Black Oxide")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.8,
+      "allowableHoleMinimum": 0.75,
+      "recommendedDrillBitSize": 0.73,
+    },
+    "material": "Hardened Carbon Steel",
+    "pitch": 9,
+    "size": "7/8",
+    "standard": "ASME_B18_2_6_STRUCTURAL",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+
+  // --- 6. ASME B18.16.6 Nylon Insert Lock Nuts ---
+  expect(parseASMENut("Nylon Insert Lock Nut, ASME B18.16.6, 1/4-20 UNC, Nylon Collar, Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.22,
+      "allowableHoleMinimum": 0.2,
+      "recommendedDrillBitSize": 0.19,
+    },
+    "material": "Carbon Steel",
+    "pitch": 20,
+    "size": "1/4",
+    "standard": "ASME_B18_16_6_LOCK_STANDARD",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("Nyloc Lock Nut 5/16-18 UNC, Grade 8, Zinc Plated")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.28,
+      "allowableHoleMinimum": 0.25,
+      "recommendedDrillBitSize": 0.24,
+    },
+    "material": "Carbon Steel",
+    "pitch": 18,
+    "size": "5/16",
+    "standard": "ASME_B18_16_6_LOCK_STANDARD",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
+  }
+  )
+  expect(parseASMENut("ASME B18.16.6 Nylon Insert Thin Lock Nut 1/2-13 UNC, Stainless Steel")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 0.45,
+      "allowableHoleMinimum": 0.42,
+      "recommendedDrillBitSize": 0.4,
+    },
+    "material": "Stainless Steel",
+    "pitch": 13,
+    "size": "1/2",
+    "standard": "ASME_B18_16_6_LOCK_THIN",
+    "threadSeries": "UNC",
+    "threadTolerance": "2B",
   }
   )
 })
