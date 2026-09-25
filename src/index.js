@@ -4,6 +4,8 @@ import { createHexNut } from './nut.v7.js'
 
 import { generateISOBolt } from './ISObolt.v5.js'
 
+import { generateUTSBolt } from './UTSbolt.v2.js'
+
 //export main
 
 export function main() {
@@ -17,20 +19,22 @@ export function main() {
   //const m10StandardNut = createHexNut({size: 'M10'});
   //return m10StandardNut
 
+/*
   const bolt = generateISOBolt({
     size: 'M6',
-    threadSeries: 'Coarse',     // String: "Coarse" or "Fine"
-    //standard: 'ISO 4017', // full thread
-    standard: 'ISO 4014', // partial thread
-
-    //nominalDiameter,  // 'd' (e.g., 12)
-    //totalLength,      // 'l' (e.g., 50)
-    //widthAcrossFlats, // 's' (e.g., 18)
-    //headHeight,       // 'k' (e.g., 7.5)
-    //standard,         // String: "ISO 4017" or "ISO 4014"
-    //threadTolerance: '6g',  // String: "6g"
-    //segments = 32
+    threadSeries: 'Coarse', // String: "Coarse" or "Fine"
+    standard: 'ISO 4017',   // full thread
+    standard: 'ISO 4014',   // partial thread
   }, 20)
+*/
+
+  const bolt = generateUTSBolt({
+    size: '1/2',
+    threadSeries: 'UNC', // String: "UNC" or "UNF"
+    standard: 'ASME_B18_2_1_TAP_BOLT',   // full thread
+    //standard: 'ASME_B18_2_1_HEX_BOLT',   // partial thread
+  }, 2)
+
   return bolt
   
 }

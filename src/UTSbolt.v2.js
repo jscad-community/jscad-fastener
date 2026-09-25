@@ -1,130 +1,146 @@
-import { primitives, booleans, transforms } from '@jscad/modeling';
+import { union } from '@jscad/modeling';
 
-const { cylinder, torus } = primitives;
-const { union, intersect } = booleans;
-const { translate } = transforms;
+import { generateHexHead, generateShank } from './bolt.js'
 
-/**
- * Calculates standard thread length (b) for imperial bolts per ASME guidelines
- * @param {number} d - Nominal Diameter (inches)
- * @param {number} l - Overall Bolt Length (inches)
- * @returns {number} Standard thread length allocation (inches)
- */
-function calculateASMEThreadLength(d, l) {
-  if (l <= 6.0) return (2 * d) + 0.25;
-  return (2 * d) + 0.50;
-}
+// Dimensions Offsets
+const MAJOR_DIAMETER = 0
+const WIDTH_ACROSS_FLATS = 1
+const HEAD_HEIGHT = 2
+const WASHER_DIAMETER = 3
+const FILLET_RADIUS = 4
 
 /**
- * Main Generator for Imperial UTS Hex Bolts using JSCAD V3 with a 30-degree Top Chamfer
- * Workspace: All calculations and output primitives are strictly in Millimeters (mm).
- * 
- * @param {Object} params - Sizing parameters passed from your UTS parsers (in inches)
- * @param {Function} createThread - Your external thread generation module
+ * Master Registry for ASME B18 Hex Cap Screws
+ *
+ * Core Reference: 
+ *   - Sizes #2 to #12: ASME B18.6.3 Hex Washer Head Machine Screws (dw = Washer Flange Diameter)
+ *   - Sizes 1/4" to 4": ASME B18.2.1 Hex Cap Screws (dw = Under-head Circular Boss Face)
+ *
+ * NOTE: Sizes #0 and #1 do not have standardized external hex heads under ASME B18.6.3.
+ *
+ * All values are preserved in native fractional/decimal inches (in).
+ *
+ * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), washerFaceDiameter (dw), filletRadius (r)]
  */
-export function generateUTSBoltInMM(params, createThread) {
-  // --- INCH TO MM WORKSPACE CONVERSION ---
-  const MM_PER_INCH = 25.4;
+export const ASME_HEX_HEAD_REGISTRY = {
+  // --- ASME B18.6.3 Miniature Machine Screw Series (#2 to #12) ---
+  "2":     [0.0860, 0.1250, 0.0500, 0.1660, 0.010],
+  "3":     [0.0990, 0.1875, 0.0550, 0.2430, 0.015],
+  "4":     [0.1120, 0.1875, 0.0600, 0.2430, 0.015],
+  "5":     [0.1250, 0.1880, 0.0700, 0.2600, 0.015],
+  "6":     [0.1380, 0.2500, 0.0930, 0.3280, 0.020],
+  "8":     [0.1640, 0.2500, 0.1100, 0.3480, 0.025],
+  "10":    [0.1900, 0.3125, 0.1200, 0.4140, 0.030],
+  "12":    [0.2160, 0.3125, 0.1550, 0.4320, 0.030],
 
-  const nominalDiameter = params.nominalDiameter * MM_PER_INCH; // 'd'
-  const totalLength     = params.totalLength * MM_PER_INCH;     // 'l'
-  const widthAcrossFlats= params.widthAcrossFlats * MM_PER_INCH;// 's'
-  const headHeight      = params.headHeight * MM_PER_INCH;      // 'k'
+  // --- ASME B18.2.1 Standard Fractional Fastener Series (1/4" to 1-1/2") ---
+  "1/4":   [0.2500, 0.4375, 0.1630, 0.4050, 0.015],
+  "5/16":  [0.3125, 0.5000, 0.2110, 0.4680, 0.015],
+  "3/8":   [0.3750, 0.5625, 0.2380, 0.5310, 0.015],
+  "7/16":  [0.4375, 0.6250, 0.2840, 0.5890, 0.015],
+  "1/2":   [0.5000, 0.7500, 0.3210, 0.7130, 0.015],
+  "9/16":  [0.5625, 0.8125, 0.3670, 0.7700, 0.020],
+  "5/8":   [0.6250, 0.9375, 0.4060, 0.8900, 0.020],
+  "3/4":   [0.7500, 1.1250, 0.4870, 1.0740, 0.020],
+  "7/8":   [0.8750, 1.3125, 0.5640, 1.2580, 0.020],
+  "1":     [1.0000, 1.5000, 0.6410, 1.4380, 0.020],
+  "1-1/8": [1.1250, 1.6875, 0.7180, 1.6200, 0.030],
+  "1-1/4": [1.2500, 1.8750, 0.8100, 1.8000, 0.030],
+  "1-3/8": [1.3750, 2.0625, 0.8870, 1.9810, 0.030],
+  "1-1/2": [1.5000, 2.2500, 0.9650, 2.1620, 0.030],
   
-  const { threadSeries, threadTolerance, tpi } = params;
+  // --- ASME B18.2.1 Large Industrial Infrastructure Extensions (1-5/8" to 4") ---
+  "1-5/8": [1.6250, 2.4375, 1.0450, 2.3400, 0.060],
+  "1-3/4": [1.7500, 2.6250, 1.1230, 2.5200, 0.060],
+  "1-7/8": [1.8750, 2.8125, 1.2010, 2.7000, 0.060],
+  "2":     [2.0000, 3.0000, 1.2790, 2.8800, 0.060],
+  "2-1/4": [2.2500, 3.3750, 1.4350, 3.2400, 0.060],
+  "2-1/2": [2.5000, 3.7500, 1.5910, 3.6000, 0.060],
+  "2-3/4": [2.7500, 4.1250, 1.7470, 3.9600, 0.060],
+  "3":     [3.0000, 4.5000, 1.9030, 4.3200, 0.060],
+  "3-1/4": [3.2500, 4.8750, 2.0760, 4.6790, 0.080],
+  "3-1/2": [3.5000, 5.2500, 2.2340, 5.0400, 0.080],
+  "3-3/4": [3.7500, 5.6250, 2.3920, 5.4000, 0.080],
+  "4":     [4.0000, 6.0000, 2.5500, 5.7600, 0.080]
+};
 
-  // 1. GENERATE THE BASE HEX HEAD
-  // Circumscribed Radius = Inscribed Radius (s/2) / cos(30 deg)
-  const inscribedRadius = widthAcrossFlats / 2;
-  const circumscribedRadius = inscribedRadius / Math.cos(Math.PI / 6);
-  
-  let rawHexHead = cylinder({
-    radius: circumscribedRadius,
-    height: headHeight,
-    segments: 6,
-    center: [0, 0, headHeight / 2] // Bottom of head sits at Z=0
-  });
+const MM_PER_INCH = 25.4
 
-  // 2. APPLY THE 30-DEGREE TOP CHAMFER CONE INTERSECTION
-  // To create a perfect chamfer where the circle hits the flat wrench faces, 
-  // the cutting cone base radius must match the inscribed radius (s/2) at the top surface (Z = headHeight)
-  const chamferAngleRad = (30 * Math.PI) / 180;
-  
-  // Calculate the required extra height of the cone tip above the head face
-  // tan(30) = inscribedRadius / extraConeHeight -> extraConeHeight = inscribedRadius / tan(30)
-  const extraConeHeight = inscribedRadius / Math.tan(chamferAngleRad);
-  const totalConeHeight = headHeight + extraConeHeight;
+/**
+ * Generate UTS Bolt from the given specification.
+ *
+ * @see parseUTSBolt() and parseUTSFastener()
+ *
+ * @param {Object} specification - bolt specification
+ * @param {String} specification.size - Dimension identifier (e.g., '#1' or `1/2`)
+ * @param {String} specifiation.standard - Bolt standard; ASME_B18_2_1_CAP_SCREW, etc
+ * @param {String} specifiation.threadSeries - Thread series of bolt; UNF or UNC
+ * @param {Number} nominalLength - nominal length of the shank (inches)
+ * @returns {Geom3} UTS bolt, centered on X-Y, head above Z, shank below Z
+ */
+export const generateUTSBolt = (specification = {}, nominalLength) => {
+  let {
+    size = '1/2',
+    standard = 'ASME_B18_2_1_CAP_SCREW',
+    threadSeries = 'UNC',
+    segments = 36
+  } = specification
 
-  // The base radius of the complete cone at Z=0 is totalConeHeight * tan(30)
-  const coneBaseRadius = totalConeHeight * Math.tan(chamferAngleRad);
-
-  const chamferCone = cylinder({
-    radiusStart: coneBaseRadius, // Base radius at the bottom
-    radiusEnd: 0,                // Pointed tip at the top
-    height: totalConeHeight,
-    segments: 64,                // Smooth rounding
-    center: [0, 0, totalConeHeight / 2] // Align bottom of cone flush with bottom of head (Z=0)
-  });
-
-  // The intersection of the hex prism and the bounding cone creates a perfect 30-degree chamfer crown
-  const finishedHexHead = intersect(rawHexHead, chamferCone);
-
-  // 3. CALCULATE INCH BOUNDS FOR PARTIAL THREADING AND CONVERT
-  const standardB_Inches = calculateASMEThreadLength(params.nominalDiameter, params.totalLength);
-  const threadLength_Inches = (params.totalLength <= standardB_Inches) ? params.totalLength : standardB_Inches;
-  
-  const threadLength = threadLength_Inches * MM_PER_INCH;
-  const unthreadedLength = totalLength - threadLength;
-
-  const assemblyParts = [finishedHexHead];
-
-  // 4. GENERATE THE UNDER-HEAD ROUND FILLET (TORUS)
-  const filletRadius = Math.max(0.4, Number((nominalDiameter * 0.04).toFixed(2))); // Safe min of 0.4mm
-  const shaftRadius = nominalDiameter / 2;
-  const torusMajorRadius = shaftRadius + filletRadius;
-
-  const cornerFillet = torus({
-    innerRadius: shaftRadius,
-    outerRadius: torusMajorRadius,
-    innerSegments: 16,
-    outerSegments: 32
-  });
-
-  const positionedFillet = translate([0, 0, -filletRadius], cornerFillet);
-  assemblyParts.push(positionedFillet);
-
-  // 5. GENERATE SHAFT SEGMENTS (IN MM)
-  // A. Smooth Shoulder Segment
-  if (unthreadedLength > 0) {
-    const smoothShank = cylinder({
-      radius: shaftRadius,
-      height: unthreadedLength,
-      segments: 32,
-      center: [0, 0, -unthreadedLength / 2]
-    });
-    assemblyParts.push(smoothShank);
+  const headSpecs = ASME_HEX_HEAD_REGISTRY[size]
+  if (!headSpecs) {
+    throw new Error(`Missing bolt head specification for size [${size}]`)
   }
 
-  // B. Helical Thread Segment Integration
-  if (threadLength > 0) {
-    // Pass parameters converted to mm or keep native if your thread module handles scale flags
-    const threadMesh = createThread(nominalDiameter, threadLength, {
-      standard: 'UTS',
-      isInternal: false,
-      isFine: (threadSeries === 'UNF'),
-      tolerance: 0.0,
-      segmentsPerTurn: 32
-    });
+  let widthAcrossFlats= headSpecs[WIDTH_ACROSS_FLATS] // s
+  let headHeight= headSpecs[HEAD_HEIGHT] // k
+  let washerFaceDiameter = headSpecs[WASHER_DIAMETER] // dw
+  let filletRadius = headSpecs[FILLET_RADIUS] // f
+  let majorDiameter = headSpecs[MAJOR_DIAMETER] // d
 
-    const positionedThread = translate(
-      [0, 0, -unthreadedLength - (threadLength / 2)], 
-      threadMesh
-    );
-    
-    assemblyParts.push(positionedThread);
+  let threadLength = 0
+  let unthreadedLength = 0
+
+  if (standard === "ASME_B18_2_1_TAP_BOLT" || standard === "ASME_B18_6_3_MACHINE") {
+    // Fully Threaded Strategy
+    threadLength = nominalLength
+    unthreadedLength = 0
+  } else if (standard === "ASME_B18_2_6_STRUCTURAL") {
+    // ASME B18.2.6 Heavy Structural Fixed Thread Length Array (Short grip bounds)
+    // Layout mapping: Size -> Standard Fixed Thread Length
+    // const structuralThreadLengths = {
+    //   "1/2": 1.000, "5/8": 1.250, "3/4": 1.375, "7/8": 1.500, "1": 1.750,
+    //   "1-1/8": 2.000, "1-1/4": 2.000, "1-3/8": 2.250, "1-1/2": 2.250
+    // }
+    // const fixedLT = structuralThreadLengths[size] || (2 * majorDiameter + 0.25)
+    const fixedLT = (2 * majorDiameter + 0.25)
+    threadLength = Math.min(fixedLT, nominalLength)
+    unthreadedLength = nominalLengthInches - threadLength
+  } else {
+    // Standard ASME B18.2.1 Commercial Hex / Heavy Hex Cap Screw Formula
+    let computedLT = 0
+    if (nominalLength <= 6.0) {
+      computedLT = (2 * majorDiameter) + 0.25 // 2D + 1/4"
+    } else {
+      computedLT = (2 * majorDiameter) + 0.50 // 2D + 1/2"
+    }
+    threadLength = Math.min(computedLT, nominalLength)
+    unthreadedLength = nominalLength - threadLength
   }
 
-  // 6. COMBINE AND RETURN SOLID IN MM
-  return union(...assemblyParts);
+  // convert inches to millimeter
+  widthAcrossFlats = widthAcrossFlats * MM_PER_INCH
+  headHeight = headHeight * MM_PER_INCH
+  washerFaceDiameter = washerFaceDiameter * MM_PER_INCH
+  filletRadius = filletRadius * MM_PER_INCH
+  majorDiameter = majorDiameter * MM_PER_INCH
+  threadLength = threadLength * MM_PER_INCH
+  unthreadedLength = unthreadedLength * MM_PER_INCH
+
+  // create the bolt head from the determined specifications
+  const head = generateHexHead({widthAcrossFlats, headHeight, washerFaceDiameter, filletRadius, majorDiameter, segments})
+
+  const shank = generateShank({ standard: 'UTS', size, threadSeries, threadLength, unthreadedLength, segments })
+
+  return union(head, shank)
 }
 

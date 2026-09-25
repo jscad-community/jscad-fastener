@@ -1,9 +1,4 @@
-import { primitives, booleans, extrusions, transforms } from '@jscad/modeling'
-
-const { cylinderElliptic, polygon } = primitives
-const { intersect, union, subtract } = booleans
-const { extrudeHelical } = extrusions
-const { translate } = transforms
+import { cylinderElliptic, polygon, intersect, union, subtract, extrudeHelical, translate } from '@jscad/modeling'
 
 // Dimensions Offsets
 export const MAJOR_DIAMETER = 0
@@ -11,9 +6,9 @@ export const COARSE_TPI = 1
 export const FINE_TPI = 2
 
 /**
- * Master Registry for ISO Metric Threads (ISO 261 / ISO 724)
- * Schema Format: "Designation": [Major_Diameter_mm, Coarse_Pitch_mm, Primary_Fine_Pitch_mm]
- * Note: If an ultra-small profile size has no official standard Fine series definition, it maps to null.
+ * ISO Metric Threads (ISO 261 / ISO 724)
+ *
+ * "Designation": [Major_Diameter, Coarse_TPI, Fine_TPI]
  */
 const ISO_THREADS = {
   "M1":    [1.0,  0.25,  0.2   ],
@@ -109,68 +104,87 @@ export const UTS_THREADS = {
 const INCH_TO_MM = 25.4
 
 /**
- * Create a thread segment supporting ISO and UTS thread standards.
+ * Get the thread specification for the given standard, size, and thread series.
  *
- * NOTE: Both tolerance and length are in millimeters.
- *
- * @param {object} options - Generation configurations
- * @param {string} options.standard - 'ISO' or 'UTS' (defaults to 'ISO')
- * @param {string|number} options.size - Dimension identifier (e.g., 6 or '6' for M6 ISO, or '#10', '1/4' for UTS)
- * @param {boolean} options.isInternal - False for bolt/external, True for nut/internal
- * @param {boolean} options.isFine - True to look up Fine pitch (UNF/Metric Fine), False for Coarse pitch (UNC/Metric Coarse)
- * @param {number} options.tolerance - Radial offset value in mm (e.g. 0.15 for 3D prints)
- * @param {number} options.segments - Segments per full rotation
- * @param {number} length - Total length of the thread (MILLIMETERS)
+ * @param {String} standard - 'ISO' or 'UTS'
+ * @param {Number|String} size - Dimension identifier; 6 or 'M6', #0 or '1/2'
+ * @param {String} threadSeries - Thread series of bolt; coarse or fine, UNC or UNF
  */
-export const createThread = (options = {}, length) => {
-  const {
-    standard = 'ISO',
-    size = 'M4',
-    isInternal = false,
-    isFine = false,
-    tolerance = 0.0,
-    segments = 32
-  } = options
+export const getThreadSpec = (standard, size, threadSeries) => {
+  let majorDiameter = 0
+  let pitch = 0
+  let isFine = false
 
-  let majorDiameterMm = 0
-  let pitchMm = 0
-
-  // 1. Resolve Geometric parameters depending on the targeted standard
   if (standard.toUpperCase() === 'UTS') {
     // UTS Imperial Standard
     const utsData = UTS_THREADS[size]
     if (!utsData) {
-      throw new Error(`UTS size "${size}" is not available in current tables`)
+      throw new Error(`UTS size "${size}" is not available in the current tables`)
     }
-    
-    // Convert nominal inch diameter to mm
-    majorDiameterMm = utsData[MAJOR_DIAMETER] * INCH_TO_MM
-    
-    // Convert Threads Per Inch (TPI) to metric Pitch value
-    const tpi = isFine ? utsData[FINE_TPI] : utsData[COARSE_TPI]
-    if (tpi === Infinity) throw new Error(`Fine thread not available for UTS ${size}`)
-    pitchMm = INCH_TO_MM / tpi
 
-  } else {
+    isFine = (threadSeries.toUpperCase() === 'UNF')
+
+    // Convert major diameter to millimeters
+    majorDiameter = utsData[MAJOR_DIAMETER] * INCH_TO_MM
+
+    // Convert Threads Per Inch (TPI) to millimeters
+    const tpi = isFine ? utsData[FINE_TPI] : utsData[COARSE_TPI]
+    if (!tpi) throw new Error(`Thread spec is unavailable for UTS ${size}, ${threadSeries}`)
+
+    pitch = INCH_TO_MM / tpi
+  } else if (standard.toUpperCase() === 'ISO') {
     // ISO Metric Standard
+    size = size.startsWith("M") ? size : "M" + size
+
     const isoData = ISO_THREADS[size]
     if (!isoData) {
-      throw new Error(`ISO size "${size}" is not available in current tables`)
+      throw new Error(`ISO size "${size}" is not available in the current tables`)
     }
-    
-    majorDiameterMm = isoData[MAJOR_DIAMETER]
-    pitchMm = isFine ? isoData[FINE_TPI] : isoData[COARSE_TPI]
+
+    isFine = (threadSeries.toUpperCase === 'FINE')
+    majorDiameter = isoData[MAJOR_DIAMETER]
+    pitch = isFine ? isoData[FINE_TPI] : isoData[COARSE_TPI]
+    if (!pitch) throw new Error(`Thread spec is unavailable for ISO ${size}, ${threadSeries}`)
+  } else {
+    throw new Error(`Standard "${standard}" is not available, use UTS or ISO`)
   }
 
+  // return the full thread specification
+  return {standard, size, threadSeries, majorDiameter, pitch, isFine}
+}
+
+/**
+ * Create a thread segment supporting ISO and UTS thread standards.
+ *
+ * NOTE: Both tolerance and length are in millimeters.
+ *
+ * @param {Object} options - Generation configurations
+ * @param {Boolean} options.isInternal - False for bolt/external, True for nut/internal
+ * @param {Number} options.majorDiameter - Major diameter of thread body
+ * @param {Number} options.pitch - Pitch of threads
+ * @param {Number} options.tolerance - Radial offset value in mm (e.g. 0.15 for 3D prints)
+ * @param {Number} options.segments - Segments per full rotation
+ * @param {Number} length - Total length of the thread to generate
+ * @returns {Geom3} thread body, extending up from Z
+ */
+export const generateThread = (options = {}, length) => {
+  const {
+    isInternal = false,
+    majorDiameter = 0,
+    pitch = 0,
+    tolerance = 0.0,
+    segments = 36
+  } = options
+
   // 2. ISO / UTS Unified Thread Profile Calculations (Both use identical 60-deg H = 0.866025 * P)
-  const H = 0.866025 * pitchMm
+  const H = 0.866025 * pitch
   const tOffset = isInternal ? tolerance : -tolerance
   
-  const majorRadius = (majorDiameterMm / 2) + tOffset
+  const majorRadius = (majorDiameter / 2) + tOffset
   const minorRadius = majorRadius - (5/8 * H) 
   
-  const chamferHeight = pitchMm * 0.75
-  const totalTurns = (length / pitchMm) + 2
+  const chamferHeight = pitch * 0.75
+  const totalTurns = (length / pitch) + 2
   const totalAngle = totalTurns * 2 * Math.PI
   
   // 3. Define 60-degree V-profile 2D cross-section
@@ -179,25 +193,23 @@ export const createThread = (options = {}, length) => {
 
   const profilePoints = [
     [profileMinorRadius, 0],
-    [majorRadius, pitchMm * 0.375], 
-    [majorRadius, pitchMm * 0.625],
-    [profileMinorRadius, pitchMm]
+    [majorRadius, pitch * 0.375], 
+    [majorRadius, pitch * 0.625],
+    [profileMinorRadius, pitch]
   ]
   
   const ridge2D = polygon({ points: profilePoints })
 
-console.log(totalAngle, pitchMm, segments)
-  
   // 4. Extrude using true helical calculation
   let threadedHelix = extrudeHelical({
     angle: totalAngle,
-    pitch: pitchMm,
+    pitch: pitch,
     endAngle: totalAngle,
     segments: segments
   }, ridge2D)
 
   // 5. Shift the thread up to correct the baseline start phase
-  threadedHelix = translate([0, 0, pitchMm], threadedHelix)
+  threadedHelix = translate([0, 0, pitch], threadedHelix)
 
   // 6. Precise bounding volume to trim uneven helical endings perfectly to [0, length]
   const cleanBounds = translate(
@@ -264,4 +276,3 @@ console.log(totalAngle, pitchMm, segments)
 
   return subtract(finalThreadedObject, chamferTool)
 }
-
