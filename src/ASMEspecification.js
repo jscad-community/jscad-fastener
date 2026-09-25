@@ -1,47 +1,52 @@
 /**
- * Parses imperial/UTS external thread bolt strings.
+ * Parses ASME bolt specifications.
+ *
  * Output schema directly matches the precise format returned by parseISOBolt().
  * 
- * @param {string} str - e.g., "Heavy Hex Structural Bolt, A325, 1/2-13 UNC x 2, Zinc Plated"
+ * @param {string} str - specification, e.g., "Heavy Hex Structural Bolt, A325, 1/2-13 UNC x 2, Zinc Plated"
  * @returns {Object} Standardized token payload
  */
-function parseUTSBolt(str) {
-  const upperStr = str.toUpperCase();
+export const parseASMEBolt = (spec) => {
+  if (!spec || typeof spec !== 'string') {
+    throw new Error("Missing string parameter; spec");
+  }
+
+  spec = spec.toUpperCase();
 
   // 1. Resolve Fastener Standard from Trade Terms
   let standard = "ASME_B18_2_1_CAP_SCREW"; // Default fallback
-  if (upperStr.includes("HEAVY HEX STRUCTURAL") || upperStr.includes("ASME B18.2.6") || upperStr.includes("A325")) {
+  if (spec.includes("HEAVY HEX STRUCTURAL") || spec.includes("ASME B18.2.6") || spec.includes("A325")) {
     standard = "ASME_B18_2_6_STRUCTURAL";
-  } else if (upperStr.includes("MACHINE SCREW") || upperStr.includes("ASME B18.6.3")) {
+  } else if (spec.includes("MACHINE SCREW") || spec.includes("ASME B18.6.3")) {
     standard = "ASME_B18_6_3_MACHINE";
-  } else if (upperStr.includes("HEAVY HEX BOLT")) {
+  } else if (spec.includes("HEAVY HEX BOLT")) {
     standard = "ASME_B18_2_1_HEAVY_BOLT";
-  } else if (upperStr.includes("HEX BOLT")) {
+  } else if (spec.includes("HEX BOLT")) {
     standard = "ASME_B18_2_1_HEX_BOLT";
-  } else if (upperStr.includes("TAP BOLT")) {
+  } else if (spec.includes("TAP BOLT")) {
     standard = "ASME_B18_2_1_TAP_BOLT"; // Fully threaded
   }
 
   // 2. Structural Thread Regex Extraction
   const threadRegex = /(?:#)?(\d+(?:\/\d+)?)-(\d+)\s*(UNC|UNF)?/i;
-  const threadMatch = str.match(threadRegex);
-  if (!threadMatch) throw new Error("Failed to extract Metric/UTS Thread parameters from Bolt string.");
+  const threadMatch = spec.match(threadRegex);
+  if (!threadMatch) throw new Error("Failed to extract ASME thread parameters");
 
   const size = threadMatch[1]; // e.g., "1/2" or "10"
   const pitch = parseInt(threadMatch[2], 10); // Threads per inch acting as pitch token
   const threadSeries = threadMatch[3] ? threadMatch[3].toUpperCase() : "UNC";
 
   // 3. Extract Material Grades & Properties
-  const propertyClassMatch = str.match(/(A325|GRADE\s*8|GRADE\s*5|A2-70|8\.8)/i);
+  const propertyClassMatch = spec.match(/(A325|GRADE\s*8|GRADE\s*5|A2-70|8\.8)/i);
   let propertyClass = propertyClassMatch ? propertyClassMatch[1].toUpperCase() : "8.8";
   
   let material = "Carbon Steel";
-  if (upperStr.includes("STAINLESS")) material = "Stainless Steel";
+  if (spec.includes("STAINLESS")) material = "Stainless Steel";
   else if (propertyClass === "A325") material = "Hardened Structural Steel";
 
   let coating = "Bare Metal";
-  if (upperStr.includes("ZINC")) coating = "Zinc Plated";
-  else if (upperStr.includes("GALVANIZED") || upperStr.includes("HDG")) coating = "Hot Dip Galvanized";
+  if (spec.includes("ZINC")) coating = "Zinc Plated";
+  else if (spec.includes("GALVANIZED") || spec.includes("HDG")) coating = "Hot Dip Galvanized";
 
   // 4. Mimic ISO Dynamic Clearance Hole Matrix Framework 
   // Custom imperial clearances based on standard fraction increments
@@ -69,33 +74,34 @@ function parseUTSBolt(str) {
 }
 
 /**
- * Parses imperial internal nut specification strings.
+ * Parses ASME nut specification.
+ *
  * Matches the exact output token schema layout of your parseISONut() engine.
  * 
- * @param {string} str - e.g., "Heavy Hex Structural Nut 1/2 inch - 13 UNC"
+ * @param {string} str - specification, e.g., "Heavy Hex Structural Nut 1/2 inch - 13 UNC"
  * @returns {Object} Perfectly structured token array with metric drilling limits
  */
-function parseUTSNut(str) {
-  if (!str || typeof str !== 'string') {
-    throw new Error("Invalid Input: String required for UTS nut parsing pipeline.");
+export const parseASMENut = (spec) => {
+  if (!spec || typeof spec !== 'string') {
+    throw new Error("Missing string parameter; spec");
   }
 
-  const upperStr = str.toUpperCase();
+  spec = spec.toUpperCase();
 
   // 1. Resolve Standard Names
   let standard = "ASME_B18_2_2_NORMAL";
-  if (upperStr.includes("HEAVY HEX STRUCTURAL") || upperStr.includes("ASME B18.2.6")) {
+  if (spec.includes("HEAVY HEX STRUCTURAL") || spec.includes("ASME B18.2.6")) {
     standard = "ASME_B18_2_6_STRUCTURAL";
-  } else if (upperStr.includes("HEAVY HEX NUT")) {
+  } else if (spec.includes("HEAVY HEX NUT")) {
     standard = "ASME_B18_2_2_HEAVY";
-  } else if (upperStr.includes("JAM NUT")) {
+  } else if (spec.includes("JAM NUT")) {
     standard = "ASME_B18_2_2_JAM";
   }
 
   // 2. Structural Regex Thread Extraction
   const nutRegex = /(?:#)?(\d+(?:\/\d+)?)(?:\s*INCH|\s*IN|\")?(?:\s*-\s*|\s+)(\d+)\s*(UNC|UNF)?/i;
-  const match = str.match(nutRegex);
-  if (!match) throw new Error("Failed to parse internal thread UTS criteria from Nut string.");
+  const match = spec.match(nutRegex);
+  if (!match) throw new Error("Failed to parse internal thread ASME criteria from Nut string.");
 
   const size = match[1];
   const tpi = parseInt(match[2], 10);
@@ -103,19 +109,19 @@ function parseUTSNut(str) {
 
   // Resolve thread fit class (Class 2B is standard commercial off-the-shelf)
   let threadTolerance = "2B";
-  if (upperStr.includes("3B")) threadTolerance = "3B";
-  else if (upperStr.includes("1B")) threadTolerance = "1B";
+  if (spec.includes("3B")) threadTolerance = "3B";
+  else if (spec.includes("1B")) threadTolerance = "1B";
 
   // 3. Dynamic Material and Coating Properties
   let material = "Carbon Steel";
-  if (upperStr.includes("STAINLESS")) material = "Stainless Steel";
-  else if (standard === "ASME_B18_2_6_STRUCTURAL" || upperStr.includes("DH") || upperStr.includes("A325")) {
+  if (spec.includes("STAINLESS")) material = "Stainless Steel";
+  else if (standard === "ASME_B18_2_6_STRUCTURAL" || spec.includes("DH") || spec.includes("A325")) {
     material = "Hardened Carbon Steel";
   }
 
   let coating = "Bare Metal";
-  if (upperStr.includes("ZINC")) coating = "Zinc Plated";
-  else if (upperStr.includes("GALVANIZED") || upperStr.includes("HDG")) coating = "Hot Dip Galvanized";
+  if (spec.includes("ZINC")) coating = "Zinc Plated";
+  else if (spec.includes("GALVANIZED") || spec.includes("HDG")) coating = "Hot Dip Galvanized";
 
   // 4. Calculate ASME B1.1 Tapped Hole Limits (Converted to mm)
   // Convert fractional or gauge sizes to numerical decimal inches first
@@ -157,30 +163,31 @@ function parseUTSNut(str) {
 
 
 /**
- * Parses imperial washer specification strings.
+ * Parses ASME washer specification.
+ *
  * Aligns perfectly with the core return signature of your ISO washer parser.
  * 
- * @param {string} str - e.g., "Hardened Flat Washer ASTM F436 - 1/2 inch"
+ * @param {string} str - specification, e.g., "Hardened Flat Washer ASTM F436 - 1/2 inch"
  * @returns {Object} Clean token matching the exact structure of your ISO washer parser.
  */
-function parseUTSWasher(str) {
-  if (!str || typeof str !== 'string') {
-    throw new Error("Invalid Input: String required for UTS washer parsing pipeline.");
+export const parseASMEWasher = (spec) => {
+  if (!spec || typeof spec !== 'string') {
+    throw new Error("Missing string parameter; spec");
   }
 
-  const upperStr = str.toUpperCase();
+  spec = spec.toUpperCase();
 
   // 1. Resolve Structural Standard Profile Labels
   let standard = "ASME_B18_21_1_TYPE_A";
-  if (upperStr.includes("F436") || upperStr.includes("STRUCTURAL")) {
+  if (spec.includes("F436") || spec.includes("STRUCTURAL")) {
     standard = "ASTM_F436_STRUCTURAL";
-  } else if (upperStr.includes("LOCK")) {
+  } else if (spec.includes("LOCK")) {
     standard = "ASME_B18_21_1_LOCK";
   }
 
   // 2. Capture sizing bounds like "1/2 inch" or "1/2 in" or "#10"
   const washerRegex = /(?:#)?(\d+(?:\/\d+)?)\s*(?:INCH|IN|\"|\$)/i;
-  const match = str.match(washerRegex);
+  const match = spec.match(washerRegex);
   if (!match) throw new Error("Failed to parse mechanical size limits from Washer string.");
 
   const size = match[1];
@@ -190,7 +197,7 @@ function parseUTSWasher(str) {
   let coating = "Bare Metal";
   let hardnessHV = 110; // Baseline for standard soft commercial Type A steel washers
 
-  if (upperStr.includes("STAINLESS")) {
+  if (spec.includes("STAINLESS")) {
     material = "Stainless Steel";
     hardnessHV = 180; // Standard 300-series stainless washer hardness
   } else if (standard === "ASTM_F436_STRUCTURAL") {
@@ -199,9 +206,9 @@ function parseUTSWasher(str) {
   }
 
   // Extract common plating surface treatments
-  if (upperStr.includes("ZINC")) coating = "Zinc Plated";
-  else if (upperStr.includes("GALVANIZED") || upperStr.includes("HDG")) coating = "Hot Dip Galvanized";
-  else if (upperStr.includes("BLACK OXIDE")) coating = "Black Oxide";
+  if (spec.includes("ZINC")) coating = "Zinc Plated";
+  else if (spec.includes("GALVANIZED") || spec.includes("HDG")) coating = "Hot Dip Galvanized";
+  else if (spec.includes("BLACK OXIDE")) coating = "Black Oxide";
 
   // 4. Dimensional Metadata Lookups for 3D Modeling (Converted to mm)
   // Hardcoded engineering geometry arrays for our target sizes to assist the renderer:
@@ -235,7 +242,6 @@ function parseUTSWasher(str) {
 }
 
 
-console.log(parseUTSBolt("Heavy Hex Structural Bolt, A325, 1/2-13 UNC x 2, Zinc Plated"));
-console.log(parseUTSNut("Heavy Hex Structural Nut 1/2 inch - 13 UNC"));
-console.log(parseUTSWasher("Hardened Flat Washer ASTM F436 - 1/2 inch"));
+//console.log(parseASMENut("Heavy Hex Structural Nut 1/2 inch - 13 UNC"));
+//console.log(parseASMEWasher("Hardened Flat Washer ASTM F436 - 1/2 inch"));
 
