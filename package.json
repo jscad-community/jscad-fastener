@@ -1,0 +1,35 @@
+{
+  "name": "jscad-hardware",
+  "version": "3.0.0",
+  "description": "JSCAD Hardware Library",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "npx eslint",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/z3dev/jscad-hardware.git"
+  },
+  "keywords": [
+    "jscad",
+    "bolt",
+    "nut",
+    "thread",
+    "hardware",
+    "design"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/z3dev/jscad-hardware/issues"
+  },
+  "homepage": "https://github.com/z3dev/jscad-hardware#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@jscad/modeling": "3.0.7-alpha.0",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "vitest": "^5.0.1"
+  }
+}
