@@ -67,18 +67,18 @@ export const ASME_HEX_HEAD_REGISTRY = {
 const MM_PER_INCH = 25.4
 
 /**
- * Generate UTS Bolt from the given specification.
+ * Generate ASME Bolt from the given specification.
  *
- * @see parseUTSBolt() and parseUTSFastener()
+ * @see parseASMEBolt() and parseASMEFastener()
  *
  * @param {Object} specification - bolt specification
  * @param {String} specification.size - Dimension identifier (e.g., '#1' or `1/2`)
  * @param {String} specifiation.standard - Bolt standard; ASME_B18_2_1_CAP_SCREW, etc
  * @param {String} specifiation.threadSeries - Thread series of bolt; UNF or UNC
  * @param {Number} nominalLength - nominal length of the shank (inches)
- * @returns {Geom3} UTS bolt, centered on X-Y, head above Z, shank below Z
+ * @returns {Geom3} ASME bolt, centered on X-Y, head above Z, shank below Z
  */
-export const generateUTSBolt = (specification = {}, nominalLength) => {
+export const generateASMEBolt = (specification = {}, nominalLength) => {
   let {
     size = '1/2',
     standard = 'ASME_B18_2_1_CAP_SCREW',
@@ -139,6 +139,7 @@ export const generateUTSBolt = (specification = {}, nominalLength) => {
   // create the bolt head from the determined specifications
   const head = generateHexHead({widthAcrossFlats, headHeight, washerFaceDiameter, filletRadius, majorDiameter, segments})
 
+  // NOTE: standard here is the thread standard
   const shank = generateShank({ standard: 'UTS', size, threadSeries, threadLength, unthreadedLength, segments })
 
   return union(head, shank)
