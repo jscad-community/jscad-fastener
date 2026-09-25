@@ -101,7 +101,7 @@ export const UTS_THREADS = {
   '3-3/4': [ 3.7500, 4,    8    ],
 }
 
-const INCH_TO_MM = 25.4
+const MM_PER_INCH = 25.4
 
 /**
  * Get the thread specification for the given standard, size, and thread series.
@@ -109,6 +109,7 @@ const INCH_TO_MM = 25.4
  * @param {String} standard - 'ISO' or 'UTS'
  * @param {Number|String} size - Dimension identifier; 6 or 'M6', #0 or '1/2'
  * @param {String} threadSeries - Thread series of bolt; coarse or fine, UNC or UNF
+ * @return {Object} specification with majorDiameter (mm) and pitch (mm)
  */
 export const getThreadSpec = (standard, size, threadSeries) => {
   let majorDiameter = 0
@@ -125,13 +126,13 @@ export const getThreadSpec = (standard, size, threadSeries) => {
     isFine = (threadSeries.toUpperCase() === 'UNF')
 
     // Convert major diameter to millimeters
-    majorDiameter = utsData[MAJOR_DIAMETER] * INCH_TO_MM
+    majorDiameter = utsData[MAJOR_DIAMETER] * MM_PER_INCH
 
     // Convert Threads Per Inch (TPI) to millimeters
     const tpi = isFine ? utsData[FINE_TPI] : utsData[COARSE_TPI]
     if (!tpi) throw new Error(`Thread spec is unavailable for UTS ${size}, ${threadSeries}`)
 
-    pitch = INCH_TO_MM / tpi
+    pitch = MM_PER_INCH / tpi
   } else if (standard.toUpperCase() === 'ISO') {
     // ISO Metric Standard
     size = size.startsWith("M") ? size : "M" + size
@@ -156,7 +157,7 @@ export const getThreadSpec = (standard, size, threadSeries) => {
 /**
  * Create a thread segment supporting ISO and UTS thread standards.
  *
- * NOTE: Both tolerance and length are in millimeters.
+ * NOTE: All dimensions are in millimeters.
  *
  * @param {Object} options - Generation configurations
  * @param {Boolean} options.isInternal - False for bolt/external, True for nut/internal
@@ -205,7 +206,7 @@ export const generateThread = (options = {}, length) => {
     angle: totalAngle,
     pitch: pitch,
     endAngle: totalAngle,
-    segments: segments
+    segments
   }, ridge2D)
 
   // 5. Shift the thread up to correct the baseline start phase
@@ -218,7 +219,7 @@ export const generateThread = (options = {}, length) => {
       startRadius: [majorRadius + 1, majorRadius + 1], 
       endRadius: [majorRadius + 1, majorRadius + 1], 
       height: length, 
-      segments: segments
+      segments
     })
   )
   
@@ -233,7 +234,7 @@ export const generateThread = (options = {}, length) => {
         startRadius: [minorRadius, minorRadius], 
         endRadius: [minorRadius, minorRadius], 
         height: length, 
-        segments: segments
+        segments
       })
     )
     finalThreadedObject = union(shiftedCore, trimmedHelix)
@@ -244,7 +245,7 @@ export const generateThread = (options = {}, length) => {
         startRadius: [majorRadius, majorRadius], 
         endRadius: [majorRadius, majorRadius], 
         height: length, 
-        segments: segments
+        segments
       })
     )
     finalThreadedObject = union(shiftedOuter, trimmedHelix)
@@ -257,10 +258,10 @@ export const generateThread = (options = {}, length) => {
       startRadius: [majorRadius + 2, majorRadius + 2], 
       endRadius: [majorRadius + 2, majorRadius + 2], 
       height: chamferHeight + 0.1, 
-      segments: segments
+      segments
     })
   )
-  
+
   const cRadius2 = majorRadius - chamferHeight
   const positionedCone = translate(
     [0, 0, length - (chamferHeight / 2)],
@@ -268,10 +269,11 @@ export const generateThread = (options = {}, length) => {
       startRadius: [majorRadius, majorRadius], 
       endRadius: [cRadius2, cRadius2],         
       height: chamferHeight + 0.1,
-      segments: segments
+      segments
     })
   )
 
+  // TBD lots of booleans, so snap might help
   const chamferTool = subtract(positionedCutterBox, positionedCone)
 
   return subtract(finalThreadedObject, chamferTool)

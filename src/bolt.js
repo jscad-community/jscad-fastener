@@ -92,7 +92,7 @@ export const generateHexHead = (headSpec) => {
  * Generate a Bolt Shank extending downwards from the Z plane.
  * 
  * @param {Object} shankSpec - The shank specifications
- * @param {String} shankSpec.standard - 'ISO' or 'UTS'
+ * @param {String} shankSpec.standard - 'ISO' or 'UTS', actually thread standard
  * @param {Number|String} shankSpec.size - Dimension identifier; 6 or 'M6', #0 or '1/2'
  * @param {String} shankSpec.threadSeries - Series of thread pitch; coarse or fine
  * @param {Number} shankSpec.threadLength - Length of the threaded section (b) in mm
@@ -106,9 +106,9 @@ export const generateShank = (shankSpec) => {
   const threadSpec = getThreadSpec(standard, size, threadSeries)
   const {majorDiameter} = threadSpec
 
-  const piecesToUnion = []
+  const parts = []
 
-  // 1. Generate the Unthreaded Smooth Grip Segment (ISO 4014)
+  // 1. Generate the Unthreaded Smooth Grip Segment
   if (unthreadedLength > 0) {
     const radius = majorDiameter / 2
     const smoothGrip3D = cylinder({
@@ -118,20 +118,19 @@ export const generateShank = (shankSpec) => {
     })
     // Positions the upper face flush with the head boundary plane at Z=0
     const positionedGrip = translate([0, 0, -unthreadedLength / 2], smoothGrip3D)
-    piecesToUnion.push(positionedGrip)
+    parts.push(positionedGrip)
   }
 
   // 2. Generate the Threaded Segment
   if (threadLength > 0) {
-    // NOTE: createThread accepts Number or String for ISO sizes
     const threadedSegment3D = generateThread(threadSpec, threadLength)
 
     // Positions the threaded module directly beneath the smooth grip boundary
     const Zoffset = -unthreadedLength
     const positionedThread = translate([0, 0, Zoffset], rotate([TAU / 2, 0, 0], threadedSegment3D))
-    piecesToUnion.push(positionedThread)
+    parts.push(positionedThread)
   }
 
   // 3. Flatten and export the complete manifold shank collection
-  return union(...piecesToUnion)
+  return union(parts)
 }

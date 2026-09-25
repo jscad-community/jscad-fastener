@@ -1,9 +1,7 @@
 import { cylinder, cylinderElliptic, roundedCylinder, intersect, union } from '@jscad/modeling'
 
 /**
- * Complete Fastener Nut Generation Module
- *
- * Solid Hexagonal Prisms from ISO or UTS Standard Dimensions
+ * Complete ISO or ASME Fastener Nut Generation Module
  */
 
 // Dimensions Offsets
@@ -15,14 +13,19 @@ export const LOCK_HEIGHT = 3
 const MM_PER_INCH = 25.4
 
 /**
- * UTS (Unified Thread Standard) Hex Nut Dimensions (inches)
+ * Master Registry for ASME Hexagon Nut Dimensions (inches)
  *
- * Array Mapping per size: [ widthAcrossFlats, standardHeight, thinHeight, lockHeight ]
- * Lock dimensions map standard ASME B18.16.6 Style NE heights
+ * Standards:
+ *   - widthAcrossFlats ASME B18.2.2 Finished Hex Nuts
+ *   - standardHeight ASME B18.2.2 Finished Hex Nuts
+ *   - thinHeight ASME 18.2.2 Finished Hex Jam Nuts
+ *   - lockHeight ASME 18.16.6 Nylon Insert Lock Nuts
+ *
+ * "Designation": [widthAcrossFlats, standardHeight, thinHeight, lockHeight]
  *
  * Note: Uses `null` where a specific standard/thin size does not officially exist.
  */
-export const UTS_NUTS = {
+export const ASME_NUTS = {
   // --- Machine Screw Sizes ---
   "#0":    [0.156, 0.050, null,  0.075],
   "#1":    [0.156, 0.050, null,  0.075],
@@ -72,7 +75,7 @@ export const UTS_NUTS = {
  *
  * "Designation": [widthAcrossFlats, standardHeight, thinHeight, lockHeight]
  */
-const ISO_NUTS = {
+export const ISO_NUTS = {
   "M1":    [2.5,   0.8,   0.55,  1.2 ], // Safe sub-millimeter DIN limits applied
   "M1.1":  [2.5,   0.8,   0.55,  1.2 ],
   "M1.2":  [3.0,   1.0,   0.6,   1.4 ],
@@ -119,8 +122,8 @@ const ISO_NUTS = {
  * Obtain overall hex nut dimensions for the given specification.
  *
  * @param {Object} specification - specification for construction
- * @param {String} [specification.size='M4'] - size of ISO / UTS nut, see lists above.
- * @param {String} [specification.standard='ISO'] - dimension standard, ISO or UTS
+ * @param {String} [specification.size='M4'] - size of ISO / ASME nut, see lists above.
+ * @param {String} [specification.standard='ISO'] - dimension standard, ISO or ASME
  * @param {Boolean} [specification.isThin=false] - generate nuts with thin dimensions
  * @param {Boolean} [specification.isLocknut=false] - generate nuts with locknut dimensions
  * @param {Number} [specification.flatOffset=0] - clearance for oversized cutouts
@@ -137,8 +140,8 @@ export const getHexNutDimensions = (specification = {}) => {
     heightOffset = 0,
   } = specification
 
-  const isUts = standard.toUpperCase() === 'UTS'
-  const dataset = isUts ? UTS_NUTS : ISO_NUTS
+  const isUts = standard.toUpperCase() === 'ASME'
+  const dataset = isUts ? ASME_NUTS : ISO_NUTS
   const dim = dataset[size]
 
   if (!dim) return null
@@ -221,29 +224,29 @@ const createBeveledHex = (hexSpec = {}) => {
   // 6. Combine boundaries into lathe geometry mask
   const masterLatheMask = union(topCutter, middleCore, bottomCutter)
 
-  // 7. Intersect the hex with BOTH cutters sequentially to cleanly taper both ends
+  // 7. Intersect the hex with mask to taper both ends
   return intersect(rawHex, masterLatheMask)
 }
 
-
 /**
- * Create a Hex Nut from the given specification.
+ * Generate a Hex Nut from the given specification.
  *
  * @param {Object} specification - specification for construction
- * @param {String} [specification.size='M4'] - size of ISO / UTS nut, see lists above.
- * @param {String} [specification.standard='ISO'] - dimension standard, ISO or UTS
+ * @param {String} [specification.standard='ISO'] - dimension standard, ISO or ASME
+ * @param {String} [specification.size='M4'] - size of ISO / ASME nut, see lists above.
  * @param {Boolean} [specification.isThin=false] - generate nuts with thin dimensions
  * @param {Boolean} [specification.isLocknut=false] - generate nuts with locknut dimensions
  * @param {Number} [specification.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [specification.heightOffset=0] - clearance for oversized cutouts
+ * @returns {Geom3} hex nut, centered on XYZ
  *
  * @example
  * createHexNut({size: 'M4'})
  * createHexNut({size: 'M30', isLocknut: true})
- * createHexNut({size: '#8', standard: 'UTS'})
- * createHexNut({size: '1', standard: 'UTS', isThin: true})
+ * createHexNut({size: '#8', standard: 'ASME'})
+ * createHexNut({size: '1', standard: 'ASME', isThin: true})
  */
-export const createHexNut = (specification = {}) => {
+export const generateHexNut = (specification = {}) => {
   let {
     size = 'M4',
     standard = 'ISO',

@@ -1,23 +1,22 @@
-import { createThread } from './threads.v3.js'
+import { getThreadSpec, generateThread } from './threads.v3.js'
 
-import { createHexNut } from './nut.v7.js'
+import { generateHexNut } from './nut.v7.js'
 
 import { generateISOBolt } from './ISObolt.v5.js'
 
 import { generateUTSBolt } from './UTSbolt.v2.js'
 
-//export main
-
 export function main() {
   // Demonstration: Render a standard M10 Coarse Bolt with a 3D-printer friendly 0.15mm tolerance
   // Parameters: d=10, length=25, isInternal=false, isFine=false, tolerance=0.15, segments=48
-  let thread = null
-  //thread = createThread({}, 'M10', 20);
-  //thread = createThread({standard: 'UTS'}, '1/2', 20);
-  //return thread
+  let spec = getThreadSpec('ISO', 'M4', 'coarse')
+  //let spec = getThreadSpec('UTS', '#10', 'UNF')
+  let thread = generateThread(spec, 20)
+  return thread
 
-  //const m10StandardNut = createHexNut({size: 'M10'});
-  //return m10StandardNut
+  //const nut = generateHexNut({size: 'M10'});
+  const nut = generateHexNut({standard: 'ASME', size: '#10'});
+  return nut
 
 /*
   const bolt = generateISOBolt({
