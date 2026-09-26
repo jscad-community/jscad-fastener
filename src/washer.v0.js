@@ -236,6 +236,7 @@ const ISO7093 = {
  * ASME B18.21.1 is now a combined standard, it contains several different dimensions depending on the washer type.
  *
  * ASME B18.21.1 Type A (Narrow / SAE)
+ * ASME_B18_21_1_TYPE_A
  *
  * NOTE: Dimensions are in inches
  */
@@ -325,6 +326,7 @@ const ASMEB18211Wide = {
 
 /**
  * ASTM F436 - Standard Specification for Hardened Steel Washers
+ * ASTM_F436_STRUCTURAL
  *
  * Profile Geometry: Chamfered outer edge angled between 35° and 45° on at least one face
  *

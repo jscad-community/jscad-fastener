@@ -204,6 +204,22 @@ export const parseASMEWasher = (spec) => {
     } else {
       standard = "ASME_B18_21_1_TOOTH_EXTERNAL" // Outside teeth star (default fallback)
     }
+  } else if (spec.includes("TYPE B") || spec.includes("TYPE-B")) {
+    // Catch the tight-tolerance precision series!
+    if (spec.includes("NARROW")) {
+      standard = "ASME_B18_21_1_TYPE_B_NARROW"
+    } else if (spec.includes("WIDE")) {
+      standard = "ASME_B18_21_1_TYPE_B_WIDE"
+    } else {
+      standard = "ASME_B18_21_1_TYPE_B_REGULAR" // Default for generic Type B
+    }
+  } else {
+    // If it's Type A or generic flat, split via legacy terms
+    if (spec.includes("WIDE") || spec.includes("USS")) {
+      standard = "ASME_B18_21_1_TYPE_A_WIDE"
+    } else {
+      standard = "ASME_B18_21_1_TYPE_A_NARROW"
+    }
   }
 
   // 2. Capture sizing bounds like "1/2 inch" or "1/2 in" or "#10"

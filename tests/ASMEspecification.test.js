@@ -738,7 +738,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.065,
     },
     "size": "1/4",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
   )
   expect(parseASMEWasher("Flat Washer ASME B18.21.1 5/16 in, Regular Series, Yellow Zinc")).toStrictEqual(
@@ -752,7 +752,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.065,
     },
     "size": "5/16",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
   )
   expect(parseASMEWasher("ASME B18.21.1 Type A Flat Washer 3/8 inch, Wide Series, Bare Metal")).toStrictEqual(
@@ -766,7 +766,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.065,
     },
     "size": "3/8",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_WIDE",
   }
   )
   expect(parseASMEWasher("Flat Washer 1/2 inch, ASME B18.21.1, Stainless Steel 304")).toStrictEqual(
@@ -780,7 +780,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "1/2",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
   )
 // FIXME
@@ -795,7 +795,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "5/8",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
   )
   expect(parseASMEWasher("ASME B18.21.1 Type A Plain Washer 1 inch, Carbon Steel, Zinc Plated")).toStrictEqual(
@@ -809,7 +809,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "1",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
   )
 
@@ -941,7 +941,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "#4",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
   )
   expect(parseASMEWasher("ASME B18.21.1 Split Lock Washer #6, Steel Zinc Plated")).toStrictEqual(
@@ -969,7 +969,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "#10",
-    "standard": "ASME_B18_21_1_TYPE_A",
+    "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
   )
   expect(parseASMEWasher("Helical Spring Lock Washer ASME B18.21.1 #12, Regular Series")).toStrictEqual(
