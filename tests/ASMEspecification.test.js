@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { parseASMEBolt, parseASMENut } from './src/ASMEspecification.js'
+import { parseASMEBolt, parseASMENut, parseASMEWasher } from './src/ASMEspecification.js'
 
 test('parseASMEBolt parsing', () => {
   // error cases
@@ -408,9 +408,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.22,
-      "allowableHoleMinimum": 0.2,
-      "recommendedDrillBitSize": 0.19,
+      "allowableHoleMaximum": 0.218,
+      "allowableHoleMinimum": 0.196,
+      "recommendedDrillBitSize": 0.185,
     },
     "material": "Carbon Steel",
     "pitch": 20,
@@ -424,8 +424,8 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.28,
-      "allowableHoleMinimum": 0.25,
+      "allowableHoleMaximum": 0.276,
+      "allowableHoleMinimum": 0.252,
       "recommendedDrillBitSize": 0.24,
     },
     "material": "Carbon Steel",
@@ -440,9 +440,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Bare Metal",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.33,
-      "allowableHoleMinimum": 0.31,
-      "recommendedDrillBitSize": 0.29,
+      "allowableHoleMaximum": 0.334,
+      "allowableHoleMinimum": 0.307,
+      "recommendedDrillBitSize": 0.294,
     },
     "material": "Stainless Steel",
     "pitch": 16,
@@ -457,7 +457,7 @@ test('parseASMENut parsing', () => {
     "coating": "Bare Metal",
     "drillingSpecifications": {
       "allowableHoleMaximum": 0.45,
-      "allowableHoleMinimum": 0.42,
+      "allowableHoleMinimum": 0.417,
       "recommendedDrillBitSize": 0.4,
     },
     "material": "Carbon Steel",
@@ -472,9 +472,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Bare Metal",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.57,
-      "allowableHoleMinimum": 0.53,
-      "recommendedDrillBitSize": 0.51,
+      "allowableHoleMaximum": 0.566,
+      "allowableHoleMinimum": 0.527,
+      "recommendedDrillBitSize": 0.507,
     },
     "material": "Carbon Steel",
     "pitch": 11,
@@ -490,9 +490,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.29,
-      "allowableHoleMinimum": 0.27,
-      "recommendedDrillBitSize": 0.26,
+      "allowableHoleMaximum": 0.285,
+      "allowableHoleMinimum": 0.267,
+      "recommendedDrillBitSize": 0.258,
     },
     "material": "Carbon Steel",
     "pitch": 24,
@@ -506,9 +506,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Bare Metal",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.47,
-      "allowableHoleMinimum": 0.45,
-      "recommendedDrillBitSize": 0.44,
+      "allowableHoleMaximum": 0.468,
+      "allowableHoleMinimum": 0.446,
+      "recommendedDrillBitSize": 0.435,
     },
     "material": "Carbon Steel",
     "pitch": 20,
@@ -524,9 +524,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.33,
-      "allowableHoleMinimum": 0.31,
-      "recommendedDrillBitSize": 0.29,
+      "allowableHoleMaximum": 0.334,
+      "allowableHoleMinimum": 0.307,
+      "recommendedDrillBitSize": 0.294,
     },
     "material": "Carbon Steel",
     "pitch": 16,
@@ -541,7 +541,7 @@ test('parseASMENut parsing', () => {
     "coating": "Bare Metal",
     "drillingSpecifications": {
       "allowableHoleMaximum": 0.45,
-      "allowableHoleMinimum": 0.42,
+      "allowableHoleMinimum": 0.417,
       "recommendedDrillBitSize": 0.4,
     },
     "material": "Stainless Steel",
@@ -556,8 +556,8 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Bare Metal",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.69,
-      "allowableHoleMinimum": 0.64,
+      "allowableHoleMaximum": 0.685,
+      "allowableHoleMinimum": 0.642,
       "recommendedDrillBitSize": 0.62,
     },
     "material": "Carbon Steel",
@@ -575,7 +575,7 @@ test('parseASMENut parsing', () => {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
       "allowableHoleMaximum": 0.45,
-      "allowableHoleMinimum": 0.42,
+      "allowableHoleMinimum": 0.417,
       "recommendedDrillBitSize": 0.4,
     },
     "material": "Carbon Steel",
@@ -590,9 +590,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Hot Dip Galvanized",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.57,
-      "allowableHoleMinimum": 0.53,
-      "recommendedDrillBitSize": 0.51,
+      "allowableHoleMaximum": 0.566,
+      "allowableHoleMinimum": 0.527,
+      "recommendedDrillBitSize": 0.507,
     },
     "material": "Hardened Carbon Steel",
     "pitch": 11,
@@ -606,9 +606,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Bare Metal",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.92,
-      "allowableHoleMinimum": 0.86,
-      "recommendedDrillBitSize": 0.84,
+      "allowableHoleMaximum": 0.919,
+      "allowableHoleMinimum": 0.865,
+      "recommendedDrillBitSize": 0.838,
     },
     "material": "Carbon Steel",
     "pitch": 8,
@@ -625,7 +625,7 @@ test('parseASMENut parsing', () => {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
       "allowableHoleMaximum": 0.45,
-      "allowableHoleMinimum": 0.42,
+      "allowableHoleMinimum": 0.417,
       "recommendedDrillBitSize": 0.4,
     },
     "material": "Hardened Carbon Steel",
@@ -640,8 +640,8 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Hot Dip Galvanized",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.69,
-      "allowableHoleMinimum": 0.64,
+      "allowableHoleMaximum": 0.685,
+      "allowableHoleMinimum": 0.642,
       "recommendedDrillBitSize": 0.62,
     },
     "material": "Hardened Carbon Steel",
@@ -656,9 +656,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Bare Metal",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.8,
-      "allowableHoleMinimum": 0.75,
-      "recommendedDrillBitSize": 0.73,
+      "allowableHoleMaximum": 0.803,
+      "allowableHoleMinimum": 0.755,
+      "recommendedDrillBitSize": 0.731,
     },
     "material": "Hardened Carbon Steel",
     "pitch": 9,
@@ -674,9 +674,9 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.22,
-      "allowableHoleMinimum": 0.2,
-      "recommendedDrillBitSize": 0.19,
+      "allowableHoleMaximum": 0.218,
+      "allowableHoleMinimum": 0.196,
+      "recommendedDrillBitSize": 0.185,
     },
     "material": "Carbon Steel",
     "pitch": 20,
@@ -690,8 +690,8 @@ test('parseASMENut parsing', () => {
   {
     "coating": "Zinc Plated",
     "drillingSpecifications": {
-      "allowableHoleMaximum": 0.28,
-      "allowableHoleMinimum": 0.25,
+      "allowableHoleMaximum": 0.276,
+      "allowableHoleMinimum": 0.252,
       "recommendedDrillBitSize": 0.24,
     },
     "material": "Carbon Steel",
@@ -707,7 +707,7 @@ test('parseASMENut parsing', () => {
     "coating": "Bare Metal",
     "drillingSpecifications": {
       "allowableHoleMaximum": 0.45,
-      "allowableHoleMinimum": 0.42,
+      "allowableHoleMinimum": 0.417,
       "recommendedDrillBitSize": 0.4,
     },
     "material": "Stainless Steel",
@@ -716,6 +716,274 @@ test('parseASMENut parsing', () => {
     "standard": "ASME_B18_16_6_LOCK_THIN",
     "threadSeries": "UNC",
     "threadTolerance": "2B",
+  }
+  )
+})
+
+
+test('parseASMEWasher parsing', () => {
+  // error cases
+  expect(() => parseASMEWasher()).toThrow()
+  expect(() => parseASMEWasher('')).toThrow()
+
+  // --- 1. ASME B18.21.1 Type A Standard Commercial Flat Washers ---
+  expect(parseASMEWasher("Flat Washer, ASME B18.21.1 Type A, 1/4 inch, Narrow Series, Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.281,
+      "outerDiameter": 0.625,
+      "thickness": 0.065,
+    },
+    "size": "1/4",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+  expect(parseASMEWasher("Flat Washer ASME B18.21.1 5/16 in, Regular Series, Yellow Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.344,
+      "outerDiameter": 0.688,
+      "thickness": 0.065,
+    },
+    "size": "5/16",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+  expect(parseASMEWasher("ASME B18.21.1 Type A Flat Washer 3/8 inch, Wide Series, Bare Metal")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.406,
+      "outerDiameter": 0.812,
+      "thickness": 0.065,
+    },
+    "size": "3/8",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+  expect(parseASMEWasher("Flat Washer 1/2 inch, ASME B18.21.1, Stainless Steel 304")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 180,
+    "material": "Stainless Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "1/2",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+// FIXME
+  expect(parseASMEWasher("Plain Flat Washer ASME B18.21.1 Regular 5/8 inch, Black Oxide")).toStrictEqual(
+  {
+    "coating": "Black Oxide",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "5/8",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+  expect(parseASMEWasher("ASME B18.21.1 Type A Plain Washer 1 inch, Carbon Steel, Zinc Plated")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "1",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+
+  // --- 2. ASTM F436 High-Strength Hardened Structural Washers ---
+  expect(parseASMEWasher("Hardened Flat Washer ASTM F436 - 1/2 inch, Circular, Plain")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 360,
+    "material": "Hardened Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.062,
+      "thickness": 0.109,
+    },
+    "size": "1/2",
+    "standard": "ASTM_F436_STRUCTURAL",
+  }
+  )
+  expect(parseASMEWasher("Hardened Structural Washer, ASTM F436, 5/8 in, Hot Dip Galvanized")).toStrictEqual(
+  {
+    "coating": "Hot Dip Galvanized",
+    "hardnessHV": 360,
+    "material": "Hardened Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "5/8",
+    "standard": "ASTM_F436_STRUCTURAL",
+  }
+  )
+  expect(parseASMEWasher("ASTM F436 Hardened Structural Washer 3/4 inch, Circular, Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "hardnessHV": 360,
+    "material": "Hardened Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "3/4",
+    "standard": "ASTM_F436_STRUCTURAL",
+  }
+  )
+  expect(parseASMEWasher("Hardened Structural Washer ASTM F436 1 inch, Weathering Steel")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 360,
+    "material": "Hardened Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "1",
+    "standard": "ASTM_F436_STRUCTURAL",
+  }
+  )
+
+  // --- 3. ASME B18.21.1 Helical Spring Mechanical Lock Washers ---
+  expect(parseASMEWasher("Split Lock Washer, ASME B18.21.1, 1/4 inch, Regular Series, Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.281,
+      "outerDiameter": 0.625,
+      "thickness": 0.065,
+    },
+    "size": "1/4",
+    "standard": "ASME_B18_21_1_LOCK",
+  }
+  )
+  expect(parseASMEWasher("Helical Spring Lock Washer ASME B18.21.1 3/8 in, Heavy Series, Plain")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.406,
+      "outerDiameter": 0.812,
+      "thickness": 0.065,
+    },
+    "size": "3/8",
+    "standard": "ASME_B18_21_1_LOCK",
+  }
+  )
+  expect(parseASMEWasher("ASME B18.21.1 Split Lock Washer 1/2 inch, Stainless Steel")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 180,
+    "material": "Stainless Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "1/2",
+    "standard": "ASME_B18_21_1_LOCK",
+  }
+  )
+  expect(parseASMEWasher("High Collar Helical Spring Lock Washer 3/4 inch, ASME B18.21.1, Black Oxide")).toStrictEqual(
+  {
+    "coating": "Black Oxide",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "3/4",
+    "standard": "ASME_B18_21_1_LOCK",
+  }
+  )
+
+  // --- 4. ASME B18.21.1 Miniature Machine Screw Washers (#2 to #12) ---
+  expect(parseASMEWasher("Flat Washer, ASME B18.21.1, #4 Screw Size, Regular Series, Zinc")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "#4",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+  expect(parseASMEWasher("ASME B18.21.1 Split Lock Washer #6, Steel Zinc Plated")).toStrictEqual(
+  {
+    "coating": "Zinc Plated",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "#6",
+    "standard": "ASME_B18_21_1_LOCK",
+  }
+  )
+  expect(parseASMEWasher("Flat Washer #10 inch Screw Size, ASME B18.21.1 Type A, Stainless Steel")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 180,
+    "material": "Stainless Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "#10",
+    "standard": "ASME_B18_21_1_TYPE_A",
+  }
+  )
+  expect(parseASMEWasher("Helical Spring Lock Washer ASME B18.21.1 #12, Regular Series")).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 110,
+    "material": "Carbon Steel",
+    "metadata": {
+      "innerDiameter": 0.531,
+      "outerDiameter": 1.25,
+      "thickness": 0.095,
+    },
+    "size": "#12",
+    "standard": "ASME_B18_21_1_LOCK",
   }
   )
 })
