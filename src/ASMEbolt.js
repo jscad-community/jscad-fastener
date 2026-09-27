@@ -106,25 +106,31 @@ export const generateASMEBolt = (specification = {}, nominalLength) => {
     unthreadedLength = 0
   } else if (standard === "ASME_B18_2_6_STRUCTURAL") {
     // ASME B18.2.6 Heavy Structural Fixed Thread Length Array (Short grip bounds)
-    // Layout mapping: Size -> Standard Fixed Thread Length
-    // const structuralThreadLengths = {
-    //   "1/2": 1.000, "5/8": 1.250, "3/4": 1.375, "7/8": 1.500, "1": 1.750,
-    //   "1-1/8": 2.000, "1-1/4": 2.000, "1-3/8": 2.250, "1-1/2": 2.250
-    // }
-    // const fixedLT = structuralThreadLengths[size] || (2 * majorDiameter + 0.25)
     const fixedLT = (2 * majorDiameter + 0.25)
     threadLength = Math.min(fixedLT, nominalLength)
     unthreadedLength = nominalLengthInches - threadLength
   } else {
     // Standard ASME B18.2.1 Commercial Hex / Heavy Hex Cap Screw Formula
+    // ASME_B18_2_1_CAP_SCREW
+    // ASME_B18_2_1_HEAVY_BOLT
+    // ASME_B18_2_1_HEX_BOLT
     let computedLT = 0
     if (nominalLength <= 6.0) {
       computedLT = (2 * majorDiameter) + 0.25 // 2D + 1/4"
     } else {
       computedLT = (2 * majorDiameter) + 0.50 // 2D + 1/2"
     }
-    threadLength = Math.min(computedLT, nominalLength)
-    unthreadedLength = nominalLength - threadLength
+    if (computedLT >= nominalLength) {
+      // calculate structural rules
+      const pitchInches = 1 / threadsPerInch;
+      const maxRunout = majorDiameter <= 1.0 ? (2.5 * pitchInches) : (3.5 * pitchInches);
+
+      unthreadedLength = maxRunout
+      threadLength = nominalLength - unthreadedLength
+    } else {
+      threadLength = Math.min(computedLT, nominalLength)
+      unthreadedLength = nominalLength - threadLength
+    }
   }
 
   // convert inches to millimeter

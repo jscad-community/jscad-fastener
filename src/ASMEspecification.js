@@ -197,7 +197,11 @@ export const parseASMEWasher = (spec) => {
   if (spec.includes("F436") || spec.includes("STRUCTURAL")) {
     standard = "ASTM_F436_STRUCTURAL"
   } else if (spec.includes("LOCK") || spec.includes("SPLIT") || spec.includes("SPRING")) {
-    standard = "ASME_B18_21_1_LOCK"
+    if (spec.includes("HEAVY")) {
+      standard = "ASME_B18_21_1_LOCK_HEAVY"
+    } else {
+      standard = "ASME_B18_21_1_LOCK_REGULAR"
+    }
   } else if (spec.includes("STAR") || spec.includes("TOOTH")) {
     if (spec.includes("INTERNAL")) {
       standard = "ASME_B18_21_1_TOOTH_INTERNAL" // Inside teeth star
