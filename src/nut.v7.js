@@ -128,17 +128,19 @@ export const ISO_NUTS = {
  * @param {Boolean} [specification.isLocknut=false] - generate nuts with locknut dimensions
  * @param {Number} [specification.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [specification.heightOffset=0] - clearance for oversized cutouts
- * @returns {Object} hex nut dimensions; widthAcrossFlats, totalHeight, baseHeight
+ * @returns {Object} hex nut dimensions; widthAcrossFlats, totalHeight, baseHeight (mm)
  */
 export const getHexNutDimensions = (specification = {}) => {
   let {
-    size = 'M4',
+    size,
     standard = 'ISO',
     isThin = false,
     isLocknut = false,
     flatOffset = 0,
     heightOffset = 0,
   } = specification
+
+  if (!size) return null;
 
   const isUts = standard.toUpperCase() === 'ASME'
   const dataset = isUts ? ASME_NUTS : ISO_NUTS
@@ -231,6 +233,8 @@ const createBeveledHex = (hexSpec = {}) => {
 /**
  * Generate a Hex Nut from the given specification.
  *
+ * @see getHexNutDimensions
+ *
  * @param {Object} specification - specification for construction
  * @param {String} [specification.standard='ISO'] - dimension standard, ISO or ASME
  * @param {String} [specification.size='M4'] - size of ISO / ASME nut, see lists above.
@@ -247,18 +251,8 @@ const createBeveledHex = (hexSpec = {}) => {
  * createHexNut({size: '1', standard: 'ASME', isThin: true})
  */
 export const generateHexNut = (specification = {}) => {
-  let {
-    size = 'M4',
-    standard = 'ISO',
-    isThin = false,
-    isLocknut = false,
-    flatOffset = 0,
-    heightOffset = 0,
-    segments = 36, // for locknut collar
-  } = specification
-
   const dim = getHexNutDimensions(specification)
-  if (!dim) throw new Error(`Missing hex nut specification for size [${size}] withing ${standard}`)
+  if (!dim) throw new Error(`Missing hex nut dimensions for size ${spec.size}`)
 
   const { widthAcrossFlats, totalHeight, baseHeight } = dim
 

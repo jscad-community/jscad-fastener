@@ -883,7 +883,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.065,
     },
     "size": "1/4",
-    "standard": "ASME_B18_21_1_LOCK",
+    "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
   )
   expect(parseASMEWasher("Helical Spring Lock Washer ASME B18.21.1 3/8 in, Heavy Series, Plain")).toStrictEqual(
@@ -897,7 +897,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.065,
     },
     "size": "3/8",
-    "standard": "ASME_B18_21_1_LOCK",
+    "standard": "ASME_B18_21_1_LOCK_HEAVY",
   }
   )
   expect(parseASMEWasher("ASME B18.21.1 Split Lock Washer 1/2 inch, Stainless Steel")).toStrictEqual(
@@ -911,7 +911,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "1/2",
-    "standard": "ASME_B18_21_1_LOCK",
+    "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
   )
   expect(parseASMEWasher("High Collar Helical Spring Lock Washer 3/4 inch, ASME B18.21.1, Black Oxide")).toStrictEqual(
@@ -925,7 +925,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "3/4",
-    "standard": "ASME_B18_21_1_LOCK",
+    "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
   )
 
@@ -955,7 +955,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "#6",
-    "standard": "ASME_B18_21_1_LOCK",
+    "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
   )
   expect(parseASMEWasher("Flat Washer #10 inch Screw Size, ASME B18.21.1 Type A, Stainless Steel")).toStrictEqual(
@@ -983,7 +983,7 @@ test('parseASMEWasher parsing', () => {
       "thickness": 0.095,
     },
     "size": "#12",
-    "standard": "ASME_B18_21_1_LOCK",
+    "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
   )
 })
