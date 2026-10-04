@@ -1,4 +1,4 @@
-import { cylinder, cylinderElliptic, roundedCylinder, intersect, subtract, union, centerZ, mirrorZ, rotateZ, translate } from '@jscad/modeling'
+import { cylinder, cylinderElliptic, subtract, union, centerZ, mirrorZ, translate } from '@jscad/modeling'
 
 /**
  * Complete ISO or ASME Fastener Nut Generation Module
@@ -166,20 +166,20 @@ export const DIN_557_SQUARE = {
  *
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
- * Maintained in precise decimal Inches (in).
+ * Maintained in precise decimal inches (in).
  */
 export const ASME_B18_2_2_HEX_STANDARD = {
   // Machine Screw Sizes
-  "0":     [0.1563, 0.0469],
-  "1":     [0.1563, 0.0469],
-  "2":     [0.1875, 0.0625],
-  "3":     [0.1875, 0.0625],
-  "4":     [0.2500, 0.0938],
-  "5":     [0.3125, 0.1094],
-  "6":     [0.3125, 0.1094],
-  "8":     [0.3438, 0.1250],
-  "10":    [0.3750, 0.1250],
-  "12":    [0.4375, 0.1563],
+  "#0":     [0.1563, 0.0469],
+  "#1":     [0.1563, 0.0469],
+  "#2":     [0.1875, 0.0625],
+  "#3":     [0.1875, 0.0625],
+  "#4":     [0.2500, 0.0938],
+  "#5":     [0.3125, 0.1094],
+  "#6":     [0.3125, 0.1094],
+  "#8":     [0.3438, 0.1250],
+  "#10":    [0.3750, 0.1250],
+  "#12":    [0.4375, 0.1563],
   // Fractional Inch Sizes (1/4" to 4")
   "1/4":   [0.4375, 0.2188],
   "5/16":  [0.5000, 0.2656],
@@ -212,7 +212,7 @@ export const ASME_B18_2_2_HEX_STANDARD = {
  *
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
- * Maintained in precise decimal Inches (in).
+ * Maintained in precise decimal inches (in).
  */
 const ASME_B18_2_2_HEX_HEAVY = {
   // Fractional Inch Sizes (1/4" to 4")
@@ -246,20 +246,20 @@ const ASME_B18_2_2_HEX_HEAVY = {
  * ASME B18.2.2 Regular Square Nut
  *
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- * Maintained in precise decimal Inches (in).
+ * Maintained in precise decimal inches (in).
  */
 export const ASME_B18_2_2_SQUARE = {
   // Machine Screw Sizes (Fallback to standard profiles)
-  "0":  [0.1563, 0.0469],
-  "1":  [0.1563, 0.0469],
-  "2":  [0.1875, 0.0625],
-  "3":  [0.1875, 0.0625],
-  "4":  [0.2500, 0.0938],
-  "5":  [0.3125, 0.1094],
-  "6":  [0.3125, 0.1094],
-  "8":  [0.3438, 0.1250],
-  "10": [0.3750, 0.1250],
-  "12": [0.4375, 0.1563],
+  "#0":  [0.1563, 0.0469],
+  "#1":  [0.1563, 0.0469],
+  "#2":  [0.1875, 0.0625],
+  "#3":  [0.1875, 0.0625],
+  "#4":  [0.2500, 0.0938],
+  "#5":  [0.3125, 0.1094],
+  "#6":  [0.3125, 0.1094],
+  "#8":  [0.3438, 0.1250],
+  "#10": [0.3750, 0.1250],
+  "#12": [0.4375, 0.1563],
   // Fractional Inch Sizes (1/4" to 1-1/2")
   "1/4":   [0.4375, 0.2188],
   "5/16":  [0.5625, 0.2656],
@@ -281,20 +281,20 @@ export const ASME_B18_2_2_SQUARE = {
  *
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
- * Maintained in precise decimal Inches (in).
+ * Maintained in precise decimal inches (in).
  */
 export const ASME_B18_2_2_HEX_THIN_JAM = {
   // Machine Screw Sizes (Fallback to standard profiles)
-  "0":  [0.1563, 0.0469],
-  "1":  [0.1563, 0.0469],
-  "2":  [0.1875, 0.0625],
-  "3":  [0.1875, 0.0625],
-  "4":  [0.2500, 0.0938],
-  "5":  [0.3125, 0.1094],
-  "6":  [0.3125, 0.1094],
-  "8":  [0.3438, 0.1250],
-  "10": [0.3750, 0.1250],
-  "12": [0.4375, 0.1563],
+  "#0":  [0.1563, 0.0469],
+  "#1":  [0.1563, 0.0469],
+  "#2":  [0.1875, 0.0625],
+  "#3":  [0.1875, 0.0625],
+  "#4":  [0.2500, 0.0938],
+  "#5":  [0.3125, 0.1094],
+  "#6":  [0.3125, 0.1094],
+  "#8":  [0.3438, 0.1250],
+  "#10": [0.3750, 0.1250],
+  "#12": [0.4375, 0.1563],
   // Fractional Inch Sizes (1/4" to 4")
   "1/4":   [0.4375, 0.1563],
   "5/16":  [0.5000, 0.1875],
@@ -327,20 +327,20 @@ export const ASME_B18_2_2_HEX_THIN_JAM = {
  *
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
- * Maintained in precise decimal Inches (in).
+ * Maintained in precise decimal inches (in).
  */
 export const ASME_B18_2_2_HEX_HEAVY_JAM = {
   // Machine Screw Sizes (Fallback to standard profile height)
-  "0":     [0.1563, 0.0469],
-  "1":     [0.1563, 0.0469],
-  "2":     [0.1875, 0.0625],
-  "3":     [0.1875, 0.0625],
-  "4":     [0.2500, 0.0938],
-  "5":     [0.3125, 0.1094],
-  "6":     [0.3125, 0.1094],
-  "8":     [0.3438, 0.1250],
-  "10":    [0.3750, 0.1250],
-  "12":    [0.4375, 0.1563],
+  "#0":     [0.1563, 0.0469],
+  "#1":     [0.1563, 0.0469],
+  "#2":     [0.1875, 0.0625],
+  "#3":     [0.1875, 0.0625],
+  "#4":     [0.2500, 0.0938],
+  "#5":     [0.3125, 0.1094],
+  "#6":     [0.3125, 0.1094],
+  "#8":     [0.3438, 0.1250],
+  "#10":    [0.3750, 0.1250],
+  "#12":    [0.4375, 0.1563],
   // Heavy Hex Jam Nut Sizes (1/4" to 4")
   "1/4":   [0.5000, 0.1719],
   "5/16":  [0.5625, 0.2031],
@@ -371,21 +371,22 @@ export const ASME_B18_2_2_HEX_HEAVY_JAM = {
 
 // TBD Support square nuts
 // Calculate outer corner radius directly for the 4-corner square profile
-// const squareOuterRadius = +((widthAcrossFlats * 1.4142) / 2).toFixed(3);
+// const squareOuterRadius = +((widthAcrossFlats * 1.4142) / 2).toFixed(3)
+// TBD Support flange nuts
 
 /**
- * Obtain overall hex nut dimensions for the given specification.
+ * Get the hex nut dimensions for the given specification.
  *
- * @param {Object} specification - specification for construction
- * @param {String} [specification.size] - required, size of ISO / ASME nut, see lists above
- * @param {String} [specification.standard='ISO'] - dimension standard, ISO or ASME
- * @param {Boolean} [specification.isHeavy=false] - generate nuts with heavy dimensions
- * @param {Boolean} [specification.isThin=false] - generate nuts with thin (jam) dimensions
- * @param {Number} [specification.flatOffset=0] - clearance for oversized cutouts
- * @param {Number} [specification.heightOffset=0] - clearance for oversized cutouts
- * @returns {Object} hex nut dimensions; widthAcrossFlats, totalHeight, baseHeight (mm)
+ * @param {Object} spec - specification for construction
+ * @param {String} [spec.size] - required, size of ISO / ASME nut, see lists above
+ * @param {String} [spec.standard='ISO'] - dimension standard, ISO or ASME
+ * @param {Boolean} [spec.isHeavy=false] - generate nuts with heavy dimensions
+ * @param {Boolean} [spec.isThin=false] - generate nuts with thin (jam) dimensions
+ * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
+ * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
+ * @returns {Object} hex nut dimensions; widthAcrossFlats, height, washerFaceHeight (mm)
  */
-export const getHexNutDimensions = (specification = {}) => {
+export const getHexNutDimensions = (spec = {}) => {
   let {
     size,
     standard = 'ISO',
@@ -393,9 +394,9 @@ export const getHexNutDimensions = (specification = {}) => {
     isThin = false,
     flatOffset = 0,
     heightOffset = 0,
-  } = specification
+  } = spec
 
-  if (!size) return null;
+  if (!size) return null
 
   standard = standard.toUpperCase()
 
@@ -469,8 +470,10 @@ export const getHexNutDimensions = (specification = {}) => {
   }
 }
 
-/**
+/*
  * Generate a double-beveled hex block.
+ *
+ * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
  *
  * @param {number} widthAcrossFlats - Width across the flats, i.e. wrench size (WAF)
  * @param {number} height - Total thickness/height of the nut (H)
@@ -478,16 +481,16 @@ export const getHexNutDimensions = (specification = {}) => {
  * @param {number} zOffset - Z-axis translation offset to position/center the assembly
  * @returns {geom3} - A valid 3D JSCAD V3 solid geometry object.
  */
-export const generateBeveledHexNut = (widthAcrossFlats, height, washerFaceHeight, zOffset, segments) => {
+const generateBeveledHexNut = (widthAcrossFlats, height, washerFaceHeight, zOffset, segments) => {
   // 1. Structural constants for hex layout
-  const HEX_CONSTANT = 1.154700538; // 1 / cos(30 deg)
-  const outerRadius = +((widthAcrossFlats * HEX_CONSTANT) / 2).toFixed(3);
+  const HEX_CONSTANT = 1.154700538 // 1 / cos(30 deg)
+  const outerRadius = +((widthAcrossFlats * HEX_CONSTANT) / 2).toFixed(3)
   
-  const washerFaceDiameter = +(widthAcrossFlats * 0.95).toFixed(3);
-  const washerFaceRadius = washerFaceDiameter / 2;
+  const washerFaceDiameter = +(widthAcrossFlats * 0.95).toFixed(3)
+  const washerFaceRadius = washerFaceDiameter / 2
 
   // 2. Adjust core hex body extrusion height to fit total standard thickness H
-  const hexBodyHeight = +(height - washerFaceHeight).toFixed(3);
+  const hexBodyHeight = +(height - washerFaceHeight).toFixed(3)
 
   // 3. Generate the main hex block body prism using native 6-segment cylinder shortcut
   // Rotate by 30 degrees (Math.PI / 6) to keep flat sides aligned cleanly with coordinate planes
@@ -495,12 +498,12 @@ export const generateBeveledHexNut = (widthAcrossFlats, height, washerFaceHeight
     radius: outerRadius,
     height: hexBodyHeight,
     segments: 6
-  });
+  })
 
   // 4. Build the 30-degree top chamfer cutting tool using cylinderElliptic()
-  const chamferDepth = +(widthAcrossFlats * 0.12).toFixed(3); 
-  const rStartTop = outerRadius * 1.1; // Extra clearance safety buffer
-  const rEndTop = widthAcrossFlats / 2; // Cut lands exactly on inner edge of hex flats
+  const chamferDepth = +(widthAcrossFlats * 0.12).toFixed(3) 
+  const rStartTop = outerRadius * 1.1 // Extra clearance safety buffer
+  const rEndTop = widthAcrossFlats / 2 // Cut lands exactly on inner edge of hex flats
   
   let topChamferTool = cylinderElliptic({
     height: chamferDepth,
@@ -513,8 +516,8 @@ export const generateBeveledHexNut = (widthAcrossFlats, height, washerFaceHeight
 
   // Align and subtract the tapered cone tool from the top perimeter of the hex body
   let zoffset = (hexBodyHeight / 2) - (chamferDepth / 2)
-  const positionedTopTool = translate([0, 0, zoffset], topChamferTool);
-  hexNutBody = subtract(hexNutBody, positionedTopTool);
+  const positionedTopTool = translate([0, 0, zoffset], topChamferTool)
+  hexNutBody = subtract(hexNutBody, positionedTopTool)
 
   // 5. Apply Bottom Surface Treatment
   if (washerFaceHeight > 0) {
@@ -529,12 +532,12 @@ export const generateBeveledHexNut = (widthAcrossFlats, height, washerFaceHeight
     hexNutBody = centerZ(union(hexNutBody, washerFace))
   } else {
     const bottomChamferTool = mirrorZ(topChamferTool)
-    const positionedBottomTool = translate([0, 0, -zoffset], bottomChamferTool);
+    const positionedBottomTool = translate([0, 0, -zoffset], bottomChamferTool)
     hexNutBody = subtract(hexNutBody, positionedBottomTool)
   }
 
   // 6. Apply ultimate global structural Z-axis translation offset
-  return translate([0, 0, zOffset], hexNutBody);
+  return translate([0, 0, zOffset], hexNutBody)
 }
 
 /**
