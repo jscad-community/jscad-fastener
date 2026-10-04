@@ -1,6 +1,6 @@
 import { getThreadSpec, generateThread } from './threads.v3.js'
 
-import { generateHexNut } from './nut.v7.js'
+import { getHexNutDimensions, generateHexNut } from './nut.v7.js'
 
 import { generateISOBolt } from './ISObolt.v5.js'
 
@@ -14,16 +14,19 @@ export function main() {
   //let thread = generateThread(spec, 20)
   //return thread
 
-  //const nut = generateHexNut({size: 'M10'});
-  //const nut = generateHexNut({standard: 'ASME', size: '#10'});
-  //return nut
+  let spec = getHexNutDimensions({size: 'M4'})
+  //let spec = getHexNutDimensions({size: 'M10'}) // washer
+  let nut = generateHexNut(spec)
 
-  const bolt = generateISOBolt({
-    size: 'M6',
-    threadSeries: 'Coarse', // String: "Coarse" or "Fine"
-    standard: 'ISO 4017',   // full thread
-    standard: 'ISO 4014',   // partial thread
-  }, 20)
+  //const nut = generateHexNut({standard: 'ASME', size: '#10'});
+  return nut
+
+  //const bolt = generateISOBolt({
+  //  size: 'M6',
+  //  threadSeries: 'Coarse', // String: "Coarse" or "Fine"
+  //  standard: 'ISO 4017',   // full thread
+  //  standard: 'ISO 4014',   // partial thread
+  //}, 20)
 
 /*
   const bolt = generateASMEBolt({
@@ -32,8 +35,6 @@ export function main() {
     standard: 'ASME_B18_2_1_TAP_BOLT',   // full thread
     //standard: 'ASME_B18_2_1_HEX_BOLT',   // partial thread
   }, 2)
-*/
-
   return bolt
-  
+*/
 }

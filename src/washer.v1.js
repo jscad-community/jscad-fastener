@@ -685,7 +685,7 @@ const ASME_B18_21_1_TOOTH_INTERNAL = {
  * NOTE: Returned dimensions are millimeters.
  *
  * @param {Object} spec - specification for construction
- * @param {String} [spec.size='M4'] - size of ISO / ASME washer, see lists above.
+ * @param {String} [spec.size] - required, size of ISO / ASME washer, see lists above
  * @param {String} [spec.standard='ISO'] - dimension standard, ISO or ASME
  * @param {Boolean} [spec.isHeavy=false] - get dimensions for heavy washers
  * @param {Boolean} [spec.isLocking=false] - get locking washer dimensions
@@ -919,9 +919,9 @@ const generateSplitLockWasher = (innerDiameter, outerDiameter, thickness, segmen
  *
  * @see getWasherDimensions
  * 
- * @param {object} dimensions - washer dimensions
+ * @param {object} specifications - washer specifications
  */
-export const generateWasher = (dimensions = {}) => {
+export const generateWasher = (spec = {}) => {
   let {
     innerDiameter,
     outerDiameter,
@@ -929,8 +929,8 @@ export const generateWasher = (dimensions = {}) => {
     isLocking = false,
     isInternal = false,
     isExternal = false,
-    segments = 38
-  } = dimensions
+    segments = 36
+  } = spec
 
   // lock washers
 
