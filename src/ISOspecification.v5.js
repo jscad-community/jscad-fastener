@@ -1,24 +1,41 @@
-/**
- * ============================================================================
- * METRIC FASTENER MASTER REGISTRY DATA (ISO 261 / ISO 262)
- * All values are in millimeters (mm).
- * ============================================================================
- */
-const ISO_PITCH_REGISTRY = {
-  "M1": { Coarse: 0.25, Fine: null }, "M2": { Coarse: 0.4, Fine: null },
-  "M3": { Coarse: 0.5, Fine: null },  "M4": { Coarse: 0.7, Fine: null },
-  "M5": { Coarse: 0.8, Fine: 0.5 },   "M6": { Coarse: 1.0, Fine: 0.75 },
-  "M8": { Coarse: 1.25, Fine: 1.0 },  "M10": { Coarse: 1.5, Fine: 1.25 },
-  "M12": { Coarse: 1.75, Fine: 1.25 }, "M14": { Coarse: 2.0, Fine: 1.5 },
-  "M16": { Coarse: 2.0, Fine: 1.5 },  "M20": { Coarse: 2.5, Fine: 1.5 },
-  "M24": { Coarse: 3.0, Fine: 2.0 },  "M30": { Coarse: 3.5, Fine: 2.0 },
-  "M36": { Coarse: 4.0, Fine: 3.0 },  "M42": { Coarse: 4.5, Fine: 3.0 },
-  "M48": { Coarse: 5.0, Fine: 3.0 },  "M64": { Coarse: 6.0, Fine: 4.0 },
-  "M68": { Coarse: 6.0, Fine: 4.0 }
-};
+import { getThreadSpec } from `./threads.v3.js`
 
-function lookupCoarsePitch(size) {
-  return ISO_PITCH_REGISTRY[size] ? ISO_PITCH_REGISTRY[size].Coarse : 1.0;
+/**
+ * ISO 273 Bolt Clearance Hole Diameters (all values in mm)
+ * Map structure optimized for clean, semantic UI and geometry engine routing.
+ * Formatted with explicit keys for: close (H12), normal (H13), and loose (H14) fit conditions.
+ */
+const ISO_273_CLEARANCE_HOLES = {
+  "M1.6": { close: 1.700, normal: 1.800, loose: 2.000 },
+  "M2":   { close: 2.200, normal: 2.400, loose: 2.600 },
+  "M2.5": { close: 2.700, normal: 2.800, loose: 3.100 },
+  "M3":   { close: 3.200, normal: 3.350, loose: 3.600 },
+  "M3.5": { close: 3.700, normal: 3.900, loose: 4.200 },
+  "M4":   { close: 4.300, normal: 4.500, loose: 4.800 },
+  "M5":   { close: 5.300, normal: 5.500, loose: 5.800 },
+  "M6":   { close: 6.400, normal: 6.500, loose: 7.000 },
+  "M7":   { close: 7.400, normal: 7.800, loose: 8.000 },
+  "M8":   { close: 8.400, normal: 9.000, loose: 10.000 },
+  "M10":  { close: 10.500, normal: 11.000, loose: 12.000 },
+  "M12":  { close: 13.000, normal: 14.000, loose: 15.000 },
+  "M14":  { close: 15.000, normal: 16.000, loose: 18.000 },
+  "M16":  { close: 17.000, normal: 18.000, loose: 19.000 },
+  "M18":  { close: 19.000, normal: 20.000, loose: 21.000 },
+  "M20":  { close: 21.000, normal: 22.000, loose: 24.000 },
+  "M22":  { close: 23.000, normal: 24.000, loose: 26.000 },
+  "M24":  { close: 25.000, normal: 26.000, loose: 28.000 },
+  "M27":  { close: 28.000, normal: 30.000, loose: 32.000 },
+  "M30":  { close: 31.000, normal: 33.000, loose: 35.000 },
+  "M33":  { close: 34.000, normal: 36.000, loose: 38.000 },
+  "M36":  { close: 37.000, normal: 39.000, loose: 42.000 },
+  "M39":  { close: 40.000, normal: 42.000, loose: 45.000 },
+  "M42":  { close: 43.000, normal: 45.000, loose: 48.000 },
+  "M45":  { close: 46.000, normal: 48.000, loose: 52.000 },
+  "M48":  { close: 50.000, normal: 52.000, loose: 56.000 },
+  "M52":  { close: 54.000, normal: 56.000, loose: 62.000 },
+  "M56":  { close: 58.000, normal: 62.000, loose: 66.000 },
+  "M60":  { close: 62.000, normal: 66.000, loose: 70.000 },
+  "M64":  { close: 66.000, normal: 70.000, loose: 74.000 }
 }
 
 /**
@@ -100,11 +117,11 @@ function parseISOBolt(str) {
     size,
     pitch,
     threadSeries, // "Coarse" or "Fine" preserved perfectly
-    standard,
     threadTolerance,
-    propertyClass: propertyClassMatch ? propertyClassMatch[1] : (material.includes('Stainless') ? 'A2-70' : '8.8'),
     material,
+    propertyClass: propertyClassMatch ? propertyClassMatch[1] : (material.includes('Stainless') ? 'A2-70' : '8.8'),
     coating,
+    standard,
     clearanceSpecifications: {
       standard: "ISO 273",
       fineFitHole: Number(fineHole.toFixed(1)),
