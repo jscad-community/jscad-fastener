@@ -65,7 +65,7 @@ export const ASME_B18_2_2_HEX_STANDARD = {
  *
  * Maintained in precise decimal inches (in).
  */
-const ASME_B18_2_2_HEX_HEAVY = {
+export const ASME_B18_2_2_HEX_HEAVY = {
   // Fractional Inch Sizes (1/4" to 4")
   "1/4":   [0.5000, 0.2344],
   "5/16":  [0.5625, 0.2969],

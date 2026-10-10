@@ -4,7 +4,7 @@
  * based on standard ASME structural allowance thresholds.
  * Formatted with explicit keys for: close, normal, and loose fit conditions.
  */
-const ASME_B18_2_8_CLEARANCE_HOLES = {
+export const ASME_B18_2_8_CLEARANCE_HOLES = {
   // Numbered Machine Screw Sizes (#0 to #12)
   "0":  { close: 0.067, normal: 0.076, loose: 0.094 },
   "1":  { close: 0.081, normal: 0.089, loose: 0.104 },
@@ -102,14 +102,14 @@ export const parseBoltSpec = (spec) => {
   const coarseHole = d + 0.062
 
   return {
-    size,                         // "1/2"
-    pitch,                        // 13
-    threadSeries,                 // "UNC"
-    standard,                     // "ASME_B18_2_1_CAP_SCREW"
-    threadTolerance: "2A",        // Imperial standard external class fallback
-    propertyClass,                // "A325"
-    material,                     // "Hardened Structural Steel"
-    coating,                      // "Zinc Plated"
+    size,
+    pitch,
+    threadSeries,
+    standard,
+    threadTolerance: "2A",
+    propertyClass,
+    material,
+    coating,
     clearanceSpecifications: {
       standardBody: "ASME B1.1",
       fineFitHole: Number(fineHole.toFixed(3)),
@@ -320,12 +320,5 @@ export const parseWasherSpec = (spec) => {
     hardnessHV,   // Required Core Key -> 360
     material,     // Required Core Key -> "Hardened Carbon Steel"
     coating,      // Required Core Key -> "Bare Metal"
-    
-    // --- Extended Parameter Payload Extension Block for your 3D Render Engines ---
-    metadata: {
-      innerDiameter: Number(dims[0].toFixed(3)),
-      outerDiameter: Number(dims[1].toFixed(3)),
-      thickness:     Number(dims[2].toFixed(3))
-    }
   }
 }

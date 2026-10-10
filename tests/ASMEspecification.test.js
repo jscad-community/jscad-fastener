@@ -732,11 +732,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Zinc Plated",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.281,
-      "outerDiameter": 0.625,
-      "thickness": 0.065,
-    },
     "size": "1/4",
     "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
@@ -746,11 +741,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Zinc Plated",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.344,
-      "outerDiameter": 0.688,
-      "thickness": 0.065,
-    },
     "size": "5/16",
     "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
@@ -760,11 +750,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.406,
-      "outerDiameter": 0.812,
-      "thickness": 0.065,
-    },
     "size": "3/8",
     "standard": "ASME_B18_21_1_TYPE_A_WIDE",
   }
@@ -774,11 +759,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 180,
     "material": "Stainless Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "1/2",
     "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
@@ -789,11 +769,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Black Oxide",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "5/8",
     "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
@@ -803,11 +778,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Zinc Plated",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "1",
     "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
@@ -819,11 +789,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 360,
     "material": "Hardened Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.062,
-      "thickness": 0.109,
-    },
     "size": "1/2",
     "standard": "ASTM_F436_STRUCTURAL",
   }
@@ -833,11 +798,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Hot Dip Galvanized",
     "hardnessHV": 360,
     "material": "Hardened Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "5/8",
     "standard": "ASTM_F436_STRUCTURAL",
   }
@@ -847,11 +807,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Zinc Plated",
     "hardnessHV": 360,
     "material": "Hardened Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "3/4",
     "standard": "ASTM_F436_STRUCTURAL",
   }
@@ -861,11 +816,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 360,
     "material": "Hardened Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "1",
     "standard": "ASTM_F436_STRUCTURAL",
   }
@@ -877,11 +827,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Zinc Plated",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.281,
-      "outerDiameter": 0.625,
-      "thickness": 0.065,
-    },
     "size": "1/4",
     "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
@@ -891,11 +836,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.406,
-      "outerDiameter": 0.812,
-      "thickness": 0.065,
-    },
     "size": "3/8",
     "standard": "ASME_B18_21_1_LOCK_HEAVY",
   }
@@ -905,11 +845,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 180,
     "material": "Stainless Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "1/2",
     "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
@@ -919,11 +854,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Black Oxide",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "3/4",
     "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
@@ -935,11 +865,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Zinc Plated",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "#4",
     "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
@@ -949,11 +874,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Zinc Plated",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "#6",
     "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }
@@ -963,11 +883,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 180,
     "material": "Stainless Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "#10",
     "standard": "ASME_B18_21_1_TYPE_A_NARROW",
   }
@@ -977,11 +892,6 @@ test('asme.parseWasherSpec parsing', () => {
     "coating": "Bare Metal",
     "hardnessHV": 110,
     "material": "Carbon Steel",
-    "metadata": {
-      "innerDiameter": 0.531,
-      "outerDiameter": 1.25,
-      "thickness": 0.095,
-    },
     "size": "#12",
     "standard": "ASME_B18_21_1_LOCK_REGULAR",
   }

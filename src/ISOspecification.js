@@ -1,11 +1,11 @@
-import { getThreadSpec } from `./threads.v3.js`
+import { getThreadSpec } from './threads.js'
 
 /**
  * ISO 273 Bolt Clearance Hole Diameters (all values in mm)
  * Map structure optimized for clean, semantic UI and geometry engine routing.
  * Formatted with explicit keys for: close (H12), normal (H13), and loose (H14) fit conditions.
  */
-const ISO_273_CLEARANCE_HOLES = {
+export const ISO_273_CLEARANCE_HOLES = {
   "M1.6": { close: 1.700, normal: 1.800, loose: 2.000 },
   "M2":   { close: 2.200, normal: 2.400, loose: 2.600 },
   "M2.5": { close: 2.700, normal: 2.800, loose: 3.100 },
@@ -62,7 +62,7 @@ function extractMaterialAndCoating(str) {
  * Procedural function calculating bolt specifications.
  * Dynamically appends ISO 273 clearance hole guidelines based on the nominal size.
  */
-function parseISOBolt(str) {
+export const parseBoltSpec = (str) => {
   // 1. Extract the Bolt Standard / Specification (e.g., ISO 4014, ISO 4017, DIN 931)
   const standardRegex = /(ISO|DIN)\s*\d+/i;
   const standardMatch = str.match(standardRegex);
@@ -76,20 +76,20 @@ function parseISOBolt(str) {
 
   const nominalDiameter = parseFloat(threadMatch[1]);
   const size = `M${nominalDiameter}`;
-  let pitch = null;
-  let threadSeries = 'COARSE'; // Kept intact!
 
+  let spec = null
   if (threadMatch[2] && threadMatch[3]) {
-    pitch = parseFloat(threadMatch[2]);
-    threadSeries = 'FINE';      // Kept intact!
+    spec = getThreadSpec('ISO', size, 'FINE')
   } else {
-    pitch = lookupCoarsePitch(size);
+    spec = getThreadSpec('ISO', size, 'COARSE')
   }
 
   const toleranceMatch = str.match(/(?:\s|-)([4-7][a-h](?:[4-7][a-h])?)(?:\s|-|\$)/);
   const threadTolerance = toleranceMatch ? toleranceMatch[1] : '6g';
 
   const propertyClassMatch = str.match(/(?:\s|-)(4\.6|5\.6|8\.8|10\.9|12\.9)(?:\s|-|\$)/);
+  const propertyClass = propertyClassMatch ? propertyClassMatch[1] : (material.includes('Stainless') ? 'A2-70' : '8.8')
+
   const { material, coating } = extractMaterialAndCoating(str);
 
   // --- ISO 273 Clearance Hole Matrix ---
@@ -115,13 +115,13 @@ function parseISOBolt(str) {
 
   return {
     size,
-    pitch,
-    threadSeries, // "Coarse" or "Fine" preserved perfectly
-    threadTolerance,
-    material,
-    propertyClass: propertyClassMatch ? propertyClassMatch[1] : (material.includes('Stainless') ? 'A2-70' : '8.8'),
-    coating,
+    pitch: spec.pitch,
+    threadSeries: spec.threadSeries,
     standard,
+    threadTolerance,
+    propertyClass,
+    material,
+    coating,
     clearanceSpecifications: {
       standard: "ISO 273",
       fineFitHole: Number(fineHole.toFixed(1)),
@@ -135,19 +135,29 @@ function parseISOBolt(str) {
  * Procedural function calculating the internal minor thread limits for 6H/6G.
  * Dynamically outputs tap drill hole sizing with absolute structural limits.
  */
-function parseISONut(str) {
+export const parseNutSpec = (str) => {
   const threadRegex = /M(\d+(?:\.\d+)?)(?:\s*x\s*(\d+(?:\.\d+)?))?/i;
   const threadMatch = str.match(threadRegex);
   if (!threadMatch) throw new Error("Failed to extract Metric parameters from Nut string.");
 
   const nominalDiameter = parseFloat(threadMatch[1]);
   const size = `M${nominalDiameter}`;
-  const pitch = threadMatch[2] ? parseFloat(threadMatch[2]) : lookupCoarsePitch(size);
+
+  let threadSeries = 'COARSE'
+  if (threadMatch[2]) {
+    threadSeries = 'FINE'
+  }
+  const spec = getThreadSpec('ISO', size, threadSeries)
+
+  const pitch = spec.pitch
 
   const toleranceMatch = str.match(/(?:\s|-)([4-7][G-H])(?:\s|-|\$)/);
   const threadTolerance = toleranceMatch ? toleranceMatch[1].toUpperCase() : '6H'; 
 
   const standardMatch = str.match(/ISO\s*(\d{4})/i);
+  const standardNum = standardMatch ? standardMatch[1] : "4032";
+  const standard = standardNum === "4033" ? "ISO_4033_HIGH" : "ISO_4032_NORMAL"
+
   const { material, coating } = extractMaterialAndCoating(str);
 
   // --- ISO 965-1 Sizing and Tolerance Formulas ---
@@ -183,19 +193,18 @@ function parseISONut(str) {
   let recommendedDrill = Number((nominalDiameter - pitch).toFixed(2));
   if (threadTolerance === '6G') recommendedDrill = Number((recommendedDrill + 0.04).toFixed(2));
 
-  const standardNum = standardMatch ? standardMatch[1] : "4032";
-
   return {
     size,
     pitch,
+    threadSeries,
     threadTolerance,
     material,
     coating,
-    standard: standardNum === "4033" ? "ISO_4033_HIGH" : "ISO_4032_NORMAL",
+    standard,
     drillingSpecifications: {
       recommendedDrillBitSize: recommendedDrill,
-      allowableHoleMinimum: drillHoleMin, // The structural minimum (NO-GO limit for drill size)
-      allowableHoleMaximum: drillHoleMax  // The structural maximum (GO limit for drill size)
+      allowableHoleMinimum: drillHoleMin,
+      allowableHoleMaximum: drillHoleMax
     }
   };
 }
@@ -207,7 +216,7 @@ function parseISONut(str) {
  * @param {string} str - e.g., "Plain Washer, ISO 7089, M12, 200HV, Zinc"
  * @returns {Object} Clean token matching the unified formatting footprint of the system.
  */
-const export parseISOWasher = (str) => {
+export const parseWasherSpec = (str) => {
   if (!str || typeof str !== 'string') {
     throw new Error("Invalid Input: String required for ISO washer parsing pipeline.");
   }
@@ -276,11 +285,11 @@ const export parseISOWasher = (str) => {
 
   // 5. Output Normalized Data Token Payload (Pure Millimeters)
   return {
-    size,         // Core Key -> "M12"
-    standard,     // Core Key -> "DIN_127_B"
-    hardnessHV,   // Core Key -> 400
-    material,     // Core Key -> "Carbon Steel"
-    coating       // Core Key -> "Zinc Plated"
+    size,
+    standard,
+    hardnessHV,
+    material,
+    coating
   };
 }
 
@@ -290,9 +299,9 @@ function parseISOFastener(rawString) {
   const normalized = rawString.replace(/\s+/g, ' ').trim();
   const lower = normalized.toLowerCase();
   
-  if (lower.includes('bolt') || lower.includes('screw')) return parseISOBolt(normalized);
-  if (lower.includes('washer')) return parseISOWasher(normalized);
-  if (lower.includes('nut')) return parseISONut(normalized);
+  if (lower.includes('bolt') || lower.includes('screw')) return parseBoltSpec(normalized);
+  if (lower.includes('washer')) return parseWasherSpec(normalized);
+  if (lower.includes('nut')) return parseNutSpec(normalized);
   
   throw new Error(`Unable to resolve fastener classification for: "${rawString}"`);
 }
@@ -361,7 +370,7 @@ function validateISOMetricAssembly(assembly) {
  * ============================================================================
  */
 
-// SCENARIO 1: Interferences from thick zinc layers (Fails)
+/*
 const badGalvanizedStack = {
   bolt:   parseISOFastener("Hex structural bolt ISO 4014 - M16 x 80 - 6g - 10.9 - Hot-Dip Galvanized"), // 6g tight space
   washer: parseISOFastener("Plain Washer ISO 7090 - M16 - 300 HV - HDG Finish"),
@@ -369,11 +378,11 @@ const badGalvanizedStack = {
 };
 validateISOMetricAssembly(badGalvanizedStack);
 
-// SCENARIO 2: Valid High-Precision Coarse Assembly with proper allowances (Passes)
 const correctStack = {
   bolt:   parseISOFastener("Hex head screw ISO 4017 - M12 x 50 - 6g - 8.8 - Zinc Electroplated"),
   washer: parseISOFastener("Plain Washer ISO 7090 - M12 - 200 HV"),
   nut:    parseISOFastener("Hex nut ISO 4032 - M12 - 6H")
 };
 validateISOMetricAssembly(correctStack);
+*/
 

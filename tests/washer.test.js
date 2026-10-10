@@ -2,7 +2,7 @@ import { expect, test } from 'vitest'
 
 import { geom3 } from '@jscad/modeling'
 
-import { getWasherDimensions, generateWasher } from './src/washer.v1.js'
+import { getWasherDimensions, generateWasher } from './src/washer.js'
 
 test('getWasherDimensions', () => {
   // errors

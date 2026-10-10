@@ -5,4 +5,5 @@ export { HexNut } from './nut.js'
 export * as asme from './ASMEindex.js'
 
 // ISO fasteners
+export * as iso from './ISOindex.js'
 
