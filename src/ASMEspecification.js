@@ -138,6 +138,8 @@ export const parseNutSpec = (spec) => {
   let standard = "ASME_B18_2_2_NORMAL"
   if (spec.includes("HEAVY HEX STRUCTURAL") || spec.includes("ASME B18.2.6")) {
     standard = "ASME_B18_2_6_STRUCTURAL"
+  } else if (spec.includes("HEAVY") && spec.includes("JAM")) {
+    standard = "ASME_B18_2_2_HEAVY_JAM" 
   } else if (spec.includes("HEAVY HEX NUT")) {
     standard = "ASME_B18_2_2_HEAVY"
   } else if (spec.includes("JAM NUT")) {

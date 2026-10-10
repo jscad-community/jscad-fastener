@@ -569,6 +569,8 @@ test('asme.parseNutSpec parsing', () => {
   }
   )
 
+// TODO heavy jam specs
+
   // --- 4. ASME B18.2.2 Heavy Hex Nuts ---
   expect(asme.parseNutSpec("Heavy Hex Nut, ASME B18.2.2, 1/2-13 UNC, Grade 8, Zinc")).toStrictEqual(
   {

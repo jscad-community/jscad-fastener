@@ -219,6 +219,88 @@ export const ASME_B18_2_2_HEX_HEAVY_JAM = {
   "4":     [6.1250, 2.0469]
 }
 
+/**
+ * ASME B18.2.6 Heavy Hex Nuts
+ *
+ * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
+ *
+ * Maintained in precise decimal inches (in).
+ */
+export const ASME_B18_2_6_HEX_STRUCTURAL = {
+  "1/2":   [0.8750, 0.3125],
+  "5/8":   [1.0625, 0.3906],
+  "3/4":   [1.2500, 0.4688],
+  "7/8":   [1.4375, 0.5312],
+  "1":     [1.6250, 0.6094],
+  "1-1/8": [1.8125, 0.6875],
+  "1-1/4": [2.0000, 0.7812],
+  "1-3/8": [2.1875, 0.8438],
+  "1-1/2": [2.3750, 0.9375]
+}
+
+/**
+ * ASME B18.16.6 Style NE Standard Nylon-Insert Lock Nuts
+ *
+ * Schema Layout: "Designation": [widthAcrossFlats (W), hex height (min), total height(max)]
+ *
+ * Maintained in precise decimal inches (in).
+ */
+export const ASME_B18_16_6_HEX_LOCK_STANDARD = {
+  // Machine Screw Sizes (Style NM)
+  "#2":     [0.2500, 0.063, 0.121],
+  "#4":     [0.2500, 0.063, 0.121],
+  "#6":     [0.3125, 0.111, 0.188],
+  "#8":     [0.3438, 0.142, 0.250],
+  "#10":    [0.3750, 0.142, 0.250],
+  "#12":    [0.4375, 0.160, 0.328],
+  // Fractional Inch Sizes (Style NE)
+  "1/4":    [0.4375, 0.225, 0.328],
+  "5/16":   [0.5000, 0.250, 0.359],
+  "3/8":    [0.5625, 0.335, 0.468],
+  "7/16":   [0.6250, 0.360, 0.468],
+  "1/2":    [0.7500, 0.453, 0.609],
+  "9/16":   [0.8750, 0.484, 0.656],
+  "5/8":    [0.9375, 0.578, 0.766],
+  "3/4":    [1.1250, 0.641, 0.891],
+  "7/8":    [1.3125, 0.734, 0.984],
+  "1":      [1.5000, 0.812, 1.078],
+  "1-1/8":  [1.6875, 1.016, 1.328],
+  "1-1/4":  [1.8750, 1.094, 1.422],
+  "1-3/8":  [2.0625, 1.250, 1.609],
+  "1-1/2":  [2.2500, 1.375, 1.766]
+}
+
+/**
+ * ASME B18.16.6 Style NE Thin Nylon-Insert Lock Nuts
+ *
+ * Schema Layout: "Designation": [widthAcrossFlats (W), hex height (min), total height(max)]
+ *
+ * Maintained in precise decimal inches (in).
+ */
+export const ASME_B18_16_6_HEX_LOCK_THIN = {
+  // Machine Screw Sizes (Style NTM)
+  "#2":     [0.2500, 0.050, 0.125],
+  "#4":     [0.2500, 0.050, 0.125],
+  "#6":     [0.3125, 0.060, 0.140],
+  "#8":     [0.3438, 0.090, 0.172],
+  "#10":    [0.3750, 0.110, 0.187],
+  "#12":    [0.4375, 0.140, 0.218],
+  // Fractional Inch Sizes (Style NTE)
+  "1/4":    [0.4390, 0.125, 0.218],
+  "5/16":   [0.5020, 0.158, 0.265],
+  "3/8":    [0.5640, 0.150, 0.281],
+  "7/16":   [0.6270, 0.225, 0.328],
+  "1/2":    [0.7520, 0.190, 0.328],
+  "9/16":   [0.8770, 0.225, 0.374],
+  "5/8":    [0.9400, 0.265, 0.406],
+  "3/4":    [1.0640, 0.288, 0.421],
+  "7/8":    [1.2520, 0.340, 0.484],
+  "1":      [1.4400, 0.405, 0.578],
+  "1-1/8":  [1.6250, 0.450, 0.656],
+  "1-1/4":  [1.8125, 0.510, 0.718],
+  "1-3/8":  [2.0000, 0.550, 0.812],
+  "1-1/2":  [2.1875, 0.600, 0.875]
+}
 
 // TBD Support square nuts
 // Calculate outer corner radius directly for the 4-corner square profile
@@ -227,11 +309,22 @@ export const ASME_B18_2_2_HEX_HEAVY_JAM = {
 
 // NOTE: See ASMEspecification.js for parseNutSpec()
 
+const standards = {
+  'ASME_B18_2_2_NORMAL': ASME_B18_2_2_HEX_STANDARD,
+  'ASME_B18_2_2_HEAVY': ASME_B18_2_2_HEX_HEAVY,
+  'ASME_B18_2_2_JAM': ASME_B18_2_2_HEX_THIN_JAM,
+  'ASME_B18_2_2_HEAVY_JAM': ASME_B18_2_2_HEX_HEAVY_JAM,
+  'ASME_B18_2_6_STRUCTURAL': ASME_B18_2_6_HEX_STRUCTURAL,
+  'ASME_B18_16_6_LOCK_STANDARD': ASME_B18_16_6_HEX_LOCK_STANDARD,
+  'ASME_B18_16_6_LOCK_THIN': ASME_B18_16_6_HEX_LOCK_THIN
+}
+
 /**
  * Get the hex nut dimensions for the given ASME nut specification.
  *
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ASME nut, see lists above
+ * @param {String} [spec.standard] - ASME standard or none (use other specs to choose)
  * @param {Boolean} [spec.isHeavy=false] - generate nuts with heavy dimensions
  * @param {Boolean} [spec.isThin=false] - generate nuts with thin (jam) dimensions
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
@@ -241,6 +334,7 @@ export const ASME_B18_2_2_HEX_HEAVY_JAM = {
 export const getNutDimensions = (spec = {}) => {
   let {
     size,
+    standard = null,
     isHeavy = false,
     isThin = false,
     flatOffset = 0,
@@ -249,16 +343,19 @@ export const getNutDimensions = (spec = {}) => {
 
   if (!size) return null
 
-  const standard = 'ASME'
+  standard = standard ? standard : 'ASME'
 
-  let dataset
+  let dataset = standards[standard]
 
-  if (isThin) {
-    if (!dataset && isHeavy) dataset = ASME_B18_2_2_HEX_HEAVY_JAM
-    if (!dataset) dataset = ASME_B18_2_2_HEX_THIN_JAM
-  } else {
-    if (!dataset && isHeavy) dataset = ASME_B18_2_2_HEX_HEAVY
-    if (!dataset) dataset = ASME_B18_2_2_HEX_STANDARD
+  // select the standard using the given options
+  if (!dataset) {
+    if (isThin) {
+      if (!dataset && isHeavy) dataset = ASME_B18_2_2_HEX_HEAVY_JAM
+      if (!dataset) dataset = ASME_B18_2_2_HEX_THIN_JAM
+    } else {
+      if (!dataset && isHeavy) dataset = ASME_B18_2_2_HEX_HEAVY
+      if (!dataset) dataset = ASME_B18_2_2_HEX_STANDARD
+    }
   }
   if (!dataset) return null
 
@@ -270,6 +367,7 @@ export const getNutDimensions = (spec = {}) => {
   let height = dim[STANDARD_HEIGHT] + (heightOffset * 2)
   let bearingFaceHeight = 0
   
+  // TODO support lock nuts
   // height prioritization logic sequence
   // let totalHeight = stdH
   // if (isLocknut && dim[LOCK_HEIGHT] !== null) {
@@ -278,7 +376,7 @@ export const getNutDimensions = (spec = {}) => {
   //   totalHeight = dim[THIN_HEIGHT_INDEX]
   // }
 
-  if (widthAcrossFlats >= 0.6875) {
+  if (isHeavy && widthAcrossFlats >= 0.6875) {
     // add a bearing surface to the bottom of large nuts
     bearingFaceHeight = 0.016 // mm
   }

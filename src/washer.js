@@ -679,104 +679,7 @@ const ASME_B18_21_1_TOOTH_INTERNAL = {
   "1-3/4": [1.791, 2.619, 0.067]
 }
 
-/**
- * Get the overall washer dimensions for the given specification.
- *
- * NOTE: Returned dimensions are millimeters.
- *
- * @param {Object} spec - specification for construction
- * @param {String} [spec.size] - required, size of ISO / ASME washer, see lists above
- * @param {String} [spec.standard='ISO'] - dimension standard, ISO or ASME
- * @param {Boolean} [spec.isHeavy=false] - get dimensions for heavy washers
- * @param {Boolean} [spec.isLocking=false] - get locking washer dimensions
- * @param {Boolean} [spec.isInternal=false] - get locking washer with internal stars
- * @param {Boolean} [spec.isExternal=false] - get locking washer with external stars
- * @param {Number} [spec.idOffset=0] - clearance for oversized cutouts
- * @param {Number} [spec.odOffset=0] - clearance for oversized cutouts
- * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
- * @returns {Object} washer dimensions: innerRadius, outerRadius, thickness (mm)
- */
-export const getWasherDimensions = (spec = {}) => {
-  const {
-    size,
-    standard = 'ISO',
-    isWide = false,
-    isHeavy = false,
-    isLocking = false,
-    isExternal = false,
-    isInternal = false,
-    idOffset = 0,
-    odOffset = 0,
-    thicknessOffset = 0
-  } = spec
-
-  if (!size) return null
-
-  let dataset
-
-  if (standard.toUpperCase() === 'ASME') {
-    // select the ASME washer standard to apply
-    if (isLocking) {
-      // select a locking washer standard
-      if (!dataset && isInternal) dataset = ASME_B18_21_1_TOOTH_INTERNAL
-      if (!dataset && isExternal) dataset = ASME_B18_21_1_TOOTH_EXTERNAL
-      if (!dataset && isHeavy) dataset = ASME_B18_21_1_LOCK_HEAVY
-      if (!dataset) dataset = ASME_B18_21_1_LOCK_REGULAR
-    } else {
-      // select a regular washer standard
-      if (!dataset && isHeavy) dataset = ASTMF436
-      if (!dataset && isWide) dataset = ASME_B18_22_1_WIDE
-      if (!dataset) dataset = ASME_B18_22_1_NARROW
-    }
-  }
-  if (standard.toUpperCase() === 'ISO') {
-    // select the ISO washer standard to apply
-    if (isLocking) {
-      // select a locking washer standard
-      if (!dataset && isInternal) dataset = DIN_6797_J
-      if (!dataset && isExternal) dataset = DIN_6797_A
-      //if (!dataset && isHeavy) dataset = ??
-      if (!dataset) dataset = DIN_7980
-    } else {
-      if (!dataset && isHeavy) dataset = EN_14399_6
-      if (!dataset && isWide) dataset = ISO_7093
-      if (!dataset) dataset = ISO_7090
-    }
-  }
-  if (!dataset) return null
-
-  // get the dimensions for the requested size
-  const dims = dataset[size]
-  if (!dims) return null
-
-  let innerDiameter = dims[ID_INDEX] + (idOffset * 2)
-  let outerDiameter = dims[OD_INDEX] + (odOffset * 2)
-  let thickness = dims[TH_INDEX] + (thicknessOffset * 2)
-
-  // convert ASME inches to mm
-  if (standard.toUpperCase() === 'ASME') {
-    innerDiameter = Number(innerDiameter * MM_PER_INCH).toFixed(2)
-    outerDiameter = Number(outerDiameter * MM_PER_INCH).toFixed(2)
-    thickness = Number(thickness * MM_PER_INCH).toFixed(2)
-  }
-
-  return {
-    // spec
-    size,
-    standard,
-    isWide,
-    isHeavy,
-    isLocking,
-    isInternal,
-    isExternal,
-    // dimensions
-    innerDiameter,
-    outerDiameter,
-    thickness,
-  }
-}
-
-/**
+/*
  * Procedural Star Washer Geometry Estimator
  *
  * Calculates an authentic commercial tooth count derived entirely from the outer diameter.
@@ -887,7 +790,7 @@ const generateInternalStarWasher = (innerDiameter, outerDiameter, thickness, seg
  *
  * Slices a thin radial gap through one side of the ring.
  */
-const generateSplitLockWasher = (innerDiameter, outerDiameter, thickness, segments) => {
+export const SpringWasher = (innerDiameter, outerDiameter, thickness, segments) => {
   const outerRadius = outerDiameter / 2
   const innerRadius = innerDiameter / 2
 
@@ -914,40 +817,8 @@ const generateSplitLockWasher = (innerDiameter, outerDiameter, thickness, segmen
   return subtract(washerRing, positionedSlice)
 }
 
-/**
- * Generate a solid washer manifold using the given dimensions.
- *
- * @see getWasherDimensions
- * 
- * @param {object} specifications - washer specifications
- */
-export const generateWasher = (spec = {}) => {
-  let {
-    innerDiameter,
-    outerDiameter,
-    thickness,
-    isLocking = false,
-    isInternal = false,
-    isExternal = false,
-    segments = 36
-  } = spec
-
-  // lock washers
-
-  if (isInternal) {
-    return generateInternalStarWasher(innerDiameter, outerDiameter, thickness, segments )
-  }
-
-  if (isExternal) {
-    return generateExternalStarWasher(innerDiameter, outerDiameter, thickness, segments )
-  }
-
-  if (isLocking) {
-    return generateSplitLockWasher(innerDiameter, outerDiameter, thickness, segments )
-  }
-
-  // standard washer
-
+// standard washer
+export const Washer = (innerDiameter, outerDiameter, thickness, segments) => {
   const outerRadius = outerDiameter / 2
   const innerRadius = innerDiameter / 2
 
@@ -957,3 +828,9 @@ export const generateWasher = (spec = {}) => {
   return subtract(baseOuterCylinder, baseInnerCylinder)
 }
 
+export const StarWasher = (isInternal, innerDiameter, outerDiameter, thickness, segments) => {
+  if (isInternal) {
+    return generateInternalStarWasher(innerDiameter, outerDiameter, thickness, segments)
+  }
+  return generateExternalStarWasher(innerDiameter, outerDiameter, thickness, segments)
+}

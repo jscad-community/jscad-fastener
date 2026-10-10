@@ -19,7 +19,7 @@ test('asme.getNutDimensions', () => {
     "isThin": false,
     "size": "1/2",
     "standard": "ASME",
-    "bearingFaceHeight": 0.016,
+    "bearingFaceHeight": 0,
     "widthAcrossFlats": 19.05,
   }
   )
@@ -41,7 +41,7 @@ test('asme.getNutDimensions', () => {
     "isThin": true,
     "size": "1/2",
     "standard": "ASME",
-    "bearingFaceHeight": 0.016,
+    "bearingFaceHeight": 0,
     "widthAcrossFlats": 19.05,
   }
   )
@@ -56,13 +56,13 @@ test('asme.getNutDimensions', () => {
     "widthAcrossFlats": 22.225,
   }
   )
-  expect(asme.getNutDimensions({size: "#4"})).toStrictEqual(
+  expect(asme.getNutDimensions({size: "#4", standard: 'ASME_B18_2_2_JAM'})).toStrictEqual(
   {
     "height": 2.383,
     "isHeavy": false,
     "isThin": false,
     "size": "#4",
-    "standard": "ASME",
+    "standard": "ASME_B18_2_2_JAM",
     "bearingFaceHeight": 0,
     "widthAcrossFlats": 6.35,
   }
