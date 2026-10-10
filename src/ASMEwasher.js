@@ -2,7 +2,7 @@ import { cuboid, cylinder, cylinderElliptic, rotateZ, subtract, translate, TAU }
 
 import { SpringWasher, StarWasher, Washer } from './washer.js'
 
-/**
+/*
  * ASME Washer Module
  */
 

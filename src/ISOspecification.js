@@ -156,8 +156,26 @@ export const parseNutSpec = (str) => {
 
   const standardMatch = str.match(/ISO\s*(\d{4})/i);
   const standardNum = standardMatch ? standardMatch[1] : "4032";
-  const standard = standardNum === "4033" ? "ISO_4033_HIGH" : "ISO_4032_NORMAL"
 
+  let standard = "ISO_4032_NORMAL"; // Default fallback
+
+  // 1. Plain & Structural Nuts
+  if (standardNum === "4033") {
+    standard = "ISO_4033_HIGH";
+  } else if (standardNum === "4035" || str.includes("THIN JAM")) {
+    standard = "ISO_4035_HEX_THIN_JAM";
+  } else if (standardNum === "7414" || str.includes("STRUCTURAL HEAVY")) {
+    standard = "ISO_7414_HEX_STRUCTURAL_HEAVY";
+  
+  // 2. Lock Nuts (Nylon Insert / Prevailing Torque)
+  } else if (standardNum === "7040" || standardNum === "10512" || (str.includes("LOCK") && str.includes("REGULAR"))) {
+    standard = "ISO_7040_LOCK_STANDARD";
+  } else if (standardNum === "10511" || (str.includes("LOCK") && str.includes("THIN"))) {
+    standard = "ISO_10511_LOCK_THIN";
+  } else if (standardNum === "7041" || (str.includes("LOCK") && str.includes("HIGH"))) {
+     standard = "ISO_7041_LOCK_HIGH";
+  }
+  
   const { material, coating } = extractMaterialAndCoating(str);
 
   // --- ISO 965-1 Sizing and Tolerance Formulas ---

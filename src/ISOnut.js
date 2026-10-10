@@ -9,8 +9,7 @@ import { HexNut } from './nut.js'
 // Dimensions Offsets
 export const WIDTH_ACROSS_FLATS = 0
 export const STANDARD_HEIGHT = 1
-
-const MM_PER_INCH = 25.4
+export const TOTAL_HEIGHT = 2
 
 /**
  * ISO 4032 Hex Standard Nuts
@@ -139,6 +138,58 @@ export const ISO_4035_HEX_THIN_JAM = {
   "M64":  [95.000, 32.000]
 }
 
+export const ISO_7040_LOCK_STANDARD = {
+  // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+  "M3":  [5.5,  2.15, 4.0],
+  "M4":  [7.0,  2.90, 5.0],
+  "M5":  [8.0,  4.40, 6.3],
+  "M6":  [10.0, 4.90, 8.0],
+  "M8":  [13.0, 6.44, 9.5],
+  "M10": [16.0, 8.04, 11.5],
+  "M12": [18.0, 10.37, 14.0],
+  "M14": [21.0, 12.10, 16.0],
+  "M16": [24.0, 14.10, 18.0],
+  "M20": [30.0, 16.90, 22.0],
+  "M24": [36.0, 20.20, 28.0],
+  "M30": [46.0, 24.30, 34.0],
+  "M36": [55.0, 29.40, 42.0],
+  "M39": [60.0, 31.80, 45.0]
+}
+
+export const ISO_10511_LOCK_THIN = {
+  // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+  "M3":   [5.5,  1.55, 4.0],
+  "M4":   [7.0,  1.95, 5.0],
+  "M5":   [8.0,  2.45, 5.0],
+  "M6":   [10.0, 2.90, 6.0],
+  "M8":   [13.0, 3.70, 8.0],
+  "M10":  [16.0, 4.70, 10.0], // Note: A/F width shifts from 17mm to 16mm per standard ISO sizing
+  "M12":  [18.0, 5.70, 12.0], // Note: A/F width shifts from 19mm to 18mm per standard ISO sizing
+  "M14":  [21.0, 7.42, 14.0],
+  "M16":  [24.0, 9.10, 16.0],
+  "M20":  [30.0, 10.90, 20.0],
+  "M24":  [36.0, 13.90, 24.0],
+  "M30":  [46.0, 16.90, 30.0],
+  "M36":  [55.0, 21.30, 36.0],
+  "M39":  [60.0, 23.30, 39.0]
+}
+
+export const ISO_7041_LOCK_HIGH = {
+  // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+  "M5":   [8,    4.4,   6.3],
+  "M6":   [10,   4.9,   8.0],
+  "M8":   [13,   6.44,  9.5],
+  "M10":  [16,   8.04,  12.1], // Standard ISO 16mm width across flats
+  "M12":  [18,   10.37, 15.1], // Standard ISO 18mm width across flats
+  "M14":  [21,   12.1,  16.9],
+  "M16":  [24,   14.1,  19.1],
+  "M20":  [30,   16.9,  24.8],
+  "M24":  [36,   20.2,  29.6],
+  "M30":  [46,   25.0,  37.1],
+  "M36":  [55,   29.4,  44.7],
+  "M39":  [60,   31.8,  48.2]
+}
+
 /**
  * DIN 557 Square Standard Nut
  *
@@ -168,6 +219,16 @@ export const DIN_557_SQUARE = {
 // const squareOuterRadius = +((widthAcrossFlats * 1.4142) / 2).toFixed(3)
 // TBD Support flange nuts
 
+const standards = {
+  'ISO_4032_NORMAL': ISO_4032_HEX_STANDARD,
+  'ISO_4033_HIGH': ISO_4033_HEX_HIGH_NUTS,
+  'ISO_4035_HEX_THIN_JAM': ISO_4035_HEX_THIN_JAM,
+  'ISO_7414_HEX_STRUCTURAL_HEAVY': ISO_7414_HEX_STRUCTURAL_HEAVY,
+  'ISO_7040_LOCK_STANDARD': ISO_7040_LOCK_STANDARD,
+  'ISO_10511_LOCK_THIN': ISO_10511_LOCK_THIN,
+  'ISO_7041_LOCK_HIGH': ISO_7041_LOCK_HIGH,
+}
+
 /**
  * Get the hex nut dimensions for the given ISO specification.
  *
@@ -182,6 +243,7 @@ export const DIN_557_SQUARE = {
 export const getNutDimensions = (spec = {}) => {
   let {
     size,
+    standard = null,
     isHeavy = false,
     isThin = false,
     flatOffset = 0,
@@ -190,14 +252,16 @@ export const getNutDimensions = (spec = {}) => {
 
   if (!size) return null
 
-  const standard = 'ISO'
+  standard = standard ? standard : 'ISO'
 
-  let dataset
+  let dataset = standards[standard]
 
-  if (!dataset && isThin) dataset = ISO_4035_HEX_THIN_JAM
-  if (!dataset && isHeavy) dataset = ISO_4033_HEX_HIGH_NUTS
-  if (!dataset) dataset = ISO_4032_HEX_STANDARD
-
+  // select ISO standard using the given options
+  if (!dataset) {
+    if (!dataset && isThin) dataset = ISO_4035_HEX_THIN_JAM
+    if (!dataset && isHeavy) dataset = ISO_4033_HEX_HIGH_NUTS
+    if (!dataset) dataset = ISO_4032_HEX_STANDARD
+  }
   if (!dataset) return null
 
   // get the dimensions for the requested size
@@ -266,6 +330,7 @@ export const generateNut = (spec = {}) => {
     segments = 36
   } = spec
 
+  // TODO add support for lock nuts
   // hex nut, beveled, with optional bearing
   const zOffset = 0
   return HexNut(widthAcrossFlats, height, bearingFaceHeight, zOffset, segments)

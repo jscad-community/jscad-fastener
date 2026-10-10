@@ -241,7 +241,7 @@ export const parseWasherSpec = (spec) => {
   spec = spec.toUpperCase()
 
   // 1. Resolve Structural Standard Profile Labels
-  let standard = "ASME_B18_21_1_TYPE_A"
+  let standard = "ASME_B18_21_1_TYPE_A_NARROW"
   if (spec.includes("F436") || spec.includes("STRUCTURAL")) {
     standard = "ASTM_F436_STRUCTURAL"
   } else if (spec.includes("LOCK") || spec.includes("SPLIT") || spec.includes("SPRING")) {

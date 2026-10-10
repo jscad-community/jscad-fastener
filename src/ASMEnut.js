@@ -9,6 +9,7 @@ import { HexNut } from './nut.js'
 // Dimensions Offsets
 export const WIDTH_ACROSS_FLATS = 0
 export const STANDARD_HEIGHT = 1
+export const TOTAL_HEIGHT = 1
 
 const MM_PER_INCH = 25.4
 
