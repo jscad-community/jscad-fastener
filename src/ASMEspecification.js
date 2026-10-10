@@ -47,12 +47,12 @@ const ASME_B18_2_8_CLEARANCE_HOLES = {
 /**
  * Parses ASME bolt specifications.
  *
- * NOTE: All returned dimensions are inches.
+ * NOTE: All returned specifications are inches.
  * 
  * @param {string} spec - specification
  * @returns {Object} Standardized token payload
  */
-export const parseASMEBolt = (spec) => {
+export const parseBoltSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
     throw new Error("Missing string parameter; spec")
   }
@@ -122,12 +122,12 @@ export const parseASMEBolt = (spec) => {
 /**
  * Parses ASME nut specification.
  *
- * NOTE: All returned dimensions are inches.
+ * NOTE: All returned specifications are inches.
  * 
  * @param {string} spec - specification
  * @returns {Object} Perfectly structured token array with metric drilling limits
  */
-export const parseASMENut = (spec) => {
+export const parseNutSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
     throw new Error("Missing string parameter; spec")
   }
@@ -226,12 +226,12 @@ export const parseASMENut = (spec) => {
 /**
  * Parses ASME washer specification.
  *
- * NOTE: All returned dimensions are inches.
+ * NOTE: All returned specifications are inches.
  * 
  * @param {string} spec - specification
  * @returns {Object} Clean token matching the exact structure of your ISO washer parser.
  */
-export const parseASMEWasher = (spec) => {
+export const parseWasherSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
     throw new Error("Missing string parameter; spec")
   }
