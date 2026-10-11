@@ -11,60 +11,8 @@ const WASHER_DIAMETER = 3
 const FILLET_RADIUS = 4
 
 /**
- * Master Registry for ASME B18 Hex Cap Screws
- *
- * Core Reference: 
- *   - Sizes #2 to #12: ASME B18.6.3 Hex Washer Head Machine Screws (dw = Washer Flange Diameter)
- *   - Sizes 1/4" to 4": ASME B18.2.1 Hex Cap Screws (dw = Under-head Circular Boss Face)
- *
- * NOTE: Sizes #0 and #1 do not have standardized external hex heads under ASME B18.6.3.
- *
- * All values are preserved in native fractional/decimal inches (in).
- *
  * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  */
-export const ASME_HEX_HEAD_REGISTRY = {
-  // --- ASME B18.6.3 Miniature Machine Screw Series (#2 to #12) ---
-  "2":     [0.0860, 0.1250, 0.0500, 0.1660, 0.010],
-  "3":     [0.0990, 0.1875, 0.0550, 0.2430, 0.015],
-  "4":     [0.1120, 0.1875, 0.0600, 0.2430, 0.015],
-  "5":     [0.1250, 0.1880, 0.0700, 0.2600, 0.015],
-  "6":     [0.1380, 0.2500, 0.0930, 0.3280, 0.020],
-  "8":     [0.1640, 0.2500, 0.1100, 0.3480, 0.025],
-  "10":    [0.1900, 0.3125, 0.1200, 0.4140, 0.030],
-  "12":    [0.2160, 0.3125, 0.1550, 0.4320, 0.030],
-
-  // --- ASME B18.2.1 Standard Fractional Fastener Series (1/4" to 1-1/2") ---
-  "1/4":   [0.2500, 0.4375, 0.1630, 0.4050, 0.015],
-  "5/16":  [0.3125, 0.5000, 0.2110, 0.4680, 0.015],
-  "3/8":   [0.3750, 0.5625, 0.2380, 0.5310, 0.015],
-  "7/16":  [0.4375, 0.6250, 0.2840, 0.5890, 0.015],
-  "1/2":   [0.5000, 0.7500, 0.3210, 0.7130, 0.015],
-  "9/16":  [0.5625, 0.8125, 0.3670, 0.7700, 0.020],
-  "5/8":   [0.6250, 0.9375, 0.4060, 0.8900, 0.020],
-  "3/4":   [0.7500, 1.1250, 0.4870, 1.0740, 0.020],
-  "7/8":   [0.8750, 1.3125, 0.5640, 1.2580, 0.020],
-  "1":     [1.0000, 1.5000, 0.6410, 1.4380, 0.020],
-  "1-1/8": [1.1250, 1.6875, 0.7180, 1.6200, 0.030],
-  "1-1/4": [1.2500, 1.8750, 0.8100, 1.8000, 0.030],
-  "1-3/8": [1.3750, 2.0625, 0.8870, 1.9810, 0.030],
-  "1-1/2": [1.5000, 2.2500, 0.9650, 2.1620, 0.030],
-  
-  // --- ASME B18.2.1 Large Industrial Infrastructure Extensions (1-5/8" to 4") ---
-  "1-5/8": [1.6250, 2.4375, 1.0450, 2.3400, 0.060],
-  "1-3/4": [1.7500, 2.6250, 1.1230, 2.5200, 0.060],
-  "1-7/8": [1.8750, 2.8125, 1.2010, 2.7000, 0.060],
-  "2":     [2.0000, 3.0000, 1.2790, 2.8800, 0.060],
-  "2-1/4": [2.2500, 3.3750, 1.4350, 3.2400, 0.060],
-  "2-1/2": [2.5000, 3.7500, 1.5910, 3.6000, 0.060],
-  "2-3/4": [2.7500, 4.1250, 1.7470, 3.9600, 0.060],
-  "3":     [3.0000, 4.5000, 1.9030, 4.3200, 0.060],
-  "3-1/4": [3.2500, 4.8750, 2.0760, 4.6790, 0.080],
-  "3-1/2": [3.5000, 5.2500, 2.2340, 5.0400, 0.080],
-  "3-3/4": [3.7500, 5.6250, 2.3920, 5.4000, 0.080],
-  "4":     [4.0000, 6.0000, 2.5500, 5.7600, 0.080]
-};
-
 export const ASME_B18_2_1_CAP_SCREW = {
   // Pattern: [majorDiameter, widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius]
   "1/4":   [0.2500, 0.4375, 0.1630, 0.4010, 0.015],
@@ -89,8 +37,10 @@ export const ASME_B18_2_1_CAP_SCREW = {
   "3":   [3.0000, 4.5000, 1.9350, 4.2920, 0.060]
 }
 
+/**
+ * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ */
 export const ASME_B18_2_1_HEAVY_BOLT = {
-  // Pattern: [majorDiameter, widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius]
   "1/2":   [0.500, 0.875, 0.344, 0.814, 0.031],
   "5/8":   [0.625, 1.063, 0.422, 0.998, 0.062],
   "3/4":   [0.750, 1.250, 0.500, 1.183, 0.062],
@@ -109,9 +59,10 @@ export const ASME_B18_2_1_HEAVY_BOLT = {
   "3":   [3.000, 4.625, 2.000, 4.514, 0.188]
 }
 
+/**
+ * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ */
 export const ASME_B18_6_3_MACHINE = {
-  // Pattern: [majorDiameter, widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius]
-  
   // Numbered Machine Screw Sizes
   "#2":    [0.0860, 0.1250, 0.0500, 0.1130, 0.0050],
   "#3":    [0.0990, 0.1875, 0.0550, 0.1690, 0.0050],
@@ -121,7 +72,6 @@ export const ASME_B18_6_3_MACHINE = {
   "#8":    [0.1640, 0.2500, 0.1100, 0.2250, 0.0050],
   "#10":   [0.1900, 0.3125, 0.1200, 0.2810, 0.0050],
   "#12":   [0.2160, 0.3125, 0.1550, 0.2810, 0.0050],
-
   // Fractional Machine Screw Sizes
   "1/4":   [0.2500, 0.3750, 0.1900, 0.3370, 0.0100],
   "5/16":  [0.3125, 0.5000, 0.2300, 0.4500, 0.0100],
@@ -133,8 +83,10 @@ export const ASME_B18_6_3_MACHINE = {
   "3/4":   [0.7500, 1.1250, 0.5600, 1.0120, 0.0150]
 }
 
+/**
+ * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ */
 export const ASME_B18_2_1_HEX_BOLT = {
-  // Pattern: [majorDiameter, widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius]
   "1/4":   [0.2500, 0.4375, 0.1630, 0.4375, 0.0150],
   "5/16":  [0.3125, 0.5000, 0.2110, 0.5000, 0.0150],
   "3/8":   [0.3750, 0.5625, 0.2430, 0.5625, 0.0150],
@@ -157,8 +109,10 @@ export const ASME_B18_2_1_HEX_BOLT = {
   "3":   [3.0000, 4.5000, 1.9340, 4.5000, 0.0400]
 }
 
+/**
+ * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ */
 export const ASME_B18_2_1_TAP_BOLT = {
-  // Pattern: [majorDiameter, widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius]
   "1/4":   [0.2500, 0.4375, 0.1630, 0.4375, 0.015],
   "5/16":  [0.3125, 0.5000, 0.2110, 0.5000, 0.015],
   "3/8":   [0.3750, 0.5625, 0.2430, 0.5625, 0.015],
@@ -188,7 +142,9 @@ const standards = {
   'ASME_B18_2_1_TAP_BOLT': ASME_B18_2_1_TAP_BOLT,
 }
 
-// NOTE: All dimensions are inches.
+/**
+ * NOTE: All dimensions are inches.
+ */
 export const getHexBoltDimensions = (spec = {}, nominalLength) => {
   let {
     size,
@@ -287,23 +243,22 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
  * @param {String} spec.size - Dimension identifier (e.g., '#1' or `1/2`)
  * @param {String} spec.standard - Bolt standard; ASME_B18_2_1_CAP_SCREW, etc
  * @param {String} spec.threadSeries - Thread series of bolt; UNF or UNC
- * @param {Number} nominalLength - nominal length of the shank (inches)
  * @returns {Geom3} ASME bolt, centered on X-Y, head above Z, shank below Z
  */
-export const generateHexBolt = (spec = {}, nominalLength) => {
+export const generateHexBolt = (spec) => {
   let {
     // spec
-    size = '1/2',
-    standard = 'ASME_B18_2_1_HEX_BOLT',
-    threadSeries = 'UNC',
+    size,
+    standard,
+    threadSeries,
     // dimensions
-    majorDiameter = 0.5000,
-    widthAcrossFlats = 0.7500,
-    headHeight = 0.3230,
-    bearingFaceDiameter = 0, // none
-    filletRadius = 0, // none
-    threadLength = 1.0,
-    unthreadedLength = 0,
+    majorDiameter,
+    widthAcrossFlats,
+    headHeight,
+    bearingFaceDiameter,
+    filletRadius,
+    threadLength,
+    unthreadedLength,
     segments = 36
   } = spec
 
@@ -332,6 +287,8 @@ export const generateHexBolt = (spec = {}, nominalLength) => {
 
   const shank = Shank({ threadLength, unthreadedLength, majorDiameter, pitch, segments })
 
-  return union(head, shank)
+  const bolt = union(head, shank)
+  bolt.spec = spec
+  return bolt
 }
 

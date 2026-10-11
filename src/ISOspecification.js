@@ -1,4 +1,4 @@
-import { getThreadSpec } from './threads.js'
+import { getThreadSpec } from './ISOthreads.js'
 
 /**
  * ISO 273 Bolt Clearance Hole Diameters (all values in mm)
@@ -64,10 +64,27 @@ function extractMaterialAndCoating(str) {
  */
 export const parseBoltSpec = (str) => {
   // 1. Extract the Bolt Standard / Specification (e.g., ISO 4014, ISO 4017, DIN 931)
-  const standardRegex = /(ISO|DIN)\s*\d+/i;
-  const standardMatch = str.match(standardRegex);
-  // Normalize formatting (e.g., "iso 4014" -> "ISO 4014")
-  let standard = standardMatch ? standardMatch[0].toUpperCase().replace(/\s+/g, ' ') : 'ISO 4017';
+  // captures the group name (ISO/DIN) and the full numerical string cleanly
+  const standardRegex = /(ISO|DIN)\s*(\d+)/i;
+  const match = str.match(standardRegex);
+  
+  const prefix = match[1].toUpperCase();
+  const specNumber = match[2];
+
+  let standard = 'ISO_4014_HEX_BOLT'; // Unified engineering fallback
+  if (prefix === 'ISO') {
+    if (specNumber === '4014') standard = 'ISO_4014_HEX_BOLT'
+    if (specNumber === '4016') standard = 'ISO_4016_HEX_BOLT_C'
+    if (specNumber === '4017') standard = 'ISO_4017_HEX_SCREW'
+    if (specNumber === '7411') standard = 'ISO_7411_HEX_STRUCTURAL'
+    if (specNumber === '7045') standard = 'ISO_7045_PAN_MACHINE'
+  } else if (prefix === 'DIN') {
+    if (specNumber === '601')  standard = 'DIN_601_HEX_BOLT_C'
+    if (specNumber === '931')  standard = 'DIN_931_HEX_BOLT'
+    if (specNumber === '933')  standard = 'DIN_933_HEX_SCREW'
+    if (specNumber === '6914') standard = 'DIN_6914_HEX_STRUCTURAL'
+    if (specNumber === '7985') standard = 'DIN_7985_PAN_MACHINE'
+  }
 
   // 2. Parse Thread Parameters
   const threadRegex = /M(\d+(?:\.\d+)?)(?:\s*x\s*(\d+(?:\.\d+)?))?(?:\s*x\s*(\d+))?/i;
@@ -79,18 +96,26 @@ export const parseBoltSpec = (str) => {
 
   let spec = null
   if (threadMatch[2] && threadMatch[3]) {
-    spec = getThreadSpec('ISO', size, 'FINE')
+    spec = getThreadSpec(size, 'FINE')
   } else {
-    spec = getThreadSpec('ISO', size, 'COARSE')
+    spec = getThreadSpec(size, 'COARSE')
   }
 
   const toleranceMatch = str.match(/(?:\s|-)([4-7][a-h](?:[4-7][a-h])?)(?:\s|-|\$)/);
   const threadTolerance = toleranceMatch ? toleranceMatch[1] : '6g';
 
-  const propertyClassMatch = str.match(/(?:\s|-)(4\.6|5\.6|8\.8|10\.9|12\.9)(?:\s|-|\$)/);
-  const propertyClass = propertyClassMatch ? propertyClassMatch[1] : (material.includes('Stainless') ? 'A2-70' : '8.8')
-
+  // resolve raw material context from the specification string first
   const { material, coating } = extractMaterialAndCoating(str);
+  //const isStainlessText = /stainless|ss|a2|a4/i.test(str);
+  //const material = isStainlessText ? 'Stainless' : 'Carbon Steel';
+
+  // extract the Property Class (Fixed trailing edge anchor bug by changing \\$ to $)
+  const propertyClassMatch = str.match(/(?:\s|-)(4\.6|5\.6|8\.8|10\.9|12\.9)(?:\s|-|$)/);
+  
+  // material is now safely resolved inline for the property class fallback block
+  const propertyClass = propertyClassMatch 
+    ? propertyClassMatch[1] 
+    : (material.includes('Stainless') ? 'A2-70' : '8.8');
 
   // --- ISO 273 Clearance Hole Matrix ---
   let fineHole, mediumHole, coarseHole;
@@ -123,7 +148,7 @@ export const parseBoltSpec = (str) => {
     material,
     coating,
     clearanceSpecifications: {
-      standard: "ISO 273",
+      clearanceStandard: "ISO 273",
       fineFitHole: Number(fineHole.toFixed(1)),
       mediumFitHole: Number(mediumHole.toFixed(1)), 
       coarseFitHole: Number(coarseHole.toFixed(1))
@@ -147,7 +172,7 @@ export const parseNutSpec = (str) => {
   if (threadMatch[2]) {
     threadSeries = 'FINE'
   }
-  const spec = getThreadSpec('ISO', size, threadSeries)
+  const spec = getThreadSpec(size, threadSeries)
 
   const pitch = spec.pitch
 

@@ -155,6 +155,19 @@ test('asme.getHexBoltDimensions', () => {
 
 test('asme.generateHexBolt', () => {
   // defaults
-  let b = asme.generateHexBolt({}, 1.0)
+  let spec = {
+    "bearingFaceDiameter": 0.814,
+    "filletRadius": 0.031,
+    "headHeight": 0.344,
+    "isHeavy": true,
+    "majorDiameter": 0.5,
+    "size": "1/2",
+    "standard": "ASME_B18_2_1_HEAVY_BOLT",
+    "threadLength": 0.81,
+    "threadSeries": "UNC",
+    "unthreadedLength": 0.19,
+    "widthAcrossFlats": 0.875,
+  }
+  let b = asme.generateHexBolt(spec, 2.0)
   expect(geom3.isA(b)).toBe(true)
 })
