@@ -1,5 +1,6 @@
 
-export { parseBoltSpec, parseNutSpec, parseWasherSpec } from './ASMEspecification.js'
-export { getNutDimensions, generateNut } from './ASMEnut.js'
-export { getWasherDimensions, generateWasher } from './ASMEwasher.js'
+export * from './ASMEspecification.js'
+export * from './ASMEbolt.js'
+export * from './ASMEnut.js'
+export * from './ASMEwasher.js'
 

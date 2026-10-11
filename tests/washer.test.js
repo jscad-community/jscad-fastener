@@ -5,19 +5,23 @@ import { geom3 } from '@jscad/modeling'
 import { SpringWasher, StarWasher, Washer } from './src/index.js'
 
 test('SpringWasher', () => {
-  let w = SpringWasher(4.3, 9, 0.8, 36)
+  let spec = { innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, segments: 36 }
+  let w = SpringWasher(spec)
   expect(geom3.isA(w)).toBe(true)
 })
 
 test('StarWasher', () => {
-  let w = StarWasher(true, 4.3, 9, 0.8, 36)
+  let spec = { isInternal: true, innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, segments: 36 }
+  let w = StarWasher(spec)
   expect(geom3.isA(w)).toBe(true)
 
-  w = StarWasher(false, 4.3, 9, 0.8, 36)
+  spec = { isInternal: false, innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, segments: 36 }
+  w = StarWasher(spec)
   expect(geom3.isA(w)).toBe(true)
 })
 
 test('Washer', () => {
-  let w = Washer(4.3, 9, 0.8, 36)
+  let spec = { innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, segments: 36 }
+  let w = Washer(spec)
   expect(geom3.isA(w)).toBe(true)
 })

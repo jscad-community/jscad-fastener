@@ -321,6 +321,57 @@ const standards = {
 }
 
 /**
+ * Calculates bearing face boundaries for ASME B18.2.6 Heavy Hex Structural Nuts.
+ * @param {number} nominalWaf - The nominal Width Across Flats (inches) from your profile database.
+ * @returns {Object} Calculated bearing face parameters (diameters and structural feature thickness).
+ */
+const calculateStructuralBearingFace = (nominalWaf) => {
+  // Heavy hex profiles typically have a max/min WAF variance of roughly ~2%
+  const approximateMinWaf = nominalWaf * 0.98;
+  const approximateMaxWaf = nominalWaf * 1.01;
+
+  return {
+    // Standard rule: Min bearing diameter is 95% of the minimum WAF
+    minBearingDiameter: Number((approximateMinWaf * 0.95).toFixed(4)),
+    
+    // Standard rule: Max bearing diameter equals the maximum WAF boundary
+    maxBearingDiameter: Number(approximateMaxWaf.toFixed(4)),
+    
+    // Feature Thickness Rule: B18.2.6 structural nuts feature a minor raised washer 
+    // face projection profile intended to sit within these boundaries.
+    bearingFaceThicknessMin: 0.015,
+    bearingFaceThicknessMax: 0.035
+  };
+}
+
+/**
+ * Calculates bearing face boundaries for ASME B18.16.6 Prevailing Torque Lock Nuts.
+ * @param {number} nominalWaf - The nominal Width Across Flats (inches) from your profile database.
+ * @returns {Object} Calculated bearing face parameters (diameters and max permissible runout limits).
+ */
+const calculateLockNutBearingFace = (nominalWaf) => {
+  // Lock nut profiles typically feature a tight max/min manufacturing envelope
+  const approximateMinWaf = nominalWaf * 0.985;
+  const approximateMaxWaf = nominalWaf * 1.005;
+
+  // Max permissible runout (Full Indicator Movement) limits scale linearly with size
+  let maxRunoutFim = 0.015; 
+  if (nominalWaf > 1.0) maxRunoutFim = 0.025;
+  if (nominalWaf > 1.5) maxRunoutFim = 0.034;
+
+  return {
+    // Standard rule: Min bearing circle matches 95% of minimum WAF 
+    minBearingDiameter: Number((approximateMinWaf * 0.95).toFixed(4)),
+    
+    // Standard rule: Max bearing circle matches maximum envelope WAF
+    maxBearingDiameter: Number(approximateMaxWaf.toFixed(4)),
+    
+    // Perpendicularity Tolerance limit relative to internal thread axis
+    maxTotalRunoutFim: maxRunoutFim
+  };
+}
+
+/**
  * Get the hex nut dimensions for the given ASME nut specification.
  *
  * @param {Object} spec - specification for construction
@@ -366,7 +417,6 @@ export const getNutDimensions = (spec = {}) => {
 
   let widthAcrossFlats = dim[WIDTH_ACROSS_FLATS] + (flatOffset * 2)
   let height = dim[STANDARD_HEIGHT] + (heightOffset * 2)
-  let bearingFaceHeight = 0
   
   // TODO support lock nuts
   // height prioritization logic sequence
@@ -377,7 +427,12 @@ export const getNutDimensions = (spec = {}) => {
   //   totalHeight = dim[THIN_HEIGHT_INDEX]
   // }
 
-  if (isHeavy && widthAcrossFlats >= 0.6875) {
+  let bearingFaceHeight = 0
+  if (standard === 'ASME_B18_2_6_STRUCTURAL') {
+    // apply a bearing surface
+    const t = calculateStructuralBearingFace(widthAcrossFlats)
+    bearingFaceHeight = t.bearingFaceThicknessMin
+  } else if (isHeavy && widthAcrossFlats >= 0.6875) {
     // add a bearing surface to the bottom of large nuts
     bearingFaceHeight = 0.016 // mm
   }
@@ -420,10 +475,10 @@ export const generateNut = (spec = {}) => {
     widthAcrossFlats,
     height,
     bearingFaceHeight,
+    zOffset = 0,
     segments = 36
   } = spec
 
-  // hex nut, beveled, with optional washer
-  const zOffset = 0
-  return HexNut(widthAcrossFlats, height, bearingFaceHeight, zOffset, segments)
+  // hex nut, beveled, with optional bearing face
+  return HexNut(spec)
 }

@@ -327,11 +327,11 @@ export const generateNut = (spec = {}) => {
     widthAcrossFlats,
     height,
     bearingFaceHeight,
+    zOffset = 0,
     segments = 36
   } = spec
 
   // TODO add support for lock nuts
   // hex nut, beveled, with optional bearing
-  const zOffset = 0
-  return HexNut(widthAcrossFlats, height, bearingFaceHeight, zOffset, segments)
+  return HexNut(spec)
 }

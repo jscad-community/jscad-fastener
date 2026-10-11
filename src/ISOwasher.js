@@ -528,7 +528,7 @@ export const getWasherDimensions = (spec = {}) => {
  * 
  * @param {object} specifications - washer specifications
  */
-export const generateWasher = (spec = {}) => {
+export const generateWasher = (spec) => {
   let {
     innerDiameter,
     outerDiameter,
@@ -539,21 +539,25 @@ export const generateWasher = (spec = {}) => {
     segments = 36
   } = spec
 
+  const washerSpec = { innerDiameter, outerDiameter, thickness, segments }
+
   // lock washers
 
   if (isInternal) {
-    return StarWasher(true, innerDiameter, outerDiameter, thickness, segments )
+    washerSpec['isInternal'] = true
+    return StarWasher(washerSpec)
   }
 
   if (isExternal) {
-    return StarWasher(false, innerDiameter, outerDiameter, thickness, segments )
+    washerSpec['isInternal'] = false
+    return StarWasher(washerSpec)
   }
 
   if (isLocking) {
-    return SpringWasher(innerDiameter, outerDiameter, thickness, segments )
+    return SpringWasher(washerSpec)
   }
 
   // standard washer
-  return Washer(innerDiameter, outerDiameter, thickness, segments )
+  return Washer(washerSpec)
 }
 

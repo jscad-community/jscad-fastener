@@ -8,6 +8,8 @@ export const FINE_TPI = 2
 /**
  * ISO Metric Threads (ISO 261 / ISO 724)
  *
+ * NOTE: All dimensions are in millimeters.
+ *
  * "Designation": [Major_Diameter, Coarse_TPI, Fine_TPI]
  */
 const ISO_THREADS = {
@@ -56,6 +58,8 @@ const ISO_THREADS = {
 /**
  * UTS (Unified Thread Standard) Dimensions (inches)
  * @see https://www.engineeringtoolbox.com/unified-screw-threads-unc-unf-d_1809.html
+ *
+ * NOTE: All dimensions are in inches
  * 
  * Array mapping per size: [ majorDiameter, coarseTPI, fineTPI ]
  *
@@ -101,15 +105,13 @@ export const UTS_THREADS = {
   '3-3/4': [ 3.7500, 4,    8    ],
 }
 
-const MM_PER_INCH = 25.4
-
 /**
  * Get the thread specification for the given standard, size, and thread series.
  *
- * @param {String} standard - 'ISO' or 'UTS'
+ * @param {String} standard - 'ISO' (mm) or 'UTS' (inch)
  * @param {Number|String} size - Dimension identifier; 6 or 'M6', #0 or '1/2'
  * @param {String} threadSeries - Thread series of bolt; coarse or fine, UNC or UNF
- * @return {Object} specification with majorDiameter (mm) and pitch (mm)
+ * @return {Object} specification with majorDiameter, pitch, isFine
  */
 export const getThreadSpec = (standard, size, threadSeries) => {
   let majorDiameter = 0
@@ -126,13 +128,13 @@ export const getThreadSpec = (standard, size, threadSeries) => {
     isFine = (threadSeries.toUpperCase() === 'UNF')
 
     // Convert major diameter to millimeters
-    majorDiameter = utsData[MAJOR_DIAMETER] * MM_PER_INCH
+    majorDiameter = utsData[MAJOR_DIAMETER]
 
     // Convert Threads Per Inch (TPI) to millimeters
     const tpi = isFine ? utsData[FINE_TPI] : utsData[COARSE_TPI]
     if (!tpi) throw new Error(`Thread spec is unavailable for UTS ${size}, ${threadSeries}`)
 
-    pitch = MM_PER_INCH / tpi
+    pitch = tpi
   } else if (standard.toUpperCase() === 'ISO') {
     // ISO Metric Standard
     size = size.startsWith("M") ? size : "M" + size
@@ -159,23 +161,23 @@ export const getThreadSpec = (standard, size, threadSeries) => {
  *
  * NOTE: All dimensions are in millimeters.
  *
- * @param {Object} options - Generation configurations
- * @param {Boolean} options.isInternal - False for bolt/external, True for nut/internal
- * @param {Number} options.majorDiameter - Major diameter of thread body
- * @param {Number} options.pitch - Pitch of threads
- * @param {Number} options.tolerance - Radial offset value in mm (e.g. 0.15 for 3D prints)
- * @param {Number} options.segments - Segments per full rotation
+ * @param {Object} spec - Generation configurations
+ * @param {Boolean} spec.isInternal - False for bolt/external, True for nut/internal
+ * @param {Number} spec.majorDiameter - Major diameter of thread body
+ * @param {Number} spec.pitch - Pitch of threads
+ * @param {Number} spec.tolerance - Radial offset value in mm (e.g. 0.15 for 3D prints)
+ * @param {Number} spec.segments - Segments per full rotation
  * @param {Number} length - Total length of the thread to generate
  * @returns {Geom3} thread body, extending up from Z
  */
-export const generateThread = (options = {}, length) => {
+export const generateThread = (spec = {}, length) => {
   const {
     isInternal = false,
     majorDiameter = 0,
     pitch = 0,
     tolerance = 0.0,
     segments = 36
-  } = options
+  } = spec
 
   // 2. ISO / UTS Unified Thread Profile Calculations (Both use identical 60-deg H = 0.866025 * P)
   const H = 0.866025 * pitch

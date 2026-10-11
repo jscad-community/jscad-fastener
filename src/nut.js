@@ -2,7 +2,7 @@ import { cylinder, cylinderElliptic, subtract, union, centerZ, mirrorZ, translat
 
 /*
  * Nut Generation Module with suport for
- * - HexNut : beveled with optional bearing face
+ * - HexNut : beveled with optional bearing shoulder
  */
 
 /**
@@ -16,7 +16,15 @@ import { cylinder, cylinderElliptic, subtract, union, centerZ, mirrorZ, translat
  * @param {number} zOffset - Z-axis translation offset to position/center the assembly
  * @returns {geom3} - A valid 3D JSCAD V3 solid geometry object.
  */
-export const HexNut = (widthAcrossFlats, height, bearingFaceHeight, zOffset, segments) => {
+export const HexNut = (spec) => {
+  const {
+    widthAcrossFlats,
+    height,
+    bearingFaceHeight,
+    zOffset,
+    segments
+  } = spec
+
   // 1. Structural constants for hex layout
   const HEX_CONSTANT = 1.154700538 // 1 / cos(30 deg)
   const outerRadius = +((widthAcrossFlats * HEX_CONSTANT) / 2).toFixed(3)

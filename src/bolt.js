@@ -1,27 +1,28 @@
 import { circle, cylinder, cylinderElliptic, extrudeLinear, intersect, union, rotate, translate, TAU } from '@jscad/modeling'
 
-import { getThreadSpec, generateThread } from './threads.v3.js'
+import { getThreadSpec, generateThread } from './threads.js'
 
 /**
- * Generate a hex bolt head, complete with bottom washer face and a top crown chamfer.
+ * Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.
  *
- * NOTE: ALL SIZES ARE IN MILLIMETERS
+ * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
  * 
- * @param {Object} headSpec - The head specification
- * @param {Number} headSpec.widthAcrossFlats - Wrench size across flats (s) in mm
- * @param {Number} headSpec.headHeight - Total standard head height (k) in mm
- * @param {Number} headSpec.washerFaceDiameter - Bearing face diameter (dw) in mm
- * @param {Number} headSpec.filletRadius - Fillet radius (f) in mm
- * @param {Number} headSpec.majorDiameter - Nominal (major) diameter (d) in mm
- * @param {Number} headSpec.segments - Segments per full rotation
- * @returns {Geom3} ISO bolt head sitting at Z=0
+ * @param {Object} spec - The head specification
+ * @param {Number} spec.widthAcrossFlats - Wrench size across flats (s) in mm
+ * @param {Number} spec.headHeight - Total standard head height (k) in mm
+ * @param {Number} spec.bearingFaceDiameter - Bearing face diameter (dw) in mm
+ * @param {Number} spec.filletRadius - Fillet radius (f) in mm
+ * @param {Number} spec.majorDiameter - Nominal (major) diameter (d) in mm
+ * @param {Number} spec.segments - Segments per full rotation
+ * @returns {Geom3} bolt hex head sitting above Z=0
  */
-export const generateHexHead = (headSpec) => {
-  const { widthAcrossFlats, headHeight, washerFaceDiameter, filletRadius, majorDiameter, segments } = headSpec
+export const HexHead = (spec) => {
+  const { widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius, majorDiameter, segments } = spec
 
   // 1. Establish structural vertical steps
-  const washerFaceHeight = 0.2
-  const hexPrismHeight = headHeight - washerFaceHeight
+  // FIXME this should be a parameter
+  let bearingFaceHeight = (bearingFaceDiameter > 0) ? 0.2 : 0
+  const hexPrismHeight = headHeight - bearingFaceHeight
 
   // 2. Extrude the Base Hexagon Body
   const hexRadius = (widthAcrossFlats / 2) / Math.cos(TAU / 12)
@@ -60,29 +61,40 @@ export const generateHexHead = (headSpec) => {
 
   const cutter = union(positionedCutter, middleCore)
 
+  const parts = []
+
   // Apply intersection to get the clean crowned beveled hex body top profile
   const beveledHexHead3D = intersect(hexBody3D, cutter)
+  parts.push(translate([0, 0, bearingFaceHeight], beveledHexHead3D))
 
   // 4. Generate the Bottom Washer Face Shoulder (dw)
-  const washerFace3D = cylinder({
-    radius: washerFaceDiameter / 2,
-    height: washerFaceHeight,
-    segments
-  })
+  if (bearingFaceHeight > 0) {
+    const bearingFace3D = cylinder({
+      radius: bearingFaceDiameter / 2,
+      height: bearingFaceHeight,
+      segments
+    })
+    parts.push(translate([0, 0, bearingFaceHeight / 2], bearingFace3D))
+  }
 
   // 5. Generate the fillet to connect head to shank
-  startRadius = [majorDiameter / 2, majorDiameter / 2]
-  endRadius = [majorDiameter / 2 + filletRadius, majorDiameter / 2 + filletRadius]
-  const filletCone3D = cylinderElliptic({
-    startRadius, // Top flare flaring wide outwards to match r radius bounds
-    endRadius,   // Bottom matching the shank flush boundary line width
-    height: filletRadius,
-    segments
-  })
+  if (filletRadius > 0) {
+    startRadius = [majorDiameter / 2, majorDiameter / 2]
+    endRadius = [majorDiameter / 2 + filletRadius, majorDiameter / 2 + filletRadius]
+    const filletCone3D = cylinderElliptic({
+      startRadius, // Top flare flaring wide outwards to match r radius bounds
+      endRadius,   // Bottom matching the shank flush boundary line width
+      height: filletRadius,
+      segments
+    })
+    parts.push(translate([0, 0, -filletRadius / 2], filletCone3D))
+  }
+
+  return union(parts)
 
   // 6. Assembly of Stack
-  const alignedWasher = translate([0, 0, washerFaceHeight / 2], washerFace3D)
-  const alignedHexHead = translate([0, 0, washerFaceHeight], beveledHexHead3D)
+  const alignedWasher = translate([0, 0, bearingFaceHeight / 2], bearingFace3D)
+  const alignedHexHead = translate([0, 0, bearingFaceHeight], beveledHexHead3D)
   const alignedFillet = translate([0, 0, -filletRadius / 2], filletCone3D)
 
   return union(alignedWasher, alignedHexHead, alignedFillet)
@@ -90,21 +102,17 @@ export const generateHexHead = (headSpec) => {
 
 /**
  * Generate a Bolt Shank extending downwards from the Z plane.
+ *
+ * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
  * 
- * @param {Object} shankSpec - The shank specifications
- * @param {String} shankSpec.standard - 'ISO' or 'UTS', actually thread standard
- * @param {Number|String} shankSpec.size - Dimension identifier; 6 or 'M6', #0 or '1/2'
- * @param {String} shankSpec.threadSeries - Series of thread pitch; coarse or fine
- * @param {Number} shankSpec.threadLength - Length of the threaded section (b) in mm
- * @param {Number} shankSpec.unthreadedLength - Length of smooth shank section in mm
- * @param {Number} shankSpec.segments - Segments per full rotation
+ * @param {Object} spec - The shank specifications
+ * @param {Number} spec.threadLength - Length of the threaded section (b) in mm
+ * @param {Number} spec.unthreadedLength - Length of smooth shank section in mm
+ * @param {Number} spec.segments - Segments per full rotation
  * @returns {Geom3} bolt shank, centered on X-Y, extending downwards from Z
  */
-export const generateShank = (shankSpec) => {
-  const { standard, size, threadSeries, threadLength, unthreadedLength, segments } = shankSpec
-
-  const threadSpec = getThreadSpec(standard, size, threadSeries)
-  const {majorDiameter} = threadSpec
+export const Shank = (spec) => {
+  const { threadLength, unthreadedLength, majorDiameter, pitch, segments } = spec
 
   const parts = []
 
@@ -123,6 +131,7 @@ export const generateShank = (shankSpec) => {
 
   // 2. Generate the Threaded Segment
   if (threadLength > 0) {
+    const threadSpec = {majorDiameter, pitch, segments}
     const threadedSegment3D = generateThread(threadSpec, threadLength)
 
     // Positions the threaded module directly beneath the smooth grip boundary
