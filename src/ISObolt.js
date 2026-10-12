@@ -4,57 +4,11 @@ import { getThreadSpec } from './ISOthreads.js'
 import { HexHead, Shank } from './bolt.js'
 
 // Dimensions Offsets
-export const WIDTH_ACROSS_FLATS = 0
-export const HEAD_HEIGHT = 1
-export const WASHER_DIAMETER = 2
-export const FILLET_RADIUS = 3
-
-// TODO map the legacy German DIN 931 (Partial) and DIN 933 (Full) cross-references into your ISO_BOLT_STANDARD_REGISTRY
-
-/**
- * Master Registry for ISO Hex Cap Screws
- *
- * Core Reference: ISO 4014 / ISO 4017 minimum engineering stress-dispersion boundaries
- *
- * "Designation": [widthAcrossFlats (s), headHeight (k), washerFaceDiameter (dw), filletRadius (r)]
- */
-export const ISO_BOLT_HEAD_REGISTRY = {
-  "M1":    [2.5,   0.7,   2.0,   0.1 ],
-  "M1.2":  [3.0,   0.85,  2.5,   0.1 ],
-  "M1.6":  [3.2,   1.1,   2.7,   0.1 ],
-  "M2":    [4.0,   1.4,   3.5,   0.1 ],
-  "M2.5":  [5.0,   1.7,   4.4,   0.1 ],
-  "M3":    [5.5,   2.0,   4.9,   0.1 ],
-  "M4":    [7.0,   2.8,   6.3,   0.2 ],
-  "M4.5":  [8.0,   3.0,   7.2,   0.2 ],
-  "M5":    [8.0,   3.5,   7.2,   0.2 ],
-  "M6":    [10.0,  4.0,   9.0,   0.25],
-  "M7":    [11.0,  4.8,   10.0,  0.25],
-  "M8":    [13.0,  5.3,   11.7,  0.4 ],
-  "M9":    [13.0,  6.0,   11.7,  0.4 ],
-  "M10":   [16.0,  6.4,   14.6,  0.4 ],
-  "M11":   [17.0,  7.0,   15.6,  0.4 ],
-  "M12":   [18.0,  7.5,   16.6,  0.6 ],
-  "M14":   [21.0,  8.8,   19.6,  0.6 ],
-  "M16":   [24.0,  10.0,  22.5,  0.6 ],
-  "M18":   [27.0,  11.5,  25.3,  0.8 ],
-  "M20":   [30.0,  12.5,  28.2,  0.8 ],
-  "M22":   [34.0,  14.0,  31.4,  0.8 ],
-  "M24":   [36.0,  15.0,  33.3,  0.8 ],
-  "M27":   [41.0,  17.0,  38.0,  1.0 ],
-  "M30":   [46.0,  18.7,  42.8,  1.0 ],
-  "M33":   [50.0,  21.0,  46.6,  1.0 ],
-  "M36":   [55.0,  22.5,  51.1,  1.0 ],
-  "M39":   [60.0,  25.0,  55.9,  1.0 ],
-  "M42":   [65.0,  26.0,  60.0,  1.2 ],
-  "M45":   [70.0,  28.0,  64.7,  1.2 ],
-  "M48":   [75.0,  30.0,  69.5,  1.6 ],
-  "M52":   [80.0,  33.0,  74.2,  1.6 ],
-  "M56":   [85.0,  35.0,  78.7,  2.0 ],
-  "M60":   [90.0,  38.0,  83.4,  2.0 ],
-  "M64":   [95.0,  40.0,  88.2,  2.0 ],
-  "M68":   [100.0, 54.0,  92.9,  2.0 ]
-}
+const MAJOR_DIAMETER = 0
+const WIDTH_ACROSS_FLATS = 1
+const HEAD_HEIGHT = 2
+const BEARING_FACE_DIAMETER = 3
+const FILLET_RADIUS = 4
 
 /**
  * ISO 4014: Hexagon head bolts - Product grades A and B.
@@ -365,7 +319,7 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
   let {
     size,
     standard = null,
-    threadSeries = 'UNC',
+    threadSeries = 'COARSE',
     isHeavy = false,
     isTap = false,
     flatOffset = 0,
@@ -379,7 +333,7 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
   // select the standard using the given options if not provided
   if (!standard) {
     if (!standard && isTap) standard = 'ISO_4017_HEX_SCREW'
-    if (!standard && isHeavy) standard = 'ISO_4016_HEX_BOLT_C'
+    if (!standard && isHeavy) standard = 'ISO_7411_HEX_STRUCTURAL'
     if (!standard) standard = 'ISO_4014_HEX_BOLT'
     // TODO cap machine strutural
   }
@@ -394,7 +348,7 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
   let majorDiameter = dims[MAJOR_DIAMETER] + (flatOffset * 2) // d
   let widthAcrossFlats= dims[WIDTH_ACROSS_FLATS] + (flatOffset * 2) // s
   let headHeight= dims[HEAD_HEIGHT] + (lengthOffset) // k
-  let bearingFaceDiameter = dims[WASHER_DIAMETER] // dw
+  let bearingFaceDiameter = dims[BEARING_FACE_DIAMETER] // dw
   let filletRadius = dims[FILLET_RADIUS] // f
 
   // identify fully threaded standards
@@ -408,6 +362,8 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
   let threadLength = 0;
   let unthreadedLength = 0;
 
+  const threadSpec = getThreadSpec(size, threadSeries)
+  const pitch = threadSpec.pitch
   if (isFullyThreadedStandard) {
     threadLength = nominalLength;
     unthreadedLength = 2.5 * pitch;
@@ -457,9 +413,9 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
 /**
  * Generate ISO Hex Bolt from the given specification.
  *
- * @see getHexBoltDimensions()
+ * @see getHexBoltDimensions() for obtaining the specifications
  *
- * @param {Object} spec - bolt specification
+ * @param {Object} spec - bolt specifications
  * @param {String} spec.size - Dimension identifier (e.g., 'M6' for M6 ISO)
  * @param {String} spec.standard - Bolt standard; ISO 4014 or ISO 4017
  * @param {String} spec.threadSeries - Thread series of bolt; coarse or fine
@@ -488,7 +444,7 @@ export const generateHexBolt = (spec) => {
   // create the shank from the specifications and the thread specifications
   const threadSpec = getThreadSpec(size, threadSeries)
   const pitch = threadSpec.pitch
-  const shank = generateShank({ threadLength, unthreadedLength, majorDiameter, pitch, segments })
+  const shank = Shank({ threadLength, unthreadedLength, majorDiameter, pitch, segments })
 
   const bolt = union(head, shank)
   bolt.spec = spec

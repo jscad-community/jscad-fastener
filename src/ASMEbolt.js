@@ -7,7 +7,7 @@ import { HexHead, Shank } from './bolt.js'
 const MAJOR_DIAMETER = 0
 const WIDTH_ACROSS_FLATS = 1
 const HEAD_HEIGHT = 2
-const WASHER_DIAMETER = 3
+const BEARING_FACE_DIAMETER = 3
 const FILLET_RADIUS = 4
 
 /**
@@ -176,7 +176,7 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
   let majorDiameter = dims[MAJOR_DIAMETER] + (flatOffset * 2) // d
   let widthAcrossFlats= dims[WIDTH_ACROSS_FLATS] + (flatOffset * 2) // s
   let headHeight= dims[HEAD_HEIGHT] + (lengthOffset) // k
-  let bearingFaceDiameter = dims[WASHER_DIAMETER] // dw
+  let bearingFaceDiameter = dims[BEARING_FACE_DIAMETER] // dw
   let filletRadius = dims[FILLET_RADIUS] // f
 
   let threadLength = 0
