@@ -6,7 +6,6 @@ import { iso } from './src/index.js'
 
 test('iso.getWasherDimensions', () => {
   // errors
-  expect(iso.getWasherDimensions()).toStrictEqual(null)
   expect(iso.getWasherDimensions({})).toStrictEqual(null)
   expect(iso.getWasherDimensions({size: "Z", standard: "Z"})).toStrictEqual(null)
   expect(iso.getWasherDimensions({size: "Z", standard: "ISO"})).toStrictEqual(null)

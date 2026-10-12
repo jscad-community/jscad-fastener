@@ -266,9 +266,8 @@ export const getNutDimensions = (spec = {}) => {
   const dim = dataset[size]
   if (!dim) return null
 
-  let widthAcrossFlats = dim[WIDTH_ACROSS_FLATS] + (flatOffset * 2)
-  let height = dim[STANDARD_HEIGHT] + (heightOffset * 2)
-  let bearingFaceHeight = 0
+  const widthAcrossFlats = dim[WIDTH_ACROSS_FLATS] + (flatOffset * 2)
+  const height = dim[STANDARD_HEIGHT] + (heightOffset * 2)
   
   // height prioritization logic sequence
   // let totalHeight = stdH
@@ -278,6 +277,7 @@ export const getNutDimensions = (spec = {}) => {
   //   totalHeight = dim[THIN_HEIGHT_INDEX]
   // }
 
+  let bearingFaceHeight = 0
   if (widthAcrossFlats >= 10.00) { // M6
     // add a bearing surface to the bottom of the nut
     bearingFaceHeight = 0.400
@@ -321,7 +321,7 @@ export const getNutDimensions = (spec = {}) => {
  * const nut = generateNut(spec)
  */
 export const generateNut = (spec = {}) => {
-  let {
+  const {
     widthAcrossFlats,
     height,
     bearingFaceHeight,

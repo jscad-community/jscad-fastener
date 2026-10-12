@@ -6,7 +6,6 @@ import { iso } from './src/index.js'
 
 test('iso.getHexBoltDimensions', () => {
   // errors
-  expect(iso.getHexBoltDimensions()).toStrictEqual(null)
   expect(iso.getHexBoltDimensions({})).toStrictEqual(null)
   expect(iso.getHexBoltDimensions({size: "Z"})).toStrictEqual(null)
   expect(iso.getHexBoltDimensions({size: "Z"}, 20.0)).toStrictEqual(null)

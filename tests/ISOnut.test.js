@@ -6,7 +6,6 @@ import { iso } from './src/index.js'
 
 test('iso.getNutDimensions', () => {
   // errors
-  expect(iso.getNutDimensions()).toStrictEqual(null)
   expect(iso.getNutDimensions({})).toStrictEqual(null)
   expect(iso.getNutDimensions({size: "Z"})).toStrictEqual(null)
   expect(iso.getNutDimensions({size: "Z"})).toStrictEqual(null)

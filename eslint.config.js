@@ -40,6 +40,11 @@ export default defineConfig([
       "no-var": ["error"],
       // others
 			"no-unused-vars": "error",
+			"no-var": "error",
+			// "prefer-const": "error",
+			// "no-unexpected-multiline": "error",
+      // "camelcase": ["error", {"properties":"always"}]
+      // "curly": ["error", "multi-line"]
     }
    }
 ])

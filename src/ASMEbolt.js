@@ -145,7 +145,7 @@ const standards = {
 /**
  * NOTE: All dimensions are inches.
  */
-export const getHexBoltDimensions = (spec = {}, nominalLength) => {
+export const getHexBoltDimensions = (spec, nominalLength) => {
   let {
     size,
     standard = null,
@@ -166,18 +166,18 @@ export const getHexBoltDimensions = (spec = {}, nominalLength) => {
     // TODO cap machine strutural
   }
 
-  let dataset = standards[standard]
+  const dataset = standards[standard]
   if (!dataset) return null
 
   // get the dimensions for the requested size
   const dims = dataset[size]
   if (!dims) return null
 
-  let majorDiameter = dims[MAJOR_DIAMETER] + (flatOffset * 2) // d
-  let widthAcrossFlats= dims[WIDTH_ACROSS_FLATS] + (flatOffset * 2) // s
-  let headHeight= dims[HEAD_HEIGHT] + (lengthOffset) // k
-  let bearingFaceDiameter = dims[BEARING_FACE_DIAMETER] // dw
-  let filletRadius = dims[FILLET_RADIUS] // f
+  const majorDiameter = dims[MAJOR_DIAMETER] + (flatOffset * 2) // d
+  const widthAcrossFlats= dims[WIDTH_ACROSS_FLATS] + (flatOffset * 2) // s
+  const headHeight= dims[HEAD_HEIGHT] + (lengthOffset) // k
+  const bearingFaceDiameter = dims[BEARING_FACE_DIAMETER] // dw
+  const filletRadius = dims[FILLET_RADIUS] // f
 
   let threadLength = 0
   let unthreadedLength = 0

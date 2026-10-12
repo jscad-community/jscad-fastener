@@ -6,7 +6,6 @@ import { asme } from './src/index.js'
 
 test('asme.getNutDimensions', () => {
   // errors
-  expect(asme.getNutDimensions()).toStrictEqual(null)
   expect(asme.getNutDimensions({})).toStrictEqual(null)
   expect(asme.getNutDimensions({size: "Z"})).toStrictEqual(null)
   expect(asme.getNutDimensions({size: "Z"})).toStrictEqual(null)

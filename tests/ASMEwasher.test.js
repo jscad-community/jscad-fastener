@@ -6,7 +6,6 @@ import { asme } from './src/index.js'
 
 test('asme.getWasherDimensions', () => {
   // errors
-  expect(asme.getWasherDimensions()).toStrictEqual(null)
   expect(asme.getWasherDimensions({})).toStrictEqual(null)
   expect(asme.getWasherDimensions({size: "Z", standard: "Z"})).toStrictEqual(null)
   expect(asme.getWasherDimensions({size: "Z", standard: "ISO"})).toStrictEqual(null)

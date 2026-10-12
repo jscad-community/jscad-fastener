@@ -381,7 +381,7 @@ const calculateLockNutBearingFace = (nominalWaf) => {
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
  * @returns {Object} hex nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
  */
-export const getNutDimensions = (spec = {}) => {
+export const getNutDimensions = (spec) => {
   let {
     size,
     standard = null,
@@ -468,8 +468,8 @@ export const getNutDimensions = (spec = {}) => {
  * const spec = getHexNutDimensions({size: 'M10', isHeavy: true})
  * const nut = generateHexNut(spec)
  */
-export const generateNut = (spec = {}) => {
-  let {
+export const generateNut = (spec) => {
+  const {
     widthAcrossFlats,
     height,
     bearingFaceHeight,

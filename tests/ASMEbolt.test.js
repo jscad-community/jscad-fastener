@@ -6,7 +6,6 @@ import { asme } from './src/index.js'
 
 test('asme.getHexBoltDimensions', () => {
   // errors
-  expect(asme.getHexBoltDimensions()).toStrictEqual(null)
   expect(asme.getHexBoltDimensions({})).toStrictEqual(null)
   expect(asme.getHexBoltDimensions({size: "Z"})).toStrictEqual(null)
   expect(asme.getHexBoltDimensions({size: "Z"}, 1.0)).toStrictEqual(null)

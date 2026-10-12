@@ -84,7 +84,7 @@ export const parseBoltSpec = (spec) => {
 
   // 3. Extract Material Grades & Properties
   const propertyClassMatch = spec.match(/(A325|GRADE\s*8|GRADE\s*5|A2-70|8\.8)/i)
-  let propertyClass = propertyClassMatch ? propertyClassMatch[1].toUpperCase() : "8.8"
+  const propertyClass = propertyClassMatch ? propertyClassMatch[1].toUpperCase() : "8.8"
   
   let material = "Carbon Steel"
   if (spec.includes("STAINLESS")) material = "Stainless Steel"

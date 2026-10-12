@@ -21,7 +21,7 @@ export const HexHead = (spec) => {
 
   // 1. Establish structural vertical steps
   // FIXME this should be a parameter
-  let bearingFaceHeight = (bearingFaceDiameter > 0) ? 0.2 : 0
+  const bearingFaceHeight = (bearingFaceDiameter > 0) ? 0.2 : 0
   const hexPrismHeight = headHeight - bearingFaceHeight
 
   // 2. Extrude the Base Hexagon Body

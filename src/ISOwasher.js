@@ -457,7 +457,7 @@ const standards = {
  * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
  * @returns {Object} washer dimensions: innerRadius, outerRadius, thickness (mm)
  */
-export const getWasherDimensions = (spec = {}) => {
+export const getWasherDimensions = (spec) => {
   let {
     size,
     standard = null,
@@ -497,9 +497,9 @@ export const getWasherDimensions = (spec = {}) => {
   const dims = dataset[size]
   if (!dims) return null
 
-  let innerDiameter = dims[ID_INDEX] + (idOffset * 2)
-  let outerDiameter = dims[OD_INDEX] + (odOffset * 2)
-  let thickness = dims[TH_INDEX] + (thicknessOffset * 2)
+  const innerDiameter = dims[ID_INDEX] + (idOffset * 2)
+  const outerDiameter = dims[OD_INDEX] + (odOffset * 2)
+  const thickness = dims[TH_INDEX] + (thicknessOffset * 2)
 
   return {
     // spec
@@ -525,7 +525,7 @@ export const getWasherDimensions = (spec = {}) => {
  * @param {object} specifications - washer specifications
  */
 export const generateWasher = (spec) => {
-  let {
+  const {
     innerDiameter,
     outerDiameter,
     thickness,
