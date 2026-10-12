@@ -1,4 +1,4 @@
-import { union } from '@jscad/modeling';
+import { union } from '@jscad/modeling'
 
 import { getThreadSpec } from './UTSthreads.js'
 import { HexHead, Shank } from './bolt.js'
@@ -129,7 +129,7 @@ export const ASME_B18_2_1_TAP_BOLT = {
   "1-1/2": [1.5000, 2.2500, 0.9740, 2.2500, 0.030],
   "1-3/4": [1.7500, 2.6250, 1.1340, 2.6250, 0.040],
   "2":   [2.0000, 3.0000, 1.2630, 3.0000, 0.040]
-};
+}
 
 const MM_PER_INCH = 25.4
 
@@ -205,7 +205,7 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
       // calculate structural rules
       const threadSpec = getThreadSpec(size, threadSeries)
       const pitchInches = 1 / threadSpec.pitch
-      const maxRunout = majorDiameter <= 1.0 ? (2.5 * pitchInches) : (3.5 * pitchInches);
+      const maxRunout = majorDiameter <= 1.0 ? (2.5 * pitchInches) : (3.5 * pitchInches)
 
       unthreadedLength = maxRunout
       threadLength = nominalLength - unthreadedLength
@@ -262,17 +262,17 @@ export const generateHexBolt = (spec) => {
   } = spec
 
   // 1. Thread and Stress-Concentration Geometry (Strict 3 Decimals)
-  majorDiameter       = Number((majorDiameter * MM_PER_INCH).toFixed(3));
-  filletRadius        = Number((filletRadius * MM_PER_INCH).toFixed(3));
+  majorDiameter       = Number((majorDiameter * MM_PER_INCH).toFixed(3))
+  filletRadius        = Number((filletRadius * MM_PER_INCH).toFixed(3))
 
   // 2. Tooling & Socket Wrench Interfaces (Up to 3 Decimals for fractional accuracy)
-  widthAcrossFlats    = Number((widthAcrossFlats * MM_PER_INCH).toFixed(3));
+  widthAcrossFlats    = Number((widthAcrossFlats * MM_PER_INCH).toFixed(3))
 
   // 3. Clearances, Heights, and General Tolerances (Strict 2 Decimals)
-  headHeight          = Number((headHeight * MM_PER_INCH).toFixed(2));
-  bearingFaceDiameter = Number((bearingFaceDiameter * MM_PER_INCH).toFixed(2));
-  threadLength        = Number((threadLength * MM_PER_INCH).toFixed(2));
-  unthreadedLength    = Number((unthreadedLength * MM_PER_INCH).toFixed(2));
+  headHeight          = Number((headHeight * MM_PER_INCH).toFixed(2))
+  bearingFaceDiameter = Number((bearingFaceDiameter * MM_PER_INCH).toFixed(2))
+  threadLength        = Number((threadLength * MM_PER_INCH).toFixed(2))
+  unthreadedLength    = Number((unthreadedLength * MM_PER_INCH).toFixed(2))
 
   // create the bolt head from the specifications
   const head = HexHead({widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius, majorDiameter, segments})

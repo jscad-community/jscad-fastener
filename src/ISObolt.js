@@ -357,40 +357,40 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
     'DIN_933_HEX_SCREW', 
     'ISO_7045_PAN_MACHINE', 
     'DIN_7985_PAN_MACHINE'
-  ].includes(standard);
+  ].includes(standard)
 
-  let threadLength = 0;
-  let unthreadedLength = 0;
+  let threadLength = 0
+  let unthreadedLength = 0
 
   const threadSpec = getThreadSpec(size, threadSeries)
   const pitch = threadSpec.pitch
   if (isFullyThreadedStandard) {
-    threadLength = nominalLength;
-    unthreadedLength = 2.5 * pitch;
+    threadLength = nominalLength
+    unthreadedLength = 2.5 * pitch
   } else {
     // apply ISO 888 length tier rules for partially threaded bolts
-    let computedThreadLength = 0;
+    let computedThreadLength = 0
     if (nominalLength <= 125) {
-      computedThreadLength = (2 * majorDiameter) + 6;
+      computedThreadLength = (2 * majorDiameter) + 6
     } else if (nominalLength <= 200) {
-      computedThreadLength = (2 * majorDiameter) + 12;
+      computedThreadLength = (2 * majorDiameter) + 12
     } else {
-      computedThreadLength = (2 * majorDiameter) + 25;
+      computedThreadLength = (2 * majorDiameter) + 25
     }
 
     // handle short-bolt fallback (if nominal length is less than the standard thread length)
     if (nominalLength <= computedThreadLength) {
-      threadLength = nominalLength;
-      unthreadedLength = 2.5 * pitch;
+      threadLength = nominalLength
+      unthreadedLength = 2.5 * pitch
     } else {
-      threadLength = computedThreadLength;
-      unthreadedLength = nominalLength - computedThreadLength;
+      threadLength = computedThreadLength
+      unthreadedLength = nominalLength - computedThreadLength
     }
   }
 
   // enforce standard engineering 2-decimal rounding
-  threadLength = Number(threadLength.toFixed(2));
-  unthreadedLength = Number(unthreadedLength.toFixed(2));
+  threadLength = Number(threadLength.toFixed(2))
+  unthreadedLength = Number(unthreadedLength.toFixed(2))
 
   return {
     // spec

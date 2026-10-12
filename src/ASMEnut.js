@@ -325,8 +325,8 @@ const standards = {
  */
 const calculateStructuralBearingFace = (nominalWaf) => {
   // Heavy hex profiles typically have a max/min WAF variance of roughly ~2%
-  const approximateMinWaf = nominalWaf * 0.98;
-  const approximateMaxWaf = nominalWaf * 1.01;
+  const approximateMinWaf = nominalWaf * 0.98
+  const approximateMaxWaf = nominalWaf * 1.01
 
   return {
     // Standard rule: Min bearing diameter is 95% of the minimum WAF
@@ -339,7 +339,7 @@ const calculateStructuralBearingFace = (nominalWaf) => {
     // face projection profile intended to sit within these boundaries.
     bearingFaceThicknessMin: 0.015,
     bearingFaceThicknessMax: 0.035
-  };
+  }
 }
 
 /**
@@ -349,13 +349,13 @@ const calculateStructuralBearingFace = (nominalWaf) => {
  */
 const calculateLockNutBearingFace = (nominalWaf) => {
   // Lock nut profiles typically feature a tight max/min manufacturing envelope
-  const approximateMinWaf = nominalWaf * 0.985;
-  const approximateMaxWaf = nominalWaf * 1.005;
+  const approximateMinWaf = nominalWaf * 0.985
+  const approximateMaxWaf = nominalWaf * 1.005
 
   // Max permissible runout (Full Indicator Movement) limits scale linearly with size
-  let maxRunoutFim = 0.015; 
-  if (nominalWaf > 1.0) maxRunoutFim = 0.025;
-  if (nominalWaf > 1.5) maxRunoutFim = 0.034;
+  let maxRunoutFim = 0.015 
+  if (nominalWaf > 1.0) maxRunoutFim = 0.025
+  if (nominalWaf > 1.5) maxRunoutFim = 0.034
 
   return {
     // Standard rule: Min bearing circle matches 95% of minimum WAF 
@@ -366,7 +366,7 @@ const calculateLockNutBearingFace = (nominalWaf) => {
     
     // Perpendicularity Tolerance limit relative to internal thread axis
     maxTotalRunoutFim: maxRunoutFim
-  };
+  }
 }
 
 /**
