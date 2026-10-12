@@ -206,11 +206,11 @@ export const parseNutSpec = (str) => {
   const standardMatch = str.match(/ISO\s*(\d{4})/i)
   const standardNum = standardMatch ? standardMatch[1] : "4032"
 
-  let standard = "ISO_4032_NORMAL" // Default fallback
+  let standard = "ISO_4032_HEX_STANDARD" // Default fallback
 
   // 1. Plain & Structural Nuts
   if (standardNum === "4033") {
-    standard = "ISO_4033_HIGH"
+    standard = "ISO_4033_HEX_HIGH"
   } else if (standardNum === "4035" || str.includes("THIN JAM")) {
     standard = "ISO_4035_HEX_THIN_JAM"
   } else if (standardNum === "7414" || str.includes("STRUCTURAL HEAVY")) {

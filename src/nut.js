@@ -10,11 +10,12 @@ import { cylinder, cylinderElliptic, subtract, union, centerZ, mirrorZ, translat
  *
  * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
  *
+ * @memberof jscad-fastener
  * @param {number} widthAcrossFlats - Width across the flats, i.e. wrench size (WAF)
  * @param {number} height - Total thickness/height of the nut (H)
  * @param {number} bearingFaceHeight - Height of the bearing washer step (C). May be zero.
  * @param {number} zOffset - Z-axis translation offset to position/center the assembly
- * @returns {geom3} - A valid 3D JSCAD V3 solid geometry object.
+ * @returns {geom3} - hex nut, centered on XYZ
  */
 export const HexNut = (spec) => {
   const {

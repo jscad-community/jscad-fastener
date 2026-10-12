@@ -1,20 +1,21 @@
 import { circle, cylinder, cylinderElliptic, extrudeLinear, intersect, union, rotate, translate, TAU } from '@jscad/modeling'
 
-import { generateThread } from './threads.js'
+import { Thread } from './threads.js'
 
 /**
  * Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.
  *
  * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
  * 
- * @param {Object} spec - The head specification
- * @param {Number} spec.widthAcrossFlats - Wrench size across flats (s) in mm
- * @param {Number} spec.headHeight - Total standard head height (k) in mm
- * @param {Number} spec.bearingFaceDiameter - Bearing face diameter (dw) in mm
- * @param {Number} spec.filletRadius - Fillet radius (f) in mm
- * @param {Number} spec.majorDiameter - Nominal (major) diameter (d) in mm
- * @param {Number} spec.segments - Segments per full rotation
- * @returns {Geom3} bolt hex head sitting above Z=0
+ * @memberof jscad-fastener
+ * @param {Object} spec - head specification, ALL ARE REQUIRED
+ * @param {Number} spec.widthAcrossFlats - wrench size across flats (s) in mm
+ * @param {Number} spec.headHeight - total standard head height (k) in mm
+ * @param {Number} spec.bearingFaceDiameter - bearing face diameter (dw) in mm
+ * @param {Number} spec.filletRadius - fillet radius (f) in mm
+ * @param {Number} spec.majorDiameter - nominal (major) diameter (d) in mm
+ * @param {Number} spec.segments - segments per full rotation
+ * @returns {Geom3} bolt hex head, centered XY, sitting above Z=0
  */
 export const HexHead = (spec) => {
   const { widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius, majorDiameter, segments } = spec
@@ -105,11 +106,12 @@ export const HexHead = (spec) => {
  *
  * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
  * 
- * @param {Object} spec - The shank specifications
- * @param {Number} spec.threadLength - Length of the threaded section (b) in mm
- * @param {Number} spec.unthreadedLength - Length of smooth shank section in mm
- * @param {Number} spec.segments - Segments per full rotation
- * @returns {Geom3} bolt shank, centered on X-Y, extending downwards from Z
+ * @memberof jscad-fastener
+ * @param {Object} spec - shank specifications, ALL ARE REQUIRED
+ * @param {Number} spec.threadLength - length of the threaded section (b) in mm
+ * @param {Number} spec.unthreadedLength - length of smooth shank section in mm
+ * @param {Number} spec.segments - segments per full rotation
+ * @returns {Geom3} bolt shank, centered on XY, extending downwards from Z
  */
 export const Shank = (spec) => {
   const { threadLength, unthreadedLength, majorDiameter, pitch, segments } = spec
@@ -131,8 +133,8 @@ export const Shank = (spec) => {
 
   // 2. Generate the Threaded Segment
   if (threadLength > 0) {
-    const threadSpec = {majorDiameter, pitch, segments}
-    const threadedSegment3D = generateThread(threadSpec, threadLength)
+    const threadSpec = {majorDiameter, pitch, tolerance: 0, inInternal: false, segments}
+    const threadedSegment3D = Thread(threadSpec, threadLength)
 
     // Positions the threaded module directly beneath the smooth grip boundary
     const Zoffset = -unthreadedLength

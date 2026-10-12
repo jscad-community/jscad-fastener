@@ -354,6 +354,17 @@ export const ASME_B18_21_1_TOOTH_INTERNAL = {
 }
 
 /**
+ * ASME B18.21.1: Type B Plain Washers - Regular Series (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Governs precision-stamped flat washers manufactured to tight dimensional tolerances.
+ * - This series serves as the standard industrial balance point, optimizing outside diameter 
+ *   and material thickness to distribute fastener clamping loads without causing unnecessary space constraints.
+ * - Engineered primarily to support high-precision mechanical assemblies where clearance and 
+ *   predictable torque-tension performance are vital.
+ * - Supersedes and incorporates the refined dimensional baseline of the historical ASME B18.22.1 standard.
+ * 
+ * Pattern: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -395,6 +406,17 @@ export const ASME_B18_21_1_TYPE_B_REGULAR = {
 }
 
 /**
+ * ASME B18.21.1: Type B Plain Washers - Narrow Series (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Governs narrow precision flat washers engineered specifically for tight spatial constraints.
+ * - Features reduced outside diameters (OD) designed to fit inside machined counterbores, 
+ *   pockets, or dense structural castings where a Regular washer would physically collide with side walls.
+ * - Aligns closely with the physical footprint profiles traditionally associated with standard SAE washer specs, 
+ *   but maintains the tighter manufacturing and flatness tolerances required by the Type B precision class.
+ * - Reduces surface area contact, meaning it should be paired with higher-strength mating materials to avoid crushing.
+ * 
+ * Pattern: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -436,6 +458,17 @@ export const ASME_B18_21_1_TYPE_B_NARROW = {
 }
 
 /**
+ * ASME B18.21.1: Type B Plain Washers - Wide Series (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Governs wide, heavy-duty precision flat washers engineered for maximum load distribution.
+ * - Features significantly enlarged outside diameters (OD) and increased material thicknesses.
+ * - Designed primarily to span oversized, slotted, or poorly aligned clearance holes without buckling or pulling through.
+ * - Minimizes surface embedding and local stress concentrations when clamping down onto soft, lower-strength, 
+ *   or thin-gauge mating materials (e.g., aluminum, plastics, sheet metal panels).
+ * - Aligns closely with traditional USS washer footprints but maintains the superior flatness and precision of the Type B standard.
+ * 
+ * Pattern: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}

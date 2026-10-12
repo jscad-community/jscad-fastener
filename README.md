@@ -4,32 +4,11 @@
 <dt><a href="#jscad-fastener/asme">jscad-fastener/asme</a> : <code>object</code></dt>
 <dd><p>ASME Fasteners with UTS threads</p>
 </dd>
-<dt><a href="#jscad-fasteners">jscad-fasteners</a> : <code>object</code></dt>
+<dt><a href="#jscad-fastener">jscad-fastener</a> : <code>object</code></dt>
 <dd><p>Create ASME and ISO fasteners for JSCAD designs.</p>
 </dd>
 <dt><a href="#jscad-fastener/iso">jscad-fastener/iso</a> : <code>object</code></dt>
 <dd><p>ISO Fasteners</p>
-</dd>
-</dl>
-
-## Constants
-
-<dl>
-<dt><a href="#HexHead">HexHead</a> ⇒ <code>Geom3</code></dt>
-<dd><p>Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.</p>
-<p>NOTE: ALL DIMENSIONS ARE IN MILLIMETERS</p>
-</dd>
-<dt><a href="#Shank">Shank</a> ⇒ <code>Geom3</code></dt>
-<dd><p>Generate a Bolt Shank extending downwards from the Z plane.</p>
-<p>NOTE: ALL DIMENSIONS ARE IN MILLIMETERS</p>
-</dd>
-<dt><a href="#HexNut">HexNut</a> ⇒ <code>geom3</code></dt>
-<dd><p>Generate a double-beveled hex block with optional bearing shoulder.</p>
-<p>NOTE: ALL DIMENSIONS ARE IN MILLIMETERS</p>
-</dd>
-<dt><a href="#generateThread">generateThread</a> ⇒ <code>Geom3</code></dt>
-<dd><p>Create a thread segment supporting ISO and UTS thread standards.</p>
-<p>NOTE: All dimensions are in millimeters.</p>
 </dd>
 </dl>
 
@@ -459,14 +438,50 @@ Note: Sizes #0, #1, and sizes larger than 1-3/4" do not exist under ASME B18.21.
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_REGULAR"></a>
 
 ### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_REGULAR : <code>Object</code>
+ASME B18.21.1: Type B Plain Washers - Regular Series (Inch Series).
+
+DESIGN NOTES:
+- Governs precision-stamped flat washers manufactured to tight dimensional tolerances.
+- This series serves as the standard industrial balance point, optimizing outside diameter 
+  and material thickness to distribute fastener clamping loads without causing unnecessary space constraints.
+- Engineered primarily to support high-precision mechanical assemblies where clearance and 
+  predictable torque-tension performance are vital.
+- Supersedes and incorporates the refined dimensional baseline of the historical ASME B18.22.1 standard.
+
+Pattern: [insideDiameter, outsideDiameter, thickness]
+
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_NARROW"></a>
 
 ### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_NARROW : <code>Object</code>
+ASME B18.21.1: Type B Plain Washers - Narrow Series (Inch Series).
+
+DESIGN NOTES:
+- Governs narrow precision flat washers engineered specifically for tight spatial constraints.
+- Features reduced outside diameters (OD) designed to fit inside machined counterbores, 
+  pockets, or dense structural castings where a Regular washer would physically collide with side walls.
+- Aligns closely with the physical footprint profiles traditionally associated with standard SAE washer specs, 
+  but maintains the tighter manufacturing and flatness tolerances required by the Type B precision class.
+- Reduces surface area contact, meaning it should be paired with higher-strength mating materials to avoid crushing.
+
+Pattern: [insideDiameter, outsideDiameter, thickness]
+
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_WIDE"></a>
 
 ### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_WIDE : <code>Object</code>
+ASME B18.21.1: Type B Plain Washers - Wide Series (Inch Series).
+
+DESIGN NOTES:
+- Governs wide, heavy-duty precision flat washers engineered for maximum load distribution.
+- Features significantly enlarged outside diameters (OD) and increased material thicknesses.
+- Designed primarily to span oversized, slotted, or poorly aligned clearance holes without buckling or pulling through.
+- Minimizes surface embedding and local stress concentrations when clamping down onto soft, lower-strength, 
+  or thin-gauge mating materials (e.g., aluminum, plastics, sheet metal panels).
+- Aligns closely with traditional USS washer footprints but maintains the superior flatness and precision of the Type B standard.
+
+Pattern: [insideDiameter, outsideDiameter, thickness]
+
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.getWasherDimensions"></a>
 
@@ -530,14 +545,96 @@ NOTE: All dimensions are inches
 | size | <code>Number</code> \| <code>String</code> | Dimension identifier; #0 or '1/2' |
 | threadSeries | <code>String</code> | Thread series of bolt; UNC or UNF |
 
-<a name="jscad-fasteners"></a>
+<a name="jscad-fastener"></a>
 
-## jscad-fasteners : <code>object</code>
+## jscad-fastener : <code>object</code>
 Create ASME and ISO fasteners for JSCAD designs.
 
 **Kind**: global namespace  
 **Requires**: <code>module:@jscad/modeling@^3.0.0</code>  
+**Author**: Google Gemini (AI Collaborator) and others  
 **License**: MIT  
+
+* [jscad-fastener](#jscad-fastener) : <code>object</code>
+    * [.exports.HexHead](#jscad-fastener.exports.HexHead) ⇒ <code>Geom3</code>
+    * [.exports.Shank](#jscad-fastener.exports.Shank) ⇒ <code>Geom3</code>
+    * [.exports.HexNut](#jscad-fastener.exports.HexNut) ⇒ <code>geom3</code>
+    * [.exports.Thread](#jscad-fastener.exports.Thread) ⇒ <code>Geom3</code>
+
+<a name="jscad-fastener.exports.HexHead"></a>
+
+### jscad-fastener.exports.HexHead ⇒ <code>Geom3</code>
+Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.
+
+NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
+
+**Kind**: static constant of [<code>jscad-fastener</code>](#jscad-fastener)  
+**Returns**: <code>Geom3</code> - bolt hex head, centered XY, sitting above Z=0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| spec | <code>Object</code> | head specification, ALL ARE REQUIRED |
+| spec.widthAcrossFlats | <code>Number</code> | wrench size across flats (s) in mm |
+| spec.headHeight | <code>Number</code> | total standard head height (k) in mm |
+| spec.bearingFaceDiameter | <code>Number</code> | bearing face diameter (dw) in mm |
+| spec.filletRadius | <code>Number</code> | fillet radius (f) in mm |
+| spec.majorDiameter | <code>Number</code> | nominal (major) diameter (d) in mm |
+| spec.segments | <code>Number</code> | segments per full rotation |
+
+<a name="jscad-fastener.exports.Shank"></a>
+
+### jscad-fastener.exports.Shank ⇒ <code>Geom3</code>
+Generate a Bolt Shank extending downwards from the Z plane.
+
+NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
+
+**Kind**: static constant of [<code>jscad-fastener</code>](#jscad-fastener)  
+**Returns**: <code>Geom3</code> - bolt shank, centered on XY, extending downwards from Z  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| spec | <code>Object</code> | shank specifications, ALL ARE REQUIRED |
+| spec.threadLength | <code>Number</code> | length of the threaded section (b) in mm |
+| spec.unthreadedLength | <code>Number</code> | length of smooth shank section in mm |
+| spec.segments | <code>Number</code> | segments per full rotation |
+
+<a name="jscad-fastener.exports.HexNut"></a>
+
+### jscad-fastener.exports.HexNut ⇒ <code>geom3</code>
+Generate a double-beveled hex block with optional bearing shoulder.
+
+NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
+
+**Kind**: static constant of [<code>jscad-fastener</code>](#jscad-fastener)  
+**Returns**: <code>geom3</code> - - hex nut, centered on XYZ  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| widthAcrossFlats | <code>number</code> | Width across the flats, i.e. wrench size (WAF) |
+| height | <code>number</code> | Total thickness/height of the nut (H) |
+| bearingFaceHeight | <code>number</code> | Height of the bearing washer step (C). May be zero. |
+| zOffset | <code>number</code> | Z-axis translation offset to position/center the assembly |
+
+<a name="jscad-fastener.exports.Thread"></a>
+
+### jscad-fastener.exports.Thread ⇒ <code>Geom3</code>
+Create a thread segment supporting ISO and UTS thread standards.
+
+NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
+
+**Kind**: static constant of [<code>jscad-fastener</code>](#jscad-fastener)  
+**Returns**: <code>Geom3</code> - thread body, centered XY, extending up from Z  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| spec | <code>Object</code> | thread specifications, ALL ARE REQUIRED |
+| spec.majorDiameter | <code>Number</code> | Major diameter of thread body |
+| spec.pitch | <code>Number</code> | Pitch of threads |
+| spec.tolerance | <code>Number</code> | Radial offset value in mm (e.g. 0.15 for 3D prints) |
+| spec.segments | <code>Number</code> | Segments per full rotation |
+| spec.isInternal | <code>Boolean</code> | False for bolt/external, True for nut/internal |
+| length | <code>Number</code> | Total length of the thread to generate |
+
 <a name="jscad-fastener/iso"></a>
 
 ## jscad-fastener/iso : <code>object</code>
@@ -562,7 +659,7 @@ ISO Fasteners
     * [.exports.generateHexBolt](#jscad-fastener/iso.exports.generateHexBolt) ⇒ <code>Geom3</code>
     * [.exports.ISO_4032_HEX_STANDARD](#jscad-fastener/iso.exports.ISO_4032_HEX_STANDARD) : <code>Object</code>
     * [.exports.ISO_7414_HEX_STRUCTURAL_HEAVY](#jscad-fastener/iso.exports.ISO_7414_HEX_STRUCTURAL_HEAVY) : <code>Object</code>
-    * [.exports.ISO_4033_HEX_HIGH_NUTS](#jscad-fastener/iso.exports.ISO_4033_HEX_HIGH_NUTS) : <code>Object</code>
+    * [.exports.ISO_4033_HEX_HIGH](#jscad-fastener/iso.exports.ISO_4033_HEX_HIGH) : <code>Object</code>
     * [.exports.ISO_4035_HEX_THIN_JAM](#jscad-fastener/iso.exports.ISO_4035_HEX_THIN_JAM) : <code>Object</code>
     * [.exports.ISO_7040_LOCK_STANDARD](#jscad-fastener/iso.exports.ISO_7040_LOCK_STANDARD) : <code>Object</code>
     * [.exports.ISO_10511_LOCK_THIN](#jscad-fastener/iso.exports.ISO_10511_LOCK_THIN) : <code>Object</code>
@@ -802,65 +899,116 @@ Generate ISO Hex Bolt from the given specification.
 <a name="jscad-fastener/iso.exports.ISO_4032_HEX_STANDARD"></a>
 
 ### jscad-fastener/iso.exports.ISO\_4032\_HEX\_STANDARD : <code>Object</code>
-ISO 4032 Hex Standard Nuts
+ISO 4032: Hexagon regular nuts (Style 1) - Product grades A and B.
 
-Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
+DESIGN NOTES:
+- The global baseline standard for general-purpose metric hexagon nuts.
+- Style 1 height profile balances load distribution with thread stripping resistance.
+- Grade A applies to sizes <= M16; Grade B applies to sizes > M16.
+- Features standard ISO Width Across Flats (WAF) requirements for M10 (16mm), M12 (18mm), and M14 (21mm).
+- Incorporates a precision circular underside bearing face to minimize thread-axis angularity errors.
 
-Maintained in precise millimeters (mm).
+Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7414_HEX_STRUCTURAL_HEAVY"></a>
 
 ### jscad-fastener/iso.exports.ISO\_7414\_HEX\_STRUCTURAL\_HEAVY : <code>Object</code>
-ISO 7414 Hex Structual Heavy Nuts
+ISO 7414: Hexagon nuts for high-strength structural bolting with large width across flats.
 
-Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
+DESIGN NOTES:
+- Heavy-duty, high-strength structural metric nuts engineered for preloaded structural steel joints.
+- Possesses significantly wider Width Across Flats (WAF) boundaries than regular ISO 4032 nuts to distribute clamping pressures.
+- Designed with a heavy thickness profile to reliably match high-strength structural bolts (e.g., ISO 7411 / EN 14399-4).
+- Features tightly managed perpendicularity tolerances on the circular bearing face surface.
 
-Maintained in precise millimeters (mm).
+Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
-<a name="jscad-fastener/iso.exports.ISO_4033_HEX_HIGH_NUTS"></a>
+<a name="jscad-fastener/iso.exports.ISO_4033_HEX_HIGH"></a>
 
-### jscad-fastener/iso.exports.ISO\_4033\_HEX\_HIGH\_NUTS : <code>Object</code>
-ISO 4033 Style 2 Hex High-Clamping Nuts
+### jscad-fastener/iso.exports.ISO\_4033\_HEX\_HIGH : <code>Object</code>
+ISO 4033: Hexagon high nuts (Style 2) - Product grades A and B.
 
-Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
+DESIGN NOTES:
+- Style 2 high nuts feature an increased thickness profile (~10% taller than Style 1).
+- Specifically engineered to resist core thread stripping when pairing with high-tensile property classes (e.g., 10.9 or 12.9).
+- Increased height provides extended thread engagement length to fully develop high clamping preloads.
+- Adheres to standard ISO WAF dimensions (e.g., M10=16mm, M12=18mm).
 
-Maintained in precise millimeters (mm).
+Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_4035_HEX_THIN_JAM"></a>
 
 ### jscad-fastener/iso.exports.ISO\_4035\_HEX\_THIN\_JAM : <code>Object</code>
-ISO 4035 Style 0 Hex Standard Nut (Metric Coarse)
+ISO 4035: Hexagon thin nuts (chamfered) - Product grades A and B.
 
-NOTE: ISO 8675 defines the same dimensions but uses metric fine pitch threads.
+DESIGN NOTES:
+- Low-profile thin nuts intended for use as locking, jam, or leveling devices.
+- Not engineered to withstand primary high-tensile structural tensile forces independently.
+- Double-chamfered profile allows either flat face to function as a reliable bearing surface.
+- Frequently jammed against standard Style 1 or Style 2 nuts to freeze thread movement mechanically.
 
-Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
-
-Maintained in precise millimeters (mm).
+Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7040_LOCK_STANDARD"></a>
 
 ### jscad-fastener/iso.exports.ISO\_7040\_LOCK\_STANDARD : <code>Object</code>
+ISO 7040: Prevailing torque hexagon regular nuts (with non-metallic insert) - Property classes 5, 8, and 10.
+
+DESIGN NOTES:
+- Standard-profile nylon-insert lock nuts ("Nyloc") designed for coarse pitch threads.
+- The non-metallic insert deforms elastically over mating bolt threads to generate friction-locked torque.
+- Height array elements explicitly isolate the wrenching driving body height from the total top crowning collar height.
+- Strictly directional; the flat, non-insert bottom face serves as the designated circular bearing surface.
+
+Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_10511_LOCK_THIN"></a>
 
 ### jscad-fastener/iso.exports.ISO\_10511\_LOCK\_THIN : <code>Object</code>
+ISO 10511: Prevailing torque hexagon thin nuts (with non-metallic insert).
+
+DESIGN NOTES:
+- Low-profile, thin nylon-insert lock nuts engineered for spatial restrictions or low-load clearances.
+- Replaces legacy DIN 985 low-profile locking configurations in modern parts registries.
+- Combines the thin mechanical body behavior of a jam nut with dynamic prevailing torque vibration resistance.
+- Possesses reduced load-bearing capacity compared to the standard ISO 7040 locking counterpart.
+
+Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7041_LOCK_HIGH"></a>
 
 ### jscad-fastener/iso.exports.ISO\_7041\_LOCK\_HIGH : <code>Object</code>
+ISO 7041: Prevailing torque hexagon high nuts (with non-metallic insert) - Style 2.
+
+DESIGN NOTES:
+- High-profile, Style 2 nylon-insert lock nuts engineered for extreme vibration environments.
+- Replaces historical high-profile DIN 982 specifications in modern automation and drivetrain designs.
+- Extended driving height (m_min) ensures robust wrench socket engagement while accommodating higher-tensile loads.
+- Thick profile ensures maximum thread engagement inside the locking zone before reaching the plastic boundary collar.
+
+Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_557_SQUARE"></a>
 
 ### jscad-fastener/iso.exports.DIN\_557\_SQUARE : <code>Object</code>
-DIN 557 Square Standard Nut
+DIN 557: Square nuts with chamfer - Metric coarse thread.
 
-Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
+DESIGN NOTES:
+- Governs four-sided square nuts engineered primarily for specialized positioning channels.
+- Widely utilized inside structural aluminum extrusions, sheet metal blind pockets, or vintage electrical enclosures.
+- The square geometry offers a substantially higher surface contact area than a standard hexagon nut, 
+  preventing rotation inside matching internal channels when tightening a mating bolt from the opposite side.
+- Features a single-sided top chamfer, leaving the bottom face completely flat to optimize the circular bearing face contact area.
+- Width across flats (s) requirements remain identical to early companion DIN hex standards to utilize matching open-ended spanners.
 
-Maintained in precise millimeters (mm).
+Pattern: [Width Across Flats (s), Nut Height (m_min), Total Height / Corner Extension (h_max)]
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.getNutDimensions"></a>
@@ -1146,78 +1294,4 @@ Generate a solid washer manifold using the given dimensions.
 | Param | Type | Description |
 | --- | --- | --- |
 | specifications | <code>object</code> | washer specifications |
-
-<a name="HexHead"></a>
-
-## HexHead ⇒ <code>Geom3</code>
-Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.
-
-NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
-
-**Kind**: global constant  
-**Returns**: <code>Geom3</code> - bolt hex head sitting above Z=0  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| spec | <code>Object</code> | The head specification |
-| spec.widthAcrossFlats | <code>Number</code> | Wrench size across flats (s) in mm |
-| spec.headHeight | <code>Number</code> | Total standard head height (k) in mm |
-| spec.bearingFaceDiameter | <code>Number</code> | Bearing face diameter (dw) in mm |
-| spec.filletRadius | <code>Number</code> | Fillet radius (f) in mm |
-| spec.majorDiameter | <code>Number</code> | Nominal (major) diameter (d) in mm |
-| spec.segments | <code>Number</code> | Segments per full rotation |
-
-<a name="Shank"></a>
-
-## Shank ⇒ <code>Geom3</code>
-Generate a Bolt Shank extending downwards from the Z plane.
-
-NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
-
-**Kind**: global constant  
-**Returns**: <code>Geom3</code> - bolt shank, centered on X-Y, extending downwards from Z  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| spec | <code>Object</code> | The shank specifications |
-| spec.threadLength | <code>Number</code> | Length of the threaded section (b) in mm |
-| spec.unthreadedLength | <code>Number</code> | Length of smooth shank section in mm |
-| spec.segments | <code>Number</code> | Segments per full rotation |
-
-<a name="HexNut"></a>
-
-## HexNut ⇒ <code>geom3</code>
-Generate a double-beveled hex block with optional bearing shoulder.
-
-NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
-
-**Kind**: global constant  
-**Returns**: <code>geom3</code> - - A valid 3D JSCAD V3 solid geometry object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| widthAcrossFlats | <code>number</code> | Width across the flats, i.e. wrench size (WAF) |
-| height | <code>number</code> | Total thickness/height of the nut (H) |
-| bearingFaceHeight | <code>number</code> | Height of the bearing washer step (C). May be zero. |
-| zOffset | <code>number</code> | Z-axis translation offset to position/center the assembly |
-
-<a name="generateThread"></a>
-
-## generateThread ⇒ <code>Geom3</code>
-Create a thread segment supporting ISO and UTS thread standards.
-
-NOTE: All dimensions are in millimeters.
-
-**Kind**: global constant  
-**Returns**: <code>Geom3</code> - thread body, extending up from Z  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| spec | <code>Object</code> | Generation configurations |
-| spec.isInternal | <code>Boolean</code> | False for bolt/external, True for nut/internal |
-| spec.majorDiameter | <code>Number</code> | Major diameter of thread body |
-| spec.pitch | <code>Number</code> | Pitch of threads |
-| spec.tolerance | <code>Number</code> | Radial offset value in mm (e.g. 0.15 for 3D prints) |
-| spec.segments | <code>Number</code> | Segments per full rotation |
-| length | <code>Number</code> | Total length of the thread to generate |
 

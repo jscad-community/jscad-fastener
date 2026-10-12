@@ -2,8 +2,9 @@
  * Create ASME and ISO fasteners for JSCAD designs.
  *
  * @license MIT
+ * @author Google Gemini (AI Collaborator) and others
  * @requires @jscad/modeling@^3.0.0
- * @namespace jscad-fasteners
+ * @namespace jscad-fastener
  */
 export * from './bolt.js'
 export * from './nut.js'

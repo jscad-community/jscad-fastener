@@ -393,7 +393,7 @@ test('iso.parseNutSpec parsing', () => {
     "material": "Carbon Steel",
     "pitch": 2,
     "size": "M16",
-    "standard": "ISO_4032_NORMAL",
+    "standard": "ISO_4032_HEX_STANDARD",
     "threadSeries": "COARSE",
     "threadTolerance": "6H",
   }

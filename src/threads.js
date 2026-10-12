@@ -3,24 +3,25 @@ import { cylinderElliptic, polygon, intersect, union, subtract, extrudeHelical, 
 /**
  * Create a thread segment supporting ISO and UTS thread standards.
  *
- * NOTE: All dimensions are in millimeters.
+ * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
  *
- * @param {Object} spec - Generation configurations
- * @param {Boolean} spec.isInternal - False for bolt/external, True for nut/internal
+ * @memberof jscad-fastener
+ * @param {Object} spec - thread specifications, ALL ARE REQUIRED
  * @param {Number} spec.majorDiameter - Major diameter of thread body
  * @param {Number} spec.pitch - Pitch of threads
  * @param {Number} spec.tolerance - Radial offset value in mm (e.g. 0.15 for 3D prints)
  * @param {Number} spec.segments - Segments per full rotation
+ * @param {Boolean} spec.isInternal - False for bolt/external, True for nut/internal
  * @param {Number} length - Total length of the thread to generate
- * @returns {Geom3} thread body, extending up from Z
+ * @returns {Geom3} thread body, centered XY, extending up from Z
  */
-export const generateThread = (spec = {}, length) => {
+export const Thread = (spec, length) => {
   const {
-    isInternal = false,
-    majorDiameter = 0,
-    pitch = 0,
-    tolerance = 0.0,
-    segments = 36
+    majorDiameter,
+    pitch,
+    tolerance,
+    isInternal,
+    segments
   } = spec
 
   // 2. ISO / UTS Unified Thread Profile Calculations (Both use identical 60-deg H = 0.866025 * P)

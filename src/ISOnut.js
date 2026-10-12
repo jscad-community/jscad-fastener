@@ -10,11 +10,16 @@ const STANDARD_HEIGHT = 1
 const TOTAL_HEIGHT = 2
 
 /**
- * ISO 4032 Hex Standard Nuts
- *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise millimeters (mm).
+ * ISO 4032: Hexagon regular nuts (Style 1) - Product grades A and B.
+ * 
+ * DESIGN NOTES:
+ * - The global baseline standard for general-purpose metric hexagon nuts.
+ * - Style 1 height profile balances load distribution with thread stripping resistance.
+ * - Grade A applies to sizes <= M16; Grade B applies to sizes > M16.
+ * - Features standard ISO Width Across Flats (WAF) requirements for M10 (16mm), M12 (18mm), and M14 (21mm).
+ * - Incorporates a precision circular underside bearing face to minimize thread-axis angularity errors.
+ * 
+ * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
@@ -54,11 +59,15 @@ export const ISO_4032_HEX_STANDARD = {
 }
 
 /**
- * ISO 7414 Hex Structual Heavy Nuts
- *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise millimeters (mm).
+ * ISO 7414: Hexagon nuts for high-strength structural bolting with large width across flats.
+ * 
+ * DESIGN NOTES:
+ * - Heavy-duty, high-strength structural metric nuts engineered for preloaded structural steel joints.
+ * - Possesses significantly wider Width Across Flats (WAF) boundaries than regular ISO 4032 nuts to distribute clamping pressures.
+ * - Designed with a heavy thickness profile to reliably match high-strength structural bolts (e.g., ISO 7411 / EN 14399-4).
+ * - Features tightly managed perpendicularity tolerances on the circular bearing face surface.
+ * 
+ * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
@@ -76,17 +85,21 @@ export const ISO_7414_HEX_STRUCTURAL_HEAVY = {
 }
 
 /**
- * ISO 4033 Style 2 Hex High-Clamping Nuts
- *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise millimeters (mm).
+ * ISO 4033: Hexagon high nuts (Style 2) - Product grades A and B.
+ * 
+ * DESIGN NOTES:
+ * - Style 2 high nuts feature an increased thickness profile (~10% taller than Style 1).
+ * - Specifically engineered to resist core thread stripping when pairing with high-tensile property classes (e.g., 10.9 or 12.9).
+ * - Increased height provides extended thread engagement length to fully develop high clamping preloads.
+ * - Adheres to standard ISO WAF dimensions (e.g., M10=16mm, M12=18mm).
+ * 
+ * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
  * @memberof jscad-fastener/iso
  */
-export const ISO_4033_HEX_HIGH_NUTS = {
+export const ISO_4033_HEX_HIGH = {
   "M5":   [8.00,  5.10],
   "M6":   [10.00, 5.70],
   "M7":   [11.00, 6.50],  // Added/Updated in latest ISO revisions
@@ -107,13 +120,15 @@ export const ISO_4033_HEX_HIGH_NUTS = {
 }
 
 /**
- * ISO 4035 Style 0 Hex Standard Nut (Metric Coarse)
- *
- * NOTE: ISO 8675 defines the same dimensions but uses metric fine pitch threads.
- *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise millimeters (mm).
+ * ISO 4035: Hexagon thin nuts (chamfered) - Product grades A and B.
+ * 
+ * DESIGN NOTES:
+ * - Low-profile thin nuts intended for use as locking, jam, or leveling devices.
+ * - Not engineered to withstand primary high-tensile structural tensile forces independently.
+ * - Double-chamfered profile allows either flat face to function as a reliable bearing surface.
+ * - Frequently jammed against standard Style 1 or Style 2 nuts to freeze thread movement mechanically.
+ * 
+ * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
@@ -153,13 +168,21 @@ export const ISO_4035_HEX_THIN_JAM = {
 }
 
 /**
+ * ISO 7040: Prevailing torque hexagon regular nuts (with non-metallic insert) - Property classes 5, 8, and 10.
+ * 
+ * DESIGN NOTES:
+ * - Standard-profile nylon-insert lock nuts ("Nyloc") designed for coarse pitch threads.
+ * - The non-metallic insert deforms elastically over mating bolt threads to generate friction-locked torque.
+ * - Height array elements explicitly isolate the wrenching driving body height from the total top crowning collar height.
+ * - Strictly directional; the flat, non-insert bottom face serves as the designated circular bearing surface.
+ * 
+ * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7040_LOCK_STANDARD = {
-  // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
   "M3":  [5.5,  2.15, 4.0],
   "M4":  [7.0,  2.90, 5.0],
   "M5":  [8.0,  4.40, 6.3],
@@ -177,13 +200,21 @@ export const ISO_7040_LOCK_STANDARD = {
 }
 
 /**
+ * ISO 10511: Prevailing torque hexagon thin nuts (with non-metallic insert).
+ * 
+ * DESIGN NOTES:
+ * - Low-profile, thin nylon-insert lock nuts engineered for spatial restrictions or low-load clearances.
+ * - Replaces legacy DIN 985 low-profile locking configurations in modern parts registries.
+ * - Combines the thin mechanical body behavior of a jam nut with dynamic prevailing torque vibration resistance.
+ * - Possesses reduced load-bearing capacity compared to the standard ISO 7040 locking counterpart.
+ * 
+ * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
  * @memberof jscad-fastener/iso
  */
 export const ISO_10511_LOCK_THIN = {
-  // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
   "M3":   [5.5,  1.55, 4.0],
   "M4":   [7.0,  1.95, 5.0],
   "M5":   [8.0,  2.45, 5.0],
@@ -201,6 +232,15 @@ export const ISO_10511_LOCK_THIN = {
 }
 
 /**
+ * ISO 7041: Prevailing torque hexagon high nuts (with non-metallic insert) - Style 2.
+ * 
+ * DESIGN NOTES:
+ * - High-profile, Style 2 nylon-insert lock nuts engineered for extreme vibration environments.
+ * - Replaces historical high-profile DIN 982 specifications in modern automation and drivetrain designs.
+ * - Extended driving height (m_min) ensures robust wrench socket engagement while accommodating higher-tensile loads.
+ * - Thick profile ensures maximum thread engagement inside the locking zone before reaching the plastic boundary collar.
+ * 
+ * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
@@ -223,11 +263,17 @@ export const ISO_7041_LOCK_HIGH = {
 }
 
 /**
- * DIN 557 Square Standard Nut
- *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise millimeters (mm).
+ * DIN 557: Square nuts with chamfer - Metric coarse thread.
+ * 
+ * DESIGN NOTES:
+ * - Governs four-sided square nuts engineered primarily for specialized positioning channels.
+ * - Widely utilized inside structural aluminum extrusions, sheet metal blind pockets, or vintage electrical enclosures.
+ * - The square geometry offers a substantially higher surface contact area than a standard hexagon nut, 
+ *   preventing rotation inside matching internal channels when tightening a mating bolt from the opposite side.
+ * - Features a single-sided top chamfer, leaving the bottom face completely flat to optimize the circular bearing face contact area.
+ * - Width across flats (s) requirements remain identical to early companion DIN hex standards to utilize matching open-ended spanners.
+ * 
+ * Pattern: [Width Across Flats (s), Nut Height (m_min), Total Height / Corner Extension (h_max)]
  *
  * @constant
  * @type {Object}
@@ -256,8 +302,8 @@ export const DIN_557_SQUARE = {
 // TBD Support flange nuts
 
 const standards = {
-  'ISO_4032_NORMAL': ISO_4032_HEX_STANDARD,
-  'ISO_4033_HIGH': ISO_4033_HEX_HIGH_NUTS,
+  'ISO_4032_HEX_STANDARD': ISO_4032_HEX_STANDARD,
+  'ISO_4033_HEX_HIGH': ISO_4033_HEX_HIGH,
   'ISO_4035_HEX_THIN_JAM': ISO_4035_HEX_THIN_JAM,
   'ISO_7414_HEX_STRUCTURAL_HEAVY': ISO_7414_HEX_STRUCTURAL_HEAVY,
   'ISO_7040_LOCK_STANDARD': ISO_7040_LOCK_STANDARD,
@@ -296,7 +342,7 @@ export const getNutDimensions = (spec = {}) => {
   // select ISO standard using the given options
   if (!dataset) {
     if (!dataset && isThin) dataset = ISO_4035_HEX_THIN_JAM
-    if (!dataset && isHeavy) dataset = ISO_4033_HEX_HIGH_NUTS
+    if (!dataset && isHeavy) dataset = ISO_4033_HEX_HIGH
     if (!dataset) dataset = ISO_4032_HEX_STANDARD
   }
   if (!dataset) return null
