@@ -6,7 +6,7 @@
  *  - "M6 x 0.75 x 40 Bolt + ISO 7092 Washer + ISO 4032 Nut"
  *  - "ISO 4017 Bolt M16 x 60 - 10.9 HDG Finish; ISO 7090 Washer; ISO 4032 Nut"
  */
-function parseISOAssembly(fullAssemblyString) {
+export const parseISOAssembly = (fullAssemblyString) => {
   if (!fullAssemblyString || typeof fullAssemblyString !== 'string') {
     throw new Error("Invalid or empty assembly string provided.");
   }
@@ -24,7 +24,7 @@ function parseISOAssembly(fullAssemblyString) {
   let sharedPitchContext = null;  // e.g., "1.25" for fine pitches
 
   // Step 1: Broad classification loop to sort text phrases into component buckets
-  subComponents.forEach(component => {
+  subComponents.forEach((component) => {
     const cleanChunk = component.trim();
     const type = determineFastenerType(cleanChunk); // Reuses the procedural type checker from previous ISO setup
 
@@ -91,7 +91,7 @@ const { translate } = transforms;
  * @param {Object} modules - Reference pointers to your 3D creation functions
  * @returns {Object} Unified 3D assembly mesh
  */
-export function generateISOAssembly3D(assemblyConfig, clampThickness, modules) {
+export const generateISOAssembly3D = (assemblyConfig, clampThickness, modules) => {
   const { bolt, washer, nut } = assemblyConfig;
   const { createBolt, createWasher, createNut, createThread } = modules;
 

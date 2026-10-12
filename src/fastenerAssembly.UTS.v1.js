@@ -70,7 +70,7 @@ const ASME_B18_2_2_NUTS = {
  * EXPANDED ENGINE VALIDATION SYSTEM
  * ============================================================================
  */
-function validateUnifiedAssembly(assembly) {
+export const validateUnifiedAssembly = (assembly) => {
   const { bolt, washer, nut } = assembly;
   const errors = [];
   const warnings = [];
@@ -107,7 +107,7 @@ function validateUnifiedAssembly(assembly) {
   if (!targetNutTable) {
     errors.push(`CRITICAL: Unregistered Nut standard profile geometry style: "${nut.style}".`);
   } else {
-    const registryEntry = targetNutTable.find(row => row[0] === nut.size);
+    const registryEntry = targetNutTable.find((row) => row[0] === nut.size);
     if (!registryEntry) {
       errors.push(`CRITICAL: Sizing Failure. ASME B18.2.2 ${nut.style} doesn't support a ${nut.size} production mapping.`);
     }
@@ -118,7 +118,7 @@ function validateUnifiedAssembly(assembly) {
     errors.push(`CRITICAL: Physical assembly clearance fail. Nominal sizing prevents running a ${washer.size} washer along a ${bSize} shank.`);
   }
 
-  const isStructuralBolt = ["A325", "A490", "F3125", "GRADE 8"].some(g => bolt.materialGrade.toUpperCase().includes(g));
+  const isStructuralBolt = ["A325", "A490", "F3125", "GRADE 8"].some((g) => bolt.materialGrade.toUpperCase().includes(g));
   const isHardenedWasher = washer.standard.toUpperCase().includes("F436");
   const isHeavyNut = nut.style.toUpperCase() === "HEAVY_HEX";
 
@@ -134,11 +134,11 @@ function validateUnifiedAssembly(assembly) {
   // Output Evaluation Report
   if (errors.length === 0) {
     console.log("✅ Validation successfully PASSED. Structural connection is safe and fully compliant.");
-    warnings.forEach(w => console.warn(`⚠️ ${w}`));
+    warnings.forEach((w) => console.warn(`⚠️ ${w}`));
     return { valid: true, errors, warnings };
   } else {
     console.error("❌ Validation FAILED. Component profile parameters conflict.");
-    errors.forEach(e => console.error(`🛑 ${e}`));
+    errors.forEach((e) => console.error(`🛑 ${e}`));
     return { valid: false, errors, warnings };
   }
 }

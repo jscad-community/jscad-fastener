@@ -249,7 +249,6 @@ export const generateHexBolt = (spec) => {
   let {
     // spec
     size,
-    standard,
     threadSeries,
     // dimensions
     majorDiameter,

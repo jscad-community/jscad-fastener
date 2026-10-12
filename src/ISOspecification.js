@@ -43,7 +43,7 @@ export const ISO_273_CLEARANCE_HOLES = {
  * EXPANDED PROCEDURAL PARSING FUNCTIONS (ISO 8991 & ISO 965)
  * ============================================================================
  */
-function extractMaterialAndCoating(str) {
+const extractMaterialAndCoating = (str) => {
   const lower = str.toLowerCase();
   let material = 'Carbon Steel';
   let coating = 'Plain Finish';
@@ -337,7 +337,7 @@ export const parseWasherSpec = (str) => {
 }
 
 
-function parseISOFastener(rawString) {
+export const parseISOFastener = (rawString) => {
   if (!rawString || typeof rawString !== 'string') return null;
   const normalized = rawString.replace(/\s+/g, ' ').trim();
   const lower = normalized.toLowerCase();
@@ -354,7 +354,7 @@ function parseISOFastener(rawString) {
  * METRIC ISO ASSEMBLY VALIDATION ENGINE WITH TOLERANCE CHECKS
  * ============================================================================
  */
-function validateISOMetricAssembly(assembly) {
+export const validateISOMetricAssembly = (assembly) => {
   const { bolt, washer, nut } = assembly;
   const errors = [];
   const warnings = [];
@@ -398,11 +398,11 @@ function validateISOMetricAssembly(assembly) {
   // Final Verdict
   if (errors.length === 0) {
     console.log("✅ Validation successfully PASSED. Structural tolerance and alignment checks are compliant.");
-    warnings.forEach(w => console.warn(`⚠️ ${w}`));
+    warnings.forEach((w) => console.warn(`⚠️ ${w}`));
     return { valid: true, errors, warnings };
   } else {
     console.error("❌ Validation FAILED.");
-    errors.forEach(e => console.error(`🛑 ${e}`));
+    errors.forEach((e) => console.error(`🛑 ${e}`));
     return { valid: false, errors, warnings };
   }
 }

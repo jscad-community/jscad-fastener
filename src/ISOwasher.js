@@ -1,5 +1,3 @@
-import { cuboid, cylinder, cylinderElliptic, rotateZ, subtract, translate, TAU } from '@jscad/modeling'
-
 import { SpringWasher, StarWasher, Washer } from './washer.js'
 
 /*
@@ -10,8 +8,6 @@ import { SpringWasher, StarWasher, Washer } from './washer.js'
 export const ID_INDEX = 0      // Inner Diameter
 export const OD_INDEX = 1      // Outer Diameter
 export const TH_INDEX = 2      // Thickness
-
-const MM_PER_INCH = 25.4
 
 /**
  * ISO 7089 - Plain washers — Normal series — Product grade A

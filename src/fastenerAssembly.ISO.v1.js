@@ -74,7 +74,7 @@ const ISO_NUT_REGISTRY = {
  * ISO METRIC VALIDATION ENGINE (STANDALONE ROUTINE)
  * ============================================================================
  */
-function validateISOMetricAssembly(assembly) {
+export const validateISOMetricAssembly = (assembly) => {
   const { bolt, washer, nut } = assembly;
   const errors = [];
   const warnings = [];
@@ -111,7 +111,7 @@ function validateISOMetricAssembly(assembly) {
   if (!targetNutTable) {
     errors.push(`CRITICAL: Unregistered Nut specification standard: "${nut.standard}".`);
   } else {
-    const registryEntry = targetNutTable.find(row => row === bSize);
+    const registryEntry = targetNutTable.find((row) => row === bSize);
     if (!registryEntry) {
       errors.push(`CRITICAL: Dimensional Gap. Standard ${nut.standard} has no tabulated properties for size ${bSize}.`);
     }
@@ -138,11 +138,11 @@ function validateISOMetricAssembly(assembly) {
   // Final Verdict Processing
   if (errors.length === 0) {
     console.log("✅ Validation PASSED. All metric ISO component properties correlate perfectly.");
-    warnings.forEach(w => console.warn(`⚠️ ${w}`));
+    warnings.forEach((w) => console.warn(`⚠️ ${w}`));
     return { valid: true, errors, warnings };
   } else {
     console.error("❌ Validation FAILED. Fastener cluster setup is non-compliant.");
-    errors.forEach(e => console.error(`🛑 ${e}`));
+    errors.forEach((e) => console.error(`🛑 ${e}`));
     return { valid: false, errors, warnings };
   }
 }

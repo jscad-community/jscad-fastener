@@ -1,5 +1,3 @@
-import { cylinder, cylinderElliptic, subtract, union, centerZ, mirrorZ, translate } from '@jscad/modeling'
-
 import { HexNut } from './nut.js'
 
 /**
@@ -480,5 +478,5 @@ export const generateNut = (spec = {}) => {
   } = spec
 
   // hex nut, beveled, with optional bearing face
-  return HexNut(spec)
+  return HexNut({ widthAcrossFlats, height, bearingFaceHeight, zOffset, segments })
 }

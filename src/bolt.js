@@ -1,6 +1,6 @@
 import { circle, cylinder, cylinderElliptic, extrudeLinear, intersect, union, rotate, translate, TAU } from '@jscad/modeling'
 
-import { getThreadSpec, generateThread } from './threads.js'
+import { generateThread } from './threads.js'
 
 /**
  * Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.

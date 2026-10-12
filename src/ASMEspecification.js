@@ -301,20 +301,6 @@ export const parseWasherSpec = (spec) => {
   else if (spec.includes("GALVANIZED") || spec.includes("HDG")) coating = "Hot Dip Galvanized"
   else if (spec.includes("BLACK OXIDE")) coating = "Black Oxide"
 
-  // 4. Dimensional Metadata Lookups for 3D Modeling (Converted to mm)
-  // Hardcoded engineering geometry arrays for our target sizes to assist the renderer:
-  // Layout: [Inner_Dia_Inches, Outer_Dia_Inches, Thickness_Inches]
-  const basicWasherDimensions = {
-    "1/4":  [0.281, 0.625, 0.065],
-    "5/16": [0.344, 0.688, 0.065],
-    "3/8":  [0.406, 0.812, 0.065],
-    "1/2":  standard === "ASTM_F436_STRUCTURAL" 
-             ? [0.531, 1.062, 0.109] // Heavy Structural F436 Spec
-             : [0.531, 1.250, 0.095]  // Standard Type A Spec
-  }
-
-  const dims = basicWasherDimensions[size] || [0.531, 1.250, 0.095] // Safe default fallback to 1/2"
-
   // 5. Output Unified Structural Token Framework matching your ISO standard perfectly
   return {
     size,         // Required Core Key -> "1/2"

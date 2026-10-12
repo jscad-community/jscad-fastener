@@ -1,4 +1,4 @@
-import { cuboid, cylinder, cylinderElliptic, rotateZ, subtract, translate, TAU } from '@jscad/modeling'
+import { cuboid, cylinder, rotateZ, subtract, translate, TAU } from '@jscad/modeling'
 
 /*
  * Washer Generation Module for JSCAD

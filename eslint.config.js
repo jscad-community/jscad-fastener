@@ -38,6 +38,8 @@ export default defineConfig([
       "no-multi-assign": ["error"],
       // "no-param-reassign": ["error"],
       "no-var": ["error"],
+      // others
+			"no-unused-vars": "error",
     }
    }
 ])

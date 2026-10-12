@@ -6,7 +6,7 @@ import { generateISOBolt } from './ISObolt.v5.js'
 
 import { generateASMEBolt } from './ASMEbolt.js'
 
-export function main() {
+export const main = () => {
   // Demonstration: Render a standard M10 Coarse Bolt with a 3D-printer friendly 0.15mm tolerance
   // Parameters: d=10, length=25, isInternal=false, isFine=false, tolerance=0.15, segments=48
   //let spec = getThreadSpec('ISO', 'M4', 'coarse')

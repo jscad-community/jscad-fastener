@@ -1,5 +1,3 @@
-import { cuboid, cylinder, cylinderElliptic, rotateZ, subtract, translate, TAU } from '@jscad/modeling'
-
 import { SpringWasher, StarWasher, Washer } from './washer.js'
 
 /*
