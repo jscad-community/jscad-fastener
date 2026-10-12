@@ -1,8 +1,14 @@
 /**
  * ASME B18.2.8 Bolt Clearance Hole Diameters (all values in inches)
+ *
  * Sourced natively from #0 to 1-1/2", scaled proportionally to 4" 
  * based on standard ASME structural allowance thresholds.
+ *
  * Formatted with explicit keys for: close, normal, and loose fit conditions.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_8_CLEARANCE_HOLES = {
   // Numbered Machine Screw Sizes (#0 to #12)
@@ -49,6 +55,7 @@ export const ASME_B18_2_8_CLEARANCE_HOLES = {
  *
  * NOTE: All returned specifications are inches.
  * 
+ * @memberof jscad-fastener/asme
  * @param {string} spec - specification
  * @returns {Object} Standardized token payload
  */
@@ -124,6 +131,7 @@ export const parseBoltSpec = (spec) => {
  *
  * NOTE: All returned specifications are inches.
  * 
+ * @memberof jscad-fastener/asme
  * @param {string} spec - specification
  * @returns {Object} Perfectly structured token array with metric drilling limits
  */
@@ -230,6 +238,7 @@ export const parseNutSpec = (spec) => {
  *
  * NOTE: All returned specifications are inches.
  * 
+ * @memberof jscad-fastener/asme
  * @param {string} spec - specification
  * @returns {Object} Clean token matching the exact structure of your ISO washer parser.
  */

@@ -45,9 +45,9 @@ test('asme.getHexBoltDimensions', () => {
   )
   expect(asme.getHexBoltDimensions({size: "1/2", standard: 'ASME_B18_2_6_STRUCTURAL'}, 1.0)).toStrictEqual(
   {
-    "bearingFaceDiameter": 0.814,
+    "bearingFaceDiameter": 0.85,
     "filletRadius": 0.031,
-    "headHeight": 0.344,
+    "headHeight": 0.323,
     "isHeavy": false,
     "majorDiameter": 0.5,
     "size": "1/2",

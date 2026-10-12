@@ -18,8 +18,10 @@ const FILLET_RADIUS = 4
  * - Grade A applies to sizes M1.6 to M24 (lengths <= 150mm); Grade B applies to sizes > M24 or lengths > 150mm.
  * - Features modern ISO Width Across Flats (WAF) specifications for M10 (16mm), M12 (18mm), and M14 (21mm).
  * - Incorporates a precision-machined, circular underside bearing face (dw).
- * 
- * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_4014_HEX_BOLT = {
   "M3": [3, 5.5, 2, 4.6, 0.1],
@@ -43,7 +45,7 @@ export const ISO_4014_HEX_BOLT = {
 
 /**
  * ISO 4016: Hexagon head bolts - Product grade C.
- * 
+ *
  * DESIGN NOTES:
  * - This standard defines "rough" or heavy black finish bolts with broad dimensional tolerances.
  * - Intended for low-preload architectural steel staging, agricultural setups, and heavy non-precision framing.
@@ -52,6 +54,10 @@ export const ISO_4014_HEX_BOLT = {
  * - Historically equivalent to the legacy DIN 601 structural standard.
  * 
  * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_4016_HEX_BOLT_C = {
   "M5":    [5.0, 8.0,  3.5,  8.0,  0.2],
@@ -82,6 +88,10 @@ export const ISO_4016_HEX_BOLT_C = {
  * - Incorporates a precision-machined, circular underside bearing face (dw).
  * 
  * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_4017_HEX_SCREW = {
   "M3":   [3.0,  5.5,  2.0,   5.00,  0.1],
@@ -114,6 +124,10 @@ export const ISO_4017_HEX_SCREW = {
  * - Product scope traditionally spans strictly from M12 to M36.
  * 
  * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7411_HEX_STRUCTURAL = {
   "M12": [12.0, 22.0,  8.0, 20.0, 1.2],
@@ -137,6 +151,10 @@ export const ISO_7411_HEX_STRUCTURAL = {
  * - Supersedes and aligns closely with the historical legacy DIN 7985 standard profile.
  * 
  * Pattern: [majorDiameter (d), headDiameter (s/dk), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7045_PAN_MACHINE = {
   "M2":   [2.0,  4.0, 1.6,  3.7, 0.2],
@@ -160,6 +178,10 @@ export const ISO_7045_PAN_MACHINE = {
  * - This standard serves as the functional downstream analog to ISO_4016_HEX_BOLT_C.
  * 
  * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_601_HEX_BOLT_C = {
   "M5":  [5.0,  8.0,  3.5,  8.0,  0.2],
@@ -192,6 +214,10 @@ export const DIN_601_HEX_BOLT_C = {
  * - Incorporates a precision-machined circular underside washer bearing face step (dw).
  * 
  * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_931_HEX_BOLT = {
   "M3":   [3.0,  5.5,  2.0,  4.6,  0.1],
@@ -228,6 +254,10 @@ export const DIN_931_HEX_BOLT = {
  * - Incorporates a precision circular underside washer bearing face step (dw).
  * 
  * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_933_HEX_SCREW = {
   "M3":   [3.0,  5.5,  2.0,  4.6,  0.1],
@@ -264,6 +294,10 @@ export const DIN_933_HEX_SCREW = {
  * - Product scope spans strictly from M12 to M36.
  * 
  * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_6914_HEX_STRUCTURAL = {
   "M12": [12.0, 22.0, 8.0, 20.1, 1.2],
@@ -288,6 +322,10 @@ export const DIN_6914_HEX_STRUCTURAL = {
  * - The 4th slot tracks the flat underside bearing surface diameter (dw) per DIN geometric limits.
  * 
  * Pattern: [majorDiameter (d), headDiameter (s/dk), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_7985_PAN_MACHINE = {
   "M2":   [2.0,  4.0, 1.6,  3.6, 0.2],
@@ -315,6 +353,20 @@ const standards = {
   'DIN_7985_PAN_MACHINE': DIN_7985_PAN_MACHINE,
 }
 
+/**
+ * Get the ISO Hex Bolt dimensions for the given specification.
+ *
+ * @see parseBoltSpec()
+ *
+ * If the standard is not provided then a standard will be select using the isHeavy and isTap options.
+ *
+ * @memberof jscad-fastener/iso
+ * @param {Object} spec - bolt specifications
+ * @param {String} spec.size - Dimension identifier (e.g., 'M6' for M6 ISO)
+ * @param {String} [spec.standard=null] - Bolt standard; null or valid ISO standard
+ * @param {String} [spec.threadSeries='COARSE'] - Thread series of bolt; coarse or fine
+ * @returns {Object} full ISO bolt specification with dimensions
+ */
 export const getHexBoltDimensions = (spec, nominalLength) => {
   let {
     size,
@@ -414,6 +466,7 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
  * Generate ISO Hex Bolt from the given specification.
  *
  * @see getHexBoltDimensions() for obtaining the specifications
+ * @memberof jscad-fastener/iso
  *
  * @param {Object} spec - bolt specifications
  * @param {String} spec.size - Dimension identifier (e.g., 'M6' for M6 ISO)

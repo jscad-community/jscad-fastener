@@ -11,7 +11,20 @@ const BEARING_FACE_DIAMETER = 3
 const FILLET_RADIUS = 4
 
 /**
- * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * ASME B18.2.1: Hex Cap Screws (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Governs precision-finished fasteners with tight dimensional tolerances.
+ * - Intended to thread directly into precision-tapped holes or use with precision nuts.
+ * - Shorter nominal lengths are often fully threaded, transitioning to partial threads as lengths scale.
+ * - Features a mandatory, precision-machined circular washer face (dw) on the head underside to prevent corner gouging.
+ * - Standard sizes range from 1/4" up to 3" within typical commercial inventory catalogs.
+ * 
+ * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_CAP_SCREW = {
   // Pattern: [majorDiameter, widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius]
@@ -38,7 +51,47 @@ export const ASME_B18_2_1_CAP_SCREW = {
 }
 
 /**
- * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * ASME B18.2.6: Fasteners for Use in Structural Applications - Heavy Hex Structural Bolts.
+ * 
+ * DESIGN NOTES:
+ * - High-strength fasteners explicitly engineered for structural steel-to-steel building connections.
+ * - Governs specialized material classifications such as ASTM F3125 (Grade A325 or A490) high-strength variations.
+ * - Shares the same extra-wide Width Across Flats (WAF) as the heavy hex bolt family to avoid surface indentation.
+ * - Features a tightly controlled, flat underside washer-faced bearing surface (dw) to control perpendicularity.
+ * - Size scope is structurally capped by the standard from 1/2" up to 1-1/2" diameters.
+ * 
+ * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
+ */
+export const ASME_B18_2_6_STRUCTURAL = {
+  "1/2":   [0.5000, 0.875,  0.323, 0.850, 0.031],
+  "5/8":   [0.6250, 1.0625, 0.403, 1.031, 0.062],
+  "3/4":   [0.7500, 1.250,  0.483, 1.212, 0.062],
+  "7/8":   [0.8750, 1.4375, 0.563, 1.394, 0.062],
+  "1":   [1.0000, 1.625,  0.627, 1.575, 0.093],
+  "1-1/8": [1.1250, 1.8125, 0.718, 1.756, 0.093],
+  "1-1/4": [1.2500, 2.000,  0.813, 1.938, 0.093],
+  "1-3/8": [1.3750, 2.1875, 0.878, 2.119, 0.093],
+  "1-1/2": [1.5000, 2.375,  0.974, 2.300, 0.093]
+}
+
+/**
+ * ASME B18.2.1: Heavy Hex Bolts (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Specifies heavy-duty, unrefined fasteners utilized in heavy machinery and structural assemblies.
+ * - Features a significantly wider Width Across Flats (WAF) footprint than general-purpose bolts to maximize bearing area.
+ * - Head heights (k) are noticeably thicker to withstand massive high-preload clamping stresses.
+ * - Lacks an isolated circular washer face step under the head, bounding dw directly to the broad hex profile.
+ * 
+ * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_HEAVY_BOLT = {
   "1/2":   [0.500, 0.875, 0.344, 0.814, 0.031],
@@ -60,7 +113,19 @@ export const ASME_B18_2_1_HEAVY_BOLT = {
 }
 
 /**
- * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * ASME B18.6.3: Machine Screws - Hexagon Head Variant (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Governs small-diameter mechanical and electronic assembly fasteners.
+ * - Covers the minor numbered gauge parameters (#2 through #12) along with small fractional sizes up to 3/4".
+ * - Features a radically different head geometric footprint that does not scale with heavy structural profiles.
+ * - Head profiles can be indented hex or flat hex configurations depending on specified sub-manufacturing codes.
+ * 
+ * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_6_3_MACHINE = {
   // Numbered Machine Screw Sizes
@@ -84,7 +149,20 @@ export const ASME_B18_6_3_MACHINE = {
 }
 
 /**
- * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * ASME B18.2.1: Hex Bolts - General Purpose (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Governs raw, general-use commercial hex fasteners with relaxed manufacturing tolerances.
+ * - Primarily intended to pass through standard clearance holes and be secured with a nut.
+ * - Features a flat head underside that is NOT precision-machined with an isolated washer face step.
+ * - Under engineering practice, the bearing surface diameter (dw) is bounded directly to the basic width across flats (s).
+ * - Standard sizes range from 1/4" up to 3" diameters.
+ * 
+ * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_HEX_BOLT = {
   "1/4":   [0.2500, 0.4375, 0.1630, 0.4375, 0.0150],
@@ -110,7 +188,19 @@ export const ASME_B18_2_1_HEX_BOLT = {
 }
 
 /**
- * "Designation": [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * ASME B18.2.1: Hex Tap Bolts - Fully Threaded (Inch Series).
+ * 
+ * DESIGN NOTES:
+ * - Governs general-use hexagon fasteners that are continuously threaded all the way to the head.
+ * - Acts as the raw, full-thread alternative to a general-purpose hex bolt.
+ * - Head dimensions (WAF and height) align completely with standard raw Hex Bolts rather than Cap Screws.
+ * - Head underside is non-machined, bounding the bearingFaceDiameter (dw) directly to the width across flats (s).
+ * 
+ * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_TAP_BOLT = {
   "1/4":   [0.2500, 0.4375, 0.1630, 0.4375, 0.015],
@@ -135,7 +225,7 @@ const MM_PER_INCH = 25.4
 
 const standards = {
   'ASME_B18_2_1_CAP_SCREW': ASME_B18_2_1_CAP_SCREW,
-  'ASME_B18_2_6_STRUCTURAL': ASME_B18_2_1_HEAVY_BOLT,
+  'ASME_B18_2_6_STRUCTURAL': ASME_B18_2_6_STRUCTURAL,
   'ASME_B18_6_3_MACHINE': ASME_B18_6_3_MACHINE,
   'ASME_B18_2_1_HEAVY_BOLT': ASME_B18_2_1_HEAVY_BOLT,
   'ASME_B18_2_1_HEX_BOLT': ASME_B18_2_1_HEX_BOLT,
@@ -143,7 +233,11 @@ const standards = {
 }
 
 /**
+ * getHexBoldD
+ *
  * NOTE: All dimensions are inches.
+ *
+ * @memberof jscad-fastener/asme
  */
 export const getHexBoltDimensions = (spec, nominalLength) => {
   let {
@@ -239,6 +333,7 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
  *
  * @see getHexBoltDimensions()
  *
+ * @memberof jscad-fastener/asme
  * @param {Object} spec - bolt specification
  * @param {String} spec.size - Dimension identifier (e.g., '#1' or `1/2`)
  * @param {String} spec.standard - Bolt standard; ASME_B18_2_1_CAP_SCREW, etc

@@ -2,8 +2,14 @@ import { getThreadSpec } from './ISOthreads.js'
 
 /**
  * ISO 273 Bolt Clearance Hole Diameters (all values in mm)
+ *
  * Map structure optimized for clean, semantic UI and geometry engine routing.
+ *
  * Formatted with explicit keys for: close (H12), normal (H13), and loose (H14) fit conditions.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_273_CLEARANCE_HOLES = {
   "M1.6": { close: 1.700, normal: 1.800, loose: 2.000 },
@@ -38,10 +44,8 @@ export const ISO_273_CLEARANCE_HOLES = {
   "M64":  { close: 66.000, normal: 70.000, loose: 74.000 }
 }
 
-/**
- * ============================================================================
+/*
  * EXPANDED PROCEDURAL PARSING FUNCTIONS (ISO 8991 & ISO 965)
- * ============================================================================
  */
 const extractMaterialAndCoating = (str) => {
   const lower = str.toLowerCase()
@@ -60,7 +64,10 @@ const extractMaterialAndCoating = (str) => {
 
 /**
  * Procedural function calculating bolt specifications.
+ *
  * Dynamically appends ISO 273 clearance hole guidelines based on the nominal size.
+ *
+ * @memberof jscad-fastener/iso
  */
 export const parseBoltSpec = (str) => {
   // 1. Extract the Bolt Standard / Specification (e.g., ISO 4014, ISO 4017, DIN 931)
@@ -171,8 +178,11 @@ export const parseBoltSpec = (str) => {
 }
 
 /**
- * Procedural function calculating the internal minor thread limits for 6H/6G.
+ * TBW
+ *
  * Dynamically outputs tap drill hole sizing with absolute structural limits.
+ *
+ * @memberof jscad-fastener/iso
  */
 export const parseNutSpec = (str) => {
   const threadRegex = /M(\d+(?:\.\d+)?)(?:\s*x\s*(\d+(?:\.\d+)?))?/i
@@ -270,6 +280,7 @@ export const parseNutSpec = (str) => {
  * Parses metric/ISO/DIN washer specification strings.
  * Maintained strictly in millimeters (mm).
  * 
+ * @memberof jscad-fastener/iso
  * @param {string} str - e.g., "Plain Washer, ISO 7089, M12, 200HV, Zinc"
  * @returns {Object} Clean token matching the unified formatting footprint of the system.
  */
@@ -350,7 +361,10 @@ export const parseWasherSpec = (str) => {
   }
 }
 
-
+/**
+ * 
+ * @memberof jscad-fastener/iso
+ */
 export const parseISOFastener = (rawString) => {
   if (!rawString || typeof rawString !== 'string') return null
   const normalized = rawString.replace(/\s+/g, ' ').trim()
@@ -364,9 +378,9 @@ export const parseISOFastener = (rawString) => {
 }
 
 /**
- * ============================================================================
  * METRIC ISO ASSEMBLY VALIDATION ENGINE WITH TOLERANCE CHECKS
- * ============================================================================
+ * 
+ * @memberof jscad-fastener/iso
  */
 export const validateISOMetricAssembly = (assembly) => {
   const { bolt, washer, nut } = assembly
@@ -420,26 +434,3 @@ export const validateISOMetricAssembly = (assembly) => {
     return { valid: false, errors, warnings }
   }
 }
-
-/**
- * ============================================================================
- * EXECUTING SEPARATED TOLERANCE CHECK TESTS
- * ============================================================================
- */
-
-/*
-const badGalvanizedStack = {
-  bolt:   parseISOFastener("Hex structural bolt ISO 4014 - M16 x 80 - 6g - 10.9 - Hot-Dip Galvanized"), // 6g tight space
-  washer: parseISOFastener("Plain Washer ISO 7090 - M16 - 300 HV - HDG Finish"),
-  nut:    parseISOFastener("Hex nut ISO 4032 - M16 - 6H - Zinc Plated") // 6H cannot accept HDG bolts cleanly
-}
-validateISOMetricAssembly(badGalvanizedStack)
-
-const correctStack = {
-  bolt:   parseISOFastener("Hex head screw ISO 4017 - M12 x 50 - 6g - 8.8 - Zinc Electroplated"),
-  washer: parseISOFastener("Plain Washer ISO 7090 - M12 - 200 HV"),
-  nut:    parseISOFastener("Hex nut ISO 4032 - M12 - 6H")
-}
-validateISOMetricAssembly(correctStack)
-*/
-

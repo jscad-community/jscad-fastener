@@ -1,9 +1,7 @@
-/**
- * ============================================================================
+/*
  * METRIC FASTENER HARDWARE REGISTRY (ISO Standards)
  * Complete sequence from M1 to M68 per ISO 261/262.
  * All dimensional values are in millimeters (mm).
- * ============================================================================
  */
 
 const ISO_PITCH_REGISTRY = {
@@ -69,10 +67,8 @@ const ISO_NUT_REGISTRY = {
   ]
 };
 
-/**
- * ============================================================================
+/*
  * ISO METRIC VALIDATION ENGINE (STANDALONE ROUTINE)
- * ============================================================================
  */
 export const validateISOMetricAssembly = (assembly) => {
   const { bolt, washer, nut } = assembly;
@@ -147,9 +143,7 @@ export const validateISOMetricAssembly = (assembly) => {
   }
 }
 
-// ============================================================================
 // RUNNING TEST VALIDATIONS
-// ============================================================================
 
 // TEST 1: Valid Fine-Pitch M8 Assembly (Passes)
 const validM8FineAssembly = {

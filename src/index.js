@@ -1,4 +1,10 @@
-// general functions for generating fasteners
+/**
+ * Create ASME and ISO fasteners for JSCAD designs.
+ *
+ * @license MIT
+ * @requires @jscad/modeling@^3.0.0
+ * @namespace jscad-fasteners
+ */
 export * from './bolt.js'
 export * from './nut.js'
 export * from './washer.js'

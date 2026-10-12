@@ -5,6 +5,8 @@
  *  - "Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032"
  *  - "M6 x 0.75 x 40 Bolt + ISO 7092 Washer + ISO 4032 Nut"
  *  - "ISO 4017 Bolt M16 x 60 - 10.9 HDG Finish; ISO 7090 Washer; ISO 4032 Nut"
+ *
+ * @memberof jscad-fastener/iso
  */
 export const parseISOAssembly = (fullAssemblyString) => {
   if (!fullAssemblyString || typeof fullAssemblyString !== 'string') {
@@ -80,7 +82,8 @@ export const parseISOAssembly = (fullAssemblyString) => {
 /**
  * Procedural 3D Assembly Generator for ISO Fastener Stack in JSCAD V3
  * Handles optional washers and nuts seamlessly without crashing.
- * 
+ *
+ * @memberof jscad-fastener/iso
  * @param {Object} assemblyConfig - Specifications for each component (bolt required; washer/nut optional)
  * @param {number} clampThickness - Total material thickness being joined together (mm)
  * @param {Object} modules - Reference pointers to your 3D creation functions

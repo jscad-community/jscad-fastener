@@ -1,13 +1,13 @@
 import { HexNut } from './nut.js'
 
-/**
+/*
  * ASME Nut Generation Module
  */
 
 // Dimensions Offsets
-export const WIDTH_ACROSS_FLATS = 0
-export const STANDARD_HEIGHT = 1
-export const TOTAL_HEIGHT = 1
+const WIDTH_ACROSS_FLATS = 0
+const STANDARD_HEIGHT = 1
+const TOTAL_HEIGHT = 1
 
 const MM_PER_INCH = 25.4
 
@@ -17,6 +17,10 @@ const MM_PER_INCH = 25.4
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_STANDARD = {
   // Machine Screw Sizes
@@ -63,6 +67,10 @@ export const ASME_B18_2_2_HEX_STANDARD = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_HEAVY = {
   // Fractional Inch Sizes (1/4" to 4")
@@ -97,6 +105,10 @@ export const ASME_B18_2_2_HEX_HEAVY = {
  *
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_SQUARE = {
   // Machine Screw Sizes (Fallback to standard profiles)
@@ -132,6 +144,10 @@ export const ASME_B18_2_2_SQUARE = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_THIN_JAM = {
   // Machine Screw Sizes (Fallback to standard profiles)
@@ -178,6 +194,10 @@ export const ASME_B18_2_2_HEX_THIN_JAM = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_HEAVY_JAM = {
   // Machine Screw Sizes (Fallback to standard profile height)
@@ -224,6 +244,10 @@ export const ASME_B18_2_2_HEX_HEAVY_JAM = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_6_HEX_STRUCTURAL = {
   "1/2":   [0.8750, 0.3125],
@@ -243,6 +267,10 @@ export const ASME_B18_2_6_HEX_STRUCTURAL = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), hex height (min), total height(max)]
  *
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_16_6_HEX_LOCK_STANDARD = {
   // Machine Screw Sizes (Style NM)
@@ -275,6 +303,10 @@ export const ASME_B18_16_6_HEX_LOCK_STANDARD = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), hex height (min), total height(max)]
  *
  * Maintained in precise decimal inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_16_6_HEX_LOCK_THIN = {
   // Machine Screw Sizes (Style NTM)
@@ -318,7 +350,7 @@ const standards = {
   'ASME_B18_16_6_LOCK_THIN': ASME_B18_16_6_HEX_LOCK_THIN
 }
 
-/**
+/*
  * Calculates bearing face boundaries for ASME B18.2.6 Heavy Hex Structural Nuts.
  * @param {number} nominalWaf - The nominal Width Across Flats (inches) from your profile database.
  * @returns {Object} Calculated bearing face parameters (diameters and structural feature thickness).
@@ -342,7 +374,7 @@ const calculateStructuralBearingFace = (nominalWaf) => {
   }
 }
 
-/**
+/*
  * Calculates bearing face boundaries for ASME B18.16.6 Prevailing Torque Lock Nuts.
  * @param {number} nominalWaf - The nominal Width Across Flats (inches) from your profile database.
  * @returns {Object} Calculated bearing face parameters (diameters and max permissible runout limits).
@@ -372,6 +404,7 @@ const calculateLockNutBearingFace = (nominalWaf) => {
 /**
  * Get the hex nut dimensions for the given ASME nut specification.
  *
+ * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ASME nut, see lists above
  * @param {String} [spec.standard] - ASME standard or none (use other specs to choose)
@@ -457,6 +490,7 @@ export const getNutDimensions = (spec) => {
  *
  * @see getNutDimensions
  *
+ * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)

@@ -5,9 +5,9 @@ import { HexNut } from './nut.js'
  */
 
 // Dimensions Offsets
-export const WIDTH_ACROSS_FLATS = 0
-export const STANDARD_HEIGHT = 1
-export const TOTAL_HEIGHT = 2
+const WIDTH_ACROSS_FLATS = 0
+const STANDARD_HEIGHT = 1
+const TOTAL_HEIGHT = 2
 
 /**
  * ISO 4032 Hex Standard Nuts
@@ -15,6 +15,10 @@ export const TOTAL_HEIGHT = 2
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise millimeters (mm).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_4032_HEX_STANDARD = {
   "M1.6": [3.20, 1.30],
@@ -55,6 +59,10 @@ export const ISO_4032_HEX_STANDARD = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise millimeters (mm).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7414_HEX_STRUCTURAL_HEAVY = {
   "M12": [22.00, 10.00],
@@ -73,6 +81,10 @@ export const ISO_7414_HEX_STRUCTURAL_HEAVY = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise millimeters (mm).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_4033_HEX_HIGH_NUTS = {
   "M5":   [8.00,  5.10],
@@ -102,6 +114,10 @@ export const ISO_4033_HEX_HIGH_NUTS = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise millimeters (mm).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_4035_HEX_THIN_JAM = {
   "M1.6": [3.200, 1.000],
@@ -136,6 +152,12 @@ export const ISO_4035_HEX_THIN_JAM = {
   "M64":  [95.000, 32.000]
 }
 
+/**
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
+ */
 export const ISO_7040_LOCK_STANDARD = {
   // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
   "M3":  [5.5,  2.15, 4.0],
@@ -154,6 +176,12 @@ export const ISO_7040_LOCK_STANDARD = {
   "M39": [60.0, 31.80, 45.0]
 }
 
+/**
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
+ */
 export const ISO_10511_LOCK_THIN = {
   // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
   "M3":   [5.5,  1.55, 4.0],
@@ -172,6 +200,12 @@ export const ISO_10511_LOCK_THIN = {
   "M39":  [60.0, 23.30, 39.0]
 }
 
+/**
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
+ */
 export const ISO_7041_LOCK_HIGH = {
   // Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
   "M5":   [8,    4.4,   6.3],
@@ -194,6 +228,10 @@ export const ISO_7041_LOCK_HIGH = {
  * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
  *
  * Maintained in precise millimeters (mm).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_557_SQUARE = {
   // Small Sizes (Fallback to standard profiles)
@@ -230,6 +268,7 @@ const standards = {
 /**
  * Get the hex nut dimensions for the given ISO specification.
  *
+ * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ISO nut, see lists above
  * @param {Boolean} [spec.isHeavy=false] - generate nuts with heavy dimensions
@@ -309,6 +348,7 @@ export const getNutDimensions = (spec = {}) => {
  *
  * @see getNutDimensions
  *
+ * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)

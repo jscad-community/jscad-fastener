@@ -1,7 +1,7 @@
 // Dimensions Offsets
-export const MAJOR_DIAMETER = 0
-export const COARSE_TPI = 1
-export const FINE_TPI = 2
+const MAJOR_DIAMETER = 0
+const COARSE_TPI = 1
+const FINE_TPI = 2
 
 /**
  * ISO Metric Threads (ISO 261 / ISO 724)
@@ -9,8 +9,12 @@ export const FINE_TPI = 2
  * NOTE: All dimensions are in millimeters.
  *
  * "Designation": [Major_Diameter, Coarse_TPI, Fine_TPI]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
-const ISO_THREADS = {
+export const ISO_THREADS = {
   "M1":    [1.0,  0.25,  0.2   ],
   "M1.1":  [1.1,  0.25,  0.2   ],
   "M1.2":  [1.2,  0.25,  0.2   ],
@@ -58,6 +62,7 @@ const ISO_THREADS = {
  *
  * NOTE: All dimensions are in millimeters
  *
+ * @memberof jscad-fastener/iso
  * @param {Number|String} size - Dimension identifier; 6 or 'M6'
  * @param {String} threadSeries - Thread series of bolt; coarse or fine
  * @return {Object} specification with majorDiameter, pitch, isFine

@@ -1,8 +1,6 @@
-/**
- * ============================================================================
+/*
  * FASTENER HARDWARE REGISTRY (ASME B18 / UTS / ASTM)
  * All dimensions are in inches.
- * ============================================================================
  */
 
 // Comprehensive Pitch Mapping: Nominal Size -> { UNC: TPI, UNF: TPI }
@@ -65,10 +63,8 @@ const ASME_B18_2_2_NUTS = {
   ]
 };
 
-/**
- * ============================================================================
+/*
  * EXPANDED ENGINE VALIDATION SYSTEM
- * ============================================================================
  */
 export const validateUnifiedAssembly = (assembly) => {
   const { bolt, washer, nut } = assembly;
@@ -143,9 +139,7 @@ export const validateUnifiedAssembly = (assembly) => {
   }
 }
 
-// ============================================================================
 // TEST SCENARIOS
-// ============================================================================
 
 // TEST 1: Valid UNF (Fine Thread) Precision Mechanical Assembly
 const fineThreadAssembly = {

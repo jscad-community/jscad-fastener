@@ -12,6 +12,10 @@ export const FINE_TPI = 2
  * Array mapping per size: [ majorDiameter, coarseTPI, fineTPI ]
  *
  * Note: Uses `null` where a specific coarse/fine TPI does not officially exist.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const UTS_THREADS = {
   // --- Machine Screw Sizes ---
@@ -58,6 +62,7 @@ export const UTS_THREADS = {
  *
  * NOTE: All dimensions are inches
  *
+ * @memberof jscad-fastener/asme
  * @param {Number|String} size - Dimension identifier; #0 or '1/2'
  * @param {String} threadSeries - Thread series of bolt; UNC or UNF
  * @return {Object} specification with majorDiameter, pitch, isFine

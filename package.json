@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
+    "docs": "jsdoc2md --files 'src/*.js' > README.md",
     "lint": "npx eslint",
     "test": "vitest"
   },
@@ -34,6 +35,7 @@
     "@jscad/modeling": "3.0.7-alpha.0",
     "eslint": "^10.7.0",
     "globals": "^17.7.0",
+    "jsdoc-to-markdown": "^9.1.3",
     "vitest": "^5.0.1"
   }
 }

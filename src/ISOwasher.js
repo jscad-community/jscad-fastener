@@ -17,6 +17,10 @@ export const TH_INDEX = 2      // Thickness
  * Profile Geometry: Flat, square outer edge (No chamfer)
  *
  * "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7089 = {
   "M1": [1.1, 3.0, 0.3],
@@ -70,6 +74,10 @@ export const ISO_7089 = {
  * Profile Geometry: Chamfered (beveled/sloped) outer edge
  *
  * Dimensions: Normal series. (Outer diameter ≈ 2× nominal thread size)
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7090 = ISO_7089
 
@@ -84,6 +92,10 @@ export const ISO_7090 = ISO_7089
  * but the inner diameter is punched significantly looser (larger tolerances) to accommodate lower-grade fasteners.
  *
  * "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7091 = {
   "M1": [1.2, 3.0, 0.3],
@@ -139,6 +151,10 @@ export const ISO_7091 = {
  * Dimensions: Small series. The outer diameter is tightly constrained, roughly 1.5× to 1.8× the thread size
  *
  * "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7092 = {
   "M1": [1.1, 2.5, 0.3],
@@ -194,6 +210,10 @@ export const ISO_7092 = {
  * Dimensions: Large series. The outer diameter is dramatically enlarged, roughly 3× the nominal thread size
  *
  * "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7093 = {
   "M2.5": [2.7, 8.0, 0.8],
@@ -244,6 +264,10 @@ export const ISO_7093 = {
  * Maintained strictly in precise decimal Millimeters (mm).
  * 
  * Note: Sizes below M1.6 and sizes larger than M30 do not exist under DIN 6797.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_6797_A = {
   "M1.6":  [1.7,   3.6, 0.3],
@@ -282,6 +306,10 @@ export const DIN_6797_A = {
  *     at micro-scales causes structural metal stress fractures.
  *   - Sizes larger than M30 do not exist because thin internal tabs easily 
  *     flatten or strip out under heavy industrial structural preload torques.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_6797_J = {
   "M2":    [2.2,   4.5, 0.3],
@@ -313,6 +341,10 @@ export const DIN_6797_J = {
  * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
  *
  * Maintained strictly in precise decimal Millimeters (mm).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_7980 = {
   // --- Micro-Extensions Added ---
@@ -353,6 +385,10 @@ export const DIN_7980 = {
  * 
  * Note: These washers feature an explicit external perimeter chamfer and 
  * are tightly bounded between M12 and M64 due to heavy engineering rules.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const EN_14399_6 = {
   "M12":   [13.0,  24.0, 3.0],
@@ -376,6 +412,10 @@ export const EN_14399_6 = {
 
 /**
  * DIN 127 B Helical Spring Split Lock Washers with square ends
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const DIN_127_B = {
   "M2":     [2.1, 4.4, 0.5],
@@ -410,6 +450,10 @@ export const DIN_127_B = {
 
 /**
  * ISO 7094 Plain washers — Extra large series — Product grade C
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/iso
  */
 export const ISO_7094 = {
   "M5":  [5.5,  18.0, 2.0],
@@ -445,6 +489,7 @@ const standards = {
  *
  * NOTE: Returned dimensions are millimeters.
  *
+ * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ISO / ASME washer, see lists above
  * @param {String} [spec.standard=null] - ISO standard or none
@@ -522,6 +567,7 @@ export const getWasherDimensions = (spec) => {
  *
  * @see getWasherDimensions
  * 
+ * @memberof jscad-fastener/iso
  * @param {object} specifications - washer specifications
  */
 export const generateWasher = (spec) => {

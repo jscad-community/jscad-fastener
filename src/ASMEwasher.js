@@ -5,9 +5,9 @@ import { SpringWasher, StarWasher, Washer } from './washer.js'
  */
 
 // Parameter Layout Index Offsets
-export const ID_INDEX = 0      // Inner Diameter
-export const OD_INDEX = 1      // Outer Diameter
-export const TH_INDEX = 2      // Thickness
+const ID_INDEX = 0      // Inner Diameter
+const OD_INDEX = 1      // Outer Diameter
+const TH_INDEX = 2      // Thickness
 
 const MM_PER_INCH = 25.4
 
@@ -19,6 +19,10 @@ const MM_PER_INCH = 25.4
  * NOTE: Dimensions are in inches
  *
  * "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TYPE_A_NARROW = {
   // Machine Screw Sizes (#0 to #12)
@@ -64,6 +68,10 @@ export const ASME_B18_21_1_TYPE_A_NARROW = {
  * NOTE: Dimensions are in inches
  *
  * "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TYPE_A_WIDE = {
   // Machine Screw Sizes (#0 to #12)
@@ -115,6 +123,10 @@ export const ASME_B18_21_1_TYPE_A_WIDE = {
  * NOTE: Dimensions are in inches
  *
  * "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASTM_F436_STRUCTURAL = {
   "1/4": [0.281, 0.625, 0.051],
@@ -151,6 +163,10 @@ export const ASTM_F436_STRUCTURAL = {
  * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
  *
  * Maintained in precise decimal Inches (in).
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_LOCK_REGULAR = {
   // Machine Screw Sizes (#0 to #12)
@@ -201,6 +217,10 @@ export const ASME_B18_21_1_LOCK_REGULAR = {
  * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
  *
  * Features expanded outside diameters and massive thickness walls to handle high torque.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_LOCK_HEAVY = {
   // Machine Screw Sizes (#0 to #12)
@@ -257,6 +277,10 @@ export const ASME_B18_21_1_LOCK_HEAVY = {
  * Note: Sizes #0, #1, and sizes larger than 1-3/4" do not exist under ASME B18.21.1.
  *
  * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TOOTH_EXTERNAL = {
   // Machine Screw Sizes (#0 to #12)
@@ -296,6 +320,10 @@ export const ASME_B18_21_1_TOOTH_EXTERNAL = {
  * Maintained in precise decimal Inches (in).
  * 
  * Note: Sizes #0, #1, and sizes larger than 1-3/4" do not exist under ASME B18.21.1.
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TOOTH_INTERNAL = {
   // Machine Screw Sizes (#0 to #12)
@@ -325,6 +353,12 @@ export const ASME_B18_21_1_TOOTH_INTERNAL = {
   "1-3/4": [1.791, 2.619, 0.067]
 }
 
+/**
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
+ */
 export const ASME_B18_21_1_TYPE_B_REGULAR = {
   // Machine Screw Sizes
   "#0":   [0.068, 0.188, 0.025],
@@ -360,6 +394,12 @@ export const ASME_B18_21_1_TYPE_B_REGULAR = {
   "3":   [3.125, 5.500, 0.284]
 }
 
+/**
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
+ */
 export const ASME_B18_21_1_TYPE_B_NARROW = {
   // Machine Screw Sizes
   "#0":     [0.068, 0.125, 0.025],
@@ -395,6 +435,12 @@ export const ASME_B18_21_1_TYPE_B_NARROW = {
   "3":     [3.125, 6.000, 0.239]
 }
 
+/**
+ *
+ * @constant
+ * @type {Object}
+ * @memberof jscad-fastener/asme
+ */
 export const ASME_B18_21_1_TYPE_B_WIDE = {
   // Machine Screw Sizes
   "#0": [0.068, 0.250, 0.020],
@@ -448,6 +494,7 @@ const standards = {
  *
  * NOTE: Returned dimensions are millimeters.
  *
+ * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ASME washer, see lists above
  * @param {Boolean} [spec.isHeavy=false] - get dimensions for heavy washers
@@ -530,6 +577,7 @@ export const getWasherDimensions = (spec) => {
  *
  * @see getWasherDimensions
  * 
+ * @memberof jscad-fastener/asme
  * @param {object} specifications - washer specifications
  */
 export const generateWasher = (spec) => {
