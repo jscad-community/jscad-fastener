@@ -105,10 +105,34 @@ export const parseBoltSpec = (str) => {
   const size = `M${nominalDiameter}`
 
   let spec = null
+  let pitch = null
+  let length = null
+
   if (threadMatch[2] && threadMatch[3]) {
+    // Scenario A: Three distinct numbers are present (e.g., M12 x 1.25 x 50)
     spec = getThreadSpec(size, 'FINE')
+    pitch = parseFloat(threadMatch[2])
+    length = parseInt(threadMatch[3], 10)
+  } else if (threadMatch[2]) {
+    // Scenario B: Two distinct numbers are present (e.g., M12 x 50)
+    const secondValue = parseFloat(threadMatch[2])
+      
+    // Safety check: Is this second number a pitch or a length?
+    // Standard coarse/fine pitches don't exceed 6.0mm.
+    if (threadMatch[2].includes('.') && secondValue < 4.0) {
+      spec = getThreadSpec(size, 'FINE')
+      pitch = secondValue
+      length = null // No length specified in the callout string yet
+    } else {
+      spec = getThreadSpec(size, 'COARSE') 
+      pitch = spec ? spec.pitch : null // Pull pitch default from your thread lookup table
+      length = parseInt(threadMatch[2], 10)
+    }
   } else {
+    // Scenario C: Only one number present (e.g., "M12 Bolt")
     spec = getThreadSpec(size, 'COARSE')
+    pitch = spec ? spec.pitch : null
+    length = null // No length specified in the callout string yet
   }
 
   const toleranceMatch = str.match(/(?:\s|-)([4-7][a-h](?:[4-7][a-h])?)(?:\s|-|\$)/)
@@ -164,7 +188,8 @@ export const parseBoltSpec = (str) => {
 
   return {
     size,
-    pitch: spec.pitch,
+    pitch,
+    length,
     threadSeries: spec.threadSeries,
     standard,
     threadTolerance,
