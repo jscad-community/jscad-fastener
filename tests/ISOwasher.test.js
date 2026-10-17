@@ -14,85 +14,67 @@ test('iso.getWasherDimensions', () => {
   expect(iso.getWasherDimensions({size: "M4"})).toStrictEqual(
   {
     "innerDiameter": 4.3,
-    "isExternal": false,
-    "isHeavy": false,
-    "isInternal": false,
     "isLocking": false,
-    "isWide": false,
     "outerDiameter": 9,
     "size": "M4",
-    "standard": "ISO",
+    "standard": "ISO_7090",
     "thickness": 0.8,
+    "type": "REGULAR",
   }
   )
-  expect(iso.getWasherDimensions({size: "M14", isHeavy: true})).toStrictEqual(
+  expect(iso.getWasherDimensions({size: "M14", type: 'HEAVY'})).toStrictEqual(
   {
     "innerDiameter": 15,
-    "isExternal": false,
-    "isHeavy": true,
-    "isInternal": false,
     "isLocking": false,
-    "isWide": false,
-    "outerDiameter": 28,
-    "size": "M14",
-    "standard": "ISO",
-    "thickness": 3,
-  }
-  )
-  expect(iso.getWasherDimensions({size: "M14", isWide: true})).toStrictEqual(
-  {
-    "innerDiameter": 15,
-    "isExternal": false,
-    "isHeavy": false,
-    "isInternal": false,
-    "isLocking": false,
-    "isWide": true,
     "outerDiameter": 44,
     "size": "M14",
-    "standard": "ISO",
+    "standard": "ISO_7093",
     "thickness": 3,
+    "type": "HEAVY",
+  }
+  )
+  expect(iso.getWasherDimensions({size: "M14", type: 'wide'})).toStrictEqual(
+  {
+    "innerDiameter": 15,
+    "isLocking": false,
+    "outerDiameter": 44,
+    "size": "M14",
+    "standard": "ISO_7093",
+    "thickness": 3,
+    "type": "WIDE",
   }
   )
   expect(iso.getWasherDimensions({size: "M14", isLocking: true})).toStrictEqual(
   {
     "innerDiameter": 14.2,
-    "isExternal": false,
-    "isHeavy": false,
-    "isInternal": false,
     "isLocking": true,
-    "isWide": false,
     "outerDiameter": 24.1,
     "size": "M14",
-    "standard": "ISO",
+    "standard": "DIN_127_B",
     "thickness": 3,
+    "type": "REGULAR",
   }
   )
-  expect(iso.getWasherDimensions({size: "M14", isLocking: true, isInternal: true})).toStrictEqual(
+  expect(iso.getWasherDimensions({size: "M14", isLocking: true, type: 'internal'})).toStrictEqual(
   {
     "innerDiameter": 15,
-    "isExternal": false,
-    "isHeavy": false,
-    "isInternal": true,
     "isLocking": true,
-    "isWide": false,
     "outerDiameter": 24,
     "size": "M14",
-    "standard": "ISO",
+    "standard": "DIN_6797_J",
     "thickness": 1,
+    "type": "INTERNAL",
   }
   )
-  expect(iso.getWasherDimensions({size: "M14", isLocking: true, isExternal: true})).toStrictEqual(
+  expect(iso.getWasherDimensions({size: "M14", isLocking: true, type: 'EXTERNAL'})).toStrictEqual(
   {
     "innerDiameter": 15,
-    "isExternal": true,
-    "isHeavy": false,
-    "isInternal": false,
     "isLocking": true,
-    "isWide": false,
     "outerDiameter": 24,
     "size": "M14",
-    "standard": "ISO",
+    "standard": "DIN_6797_A",
     "thickness": 1,
+    "type": "EXTERNAL",
   }
   )
 })
@@ -101,10 +83,10 @@ test('iso.generateWasher', () => {
   let w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8})
   expect(geom3.isA(w)).toBe(true)
 
-  w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isInternal: true})
+  w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true, type: 'INTERNAL'})
   expect(geom3.isA(w)).toBe(true)
 
-  w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isExternal: true})
+  w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true, type: 'EXTERNAL'})
   expect(geom3.isA(w)).toBe(true)
 
   w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true})

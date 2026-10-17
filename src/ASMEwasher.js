@@ -525,15 +525,16 @@ const standards = {
 /**
  * Get the overall washer dimensions for the given specification.
  *
- * NOTE: Returned dimensions are millimeters.
+ * @see parseWasherSpec() for parsing of specifications
+ *
+ * NOTE: Returned dimensions are inches.
  *
  * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ASME washer, see lists above
- * @param {Boolean} [spec.isHeavy=false] - get dimensions for heavy washers
+ * @param {String} [spec.standard=null] - ISO standard or none (use type to choose)
  * @param {Boolean} [spec.isLocking=false] - get locking washer dimensions
- * @param {Boolean} [spec.isInternal=false] - get locking washer with internal stars
- * @param {Boolean} [spec.isExternal=false] - get locking washer with external stars
+ * @param {String} [spec.type='REGULAR'] - type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL)
  * @param {Number} [spec.idOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.odOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
@@ -543,11 +544,8 @@ export const getWasherDimensions = (spec) => {
   let {
     size,
     standard = null,
-    isWide = false,
-    isHeavy = false,
     isLocking = false,
-    isExternal = false,
-    isInternal = false,
+    type = 'REGULAR',
     idOffset = 0,
     odOffset = 0,
     thicknessOffset = 0
@@ -555,25 +553,34 @@ export const getWasherDimensions = (spec) => {
 
   if (!size) return null
 
-  standard = standard ? standard : 'ASME'
-
-  let dataset = standards[standard]
+  type = type.toUpperCase()
 
   // select the ASME washer standard using the given options
-  if (!dataset) {
+  if (!standard) {
     if (isLocking) {
-      // select a locking washer standard
-      if (!dataset && isInternal) dataset = ASME_B18_21_1_TOOTH_INTERNAL
-      if (!dataset && isExternal) dataset = ASME_B18_21_1_TOOTH_EXTERNAL
-      if (!dataset && isHeavy) dataset = ASME_B18_21_1_LOCK_HEAVY
-      if (!dataset) dataset = ASME_B18_21_1_LOCK_REGULAR
+      if (type === 'INTERNAL') {
+        standard = 'ASME_B18_21_1_TOOTH_INTERNAL'
+      } else if (type === 'EXTERNAL') {
+        standard = 'ASME_B18_21_1_TOOTH_EXTERNAL'
+      } else if (type === 'HEAVY') {
+        standard = 'ASME_B18_21_1_LOCK_HEAVY'
+      } else {
+        type = 'REGULAR'
+        standard = 'ASME_B18_21_1_LOCK_REGULAR'
+      }
     } else {
-      // select a regular washer standard
-      if (!dataset && isHeavy) dataset = ASTM_F436_STRUCTURAL
-      if (!dataset && isWide) dataset = ASME_B18_21_1_TYPE_A_WIDE
-      if (!dataset) dataset = ASME_B18_21_1_TYPE_A_NARROW
+      if (type === 'STRUCTURAL') {
+        standard = 'ASTM_F436_STRUCTURAL'
+      } else if (type === 'HEAVY' || type === 'WIDE') {
+        standard = 'ASME_B18_21_1_TYPE_A_WIDE'
+      } else {
+        type = 'REGULAR'
+        standard = 'ASME_B18_21_1_TYPE_A_NARROW'
+      }
     }
   }
+
+  let dataset = standards[standard]
   if (!dataset) return null
 
   // get the dimensions for the requested size
@@ -584,20 +591,12 @@ export const getWasherDimensions = (spec) => {
   let outerDiameter = dims[OD_INDEX] + (odOffset * 2)
   let thickness = dims[TH_INDEX] + (thicknessOffset * 2)
 
-  // convert ASME inches to mm
-  innerDiameter = Number(innerDiameter * MM_PER_INCH).toFixed(2)
-  outerDiameter = Number(outerDiameter * MM_PER_INCH).toFixed(2)
-  thickness = Number(thickness * MM_PER_INCH).toFixed(2)
-
   return {
     // spec
     size,
     standard,
-    isWide,
-    isHeavy,
     isLocking,
-    isInternal,
-    isExternal,
+    type,
     // dimensions
     innerDiameter,
     outerDiameter,
@@ -608,41 +607,44 @@ export const getWasherDimensions = (spec) => {
 /**
  * Generate a solid washer manifold using the given dimensions.
  *
- * @see getWasherDimensions
+ * @see getWasherDimensions() to obtain correct dimensions
+ *
+ * NOTE: All dimensions are inches
  * 
  * @memberof jscad-fastener/asme
  * @param {object} specifications - washer specifications
  */
 export const generateWasher = (spec) => {
-  const {
+  let {
+    isLocking,
+    type,
     innerDiameter,
     outerDiameter,
     thickness,
-    isLocking = false,
-    isInternal = false,
-    isExternal = false,
     segments = 36
   } = spec
+
+  // convert ASME inches to mm
+  innerDiameter = Number((innerDiameter * MM_PER_INCH).toFixed(2))
+  outerDiameter = Number((outerDiameter * MM_PER_INCH).toFixed(2))
+  thickness = Number((thickness * MM_PER_INCH).toFixed(2))
 
   const washerSpec = { innerDiameter, outerDiameter, thickness, segments }
 
   // lock washers
-
-  if (isInternal) {
-    washerSpec['isInternal'] = true
-    return StarWasher(washerSpec)
-  }
-
-  if (isExternal) {
-    washerSpec['isInternal'] = false
-    return StarWasher(washerSpec)
-  }
-
   if (isLocking) {
-    return SpringWasher(washerSpec)
+    if (type === 'INTERNAL') {
+      washerSpec['isInternal'] = true
+      return StarWasher(washerSpec)
+    } else if (type === 'EXTERNAL') {
+      washerSpec['isInternal'] = false
+      return StarWasher(washerSpec)
+    } else {
+      return SpringWasher(washerSpec)
+    }
   }
 
-  // standard washer
+  // standard washers
   return Washer(washerSpec)
 }
 

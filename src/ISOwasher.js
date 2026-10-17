@@ -487,16 +487,16 @@ const standards = {
 /**
  * Get the overall washer dimensions for the given specification.
  *
+ * @see parseWasherSpec() for parsing of specifications
+ *
  * NOTE: Returned dimensions are millimeters.
  *
  * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ISO / ASME washer, see lists above
- * @param {String} [spec.standard=null] - ISO standard or none
- * @param {Boolean} [spec.isHeavy=false] - get dimensions for heavy washers
+ * @param {String} [spec.standard=null] - ISO standard or none (use type to choose)
  * @param {Boolean} [spec.isLocking=false] - get locking washer dimensions
- * @param {Boolean} [spec.isInternal=false] - get locking washer with internal stars
- * @param {Boolean} [spec.isExternal=false] - get locking washer with external stars
+ * @param {String} [spec.type='REGULAR'] - type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL)
  * @param {Number} [spec.idOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.odOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
@@ -506,11 +506,8 @@ export const getWasherDimensions = (spec) => {
   let {
     size,
     standard = null,
-    isWide = false,
-    isHeavy = false,
     isLocking = false,
-    isExternal = false,
-    isInternal = false,
+    type = 'REGULAR',
     idOffset = 0,
     odOffset = 0,
     thicknessOffset = 0
@@ -518,24 +515,36 @@ export const getWasherDimensions = (spec) => {
 
   if (!size) return null
 
-  standard = standard ? standard : 'ISO'
-
-  let dataset = standards[standard]
+  type = type.toUpperCase()
 
   // select the ISO washer standard using the given options
-  if (!dataset) {
+  if (!standard) {
     if (isLocking) {
       // select a locking washer standard
-      if (!dataset && isInternal) dataset = DIN_6797_J
-      if (!dataset && isExternal) dataset = DIN_6797_A
-      if (!dataset && isHeavy) dataset = DIN_7980
-      if (!dataset) dataset = DIN_127_B
+      if (type === 'INTERNAL') {
+        standard = 'DIN_6797_J'
+      } else if (type === 'EXTERNAL') {
+        standard = 'DIN_6797_A'
+      } else if (type === 'HEAVY') {
+        standard = 'DIN_7980'
+      } else {
+        type = 'REGULAR'
+        standard = 'DIN_127_B'
+      }
     } else {
-      if (!dataset && isHeavy) dataset = EN_14399_6
-      if (!dataset && isWide) dataset = ISO_7093
-      if (!dataset) dataset = ISO_7090
+      // select a regular washer standard
+      if (type === 'STRUCTURAL') {
+        standard = 'EN_14399_6_STRUCTURAL'
+      } else if (type === 'HEAVY' || type === 'WIDE') {
+        standard = 'ISO_7093'
+      } else {
+        type = 'REGULAR'
+        standard = 'ISO_7090'
+      }
     }
   }
+
+  let dataset = standards[standard]
   if (!dataset) return null
 
   // get the dimensions for the requested size
@@ -550,11 +559,8 @@ export const getWasherDimensions = (spec) => {
     // spec
     size,
     standard,
-    isWide,
-    isHeavy,
     isLocking,
-    isInternal,
-    isExternal,
+    type,
     // dimensions
     innerDiameter,
     outerDiameter,
@@ -565,41 +571,39 @@ export const getWasherDimensions = (spec) => {
 /**
  * Generate a solid washer manifold using the given dimensions.
  *
- * @see getWasherDimensions
+ * @see getWasherDimensions() to obtain correct dimensions
+ *
+ * NOTE: All dimensions are millimeters
  * 
  * @memberof jscad-fastener/iso
  * @param {object} specifications - washer specifications
  */
 export const generateWasher = (spec) => {
   const {
+    isLocking,
+    type,
     innerDiameter,
     outerDiameter,
     thickness,
-    isLocking = false,
-    isInternal = false,
-    isExternal = false,
     segments = 36
   } = spec
 
   const washerSpec = { innerDiameter, outerDiameter, thickness, segments }
 
   // lock washers
-
-  if (isInternal) {
-    washerSpec['isInternal'] = true
-    return StarWasher(washerSpec)
-  }
-
-  if (isExternal) {
-    washerSpec['isInternal'] = false
-    return StarWasher(washerSpec)
-  }
-
   if (isLocking) {
-    return SpringWasher(washerSpec)
+    if (type === 'INTERNAL') {
+      washerSpec['isInternal'] = true
+      return StarWasher(washerSpec)
+    } else if (type === 'EXTERNAL') {
+      washerSpec['isInternal'] = false
+      return StarWasher(washerSpec)
+    } else {
+      return SpringWasher(washerSpec)
+    }
   }
 
-  // standard washer
+  // standard washers
   return Washer(washerSpec)
 }
 
