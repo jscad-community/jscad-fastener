@@ -1,6 +1,6 @@
 import { getThreadSpec } from './ISOthreads.js'
 
-/**
+/*
  * ISO 273 Bolt Clearance Hole Diameters (all values in mm)
  *
  * Map structure optimized for clean, semantic UI and geometry engine routing.
@@ -11,7 +11,7 @@ import { getThreadSpec } from './ISOthreads.js'
  * @type {Object}
  * @memberof jscad-fastener/iso
  */
-export const ISO_273_CLEARANCE_HOLES = {
+const ISO_273_CLEARANCE_HOLES = {
   "M1.6": { close: 1.700, normal: 1.800, loose: 2.000 },
   "M2":   { close: 2.200, normal: 2.400, loose: 2.600 },
   "M2.5": { close: 2.700, normal: 2.800, loose: 3.100 },
@@ -63,11 +63,13 @@ const extractMaterialAndCoating = (str) => {
 }
 
 /**
- * Procedural function calculating bolt specifications.
+ * Parses ISO bolt specifications.
  *
- * Dynamically appends ISO 273 clearance hole guidelines based on the nominal size.
- *
+ * NOTE: All returned specifications are millimeters.
+ * 
  * @memberof jscad-fastener/iso
+ * @param {String} str - specification
+ * @returns {Object} ISO bolt specification
  */
 export const parseBoltSpec = (str) => {
   // 1. Extract the Bolt Standard / Specification (e.g., ISO 4014, ISO 4017, DIN 931)
@@ -178,11 +180,13 @@ export const parseBoltSpec = (str) => {
 }
 
 /**
- * TBW
+ * Parses ISO nut specification.
  *
- * Dynamically outputs tap drill hole sizing with absolute structural limits.
- *
+ * NOTE: All returned specifications are millimeters.
+ * 
  * @memberof jscad-fastener/iso
+ * @param {String} spec - specification
+ * @returns {Object} ISO nut specification
  */
 export const parseNutSpec = (str) => {
   const threadRegex = /M(\d+(?:\.\d+)?)(?:\s*x\s*(\d+(?:\.\d+)?))?/i
@@ -277,16 +281,17 @@ export const parseNutSpec = (str) => {
 }
 
 /**
- * Parses metric/ISO/DIN washer specification strings.
- * Maintained strictly in millimeters (mm).
+ * Parses ISO/DIN washer specification.
+ *
+ * NOTE: All returned specifications are millimeters.
  * 
  * @memberof jscad-fastener/iso
- * @param {string} str - e.g., "Plain Washer, ISO 7089, M12, 200HV, Zinc"
- * @returns {Object} Clean token matching the unified formatting footprint of the system.
+ * @param {String} str - specification, e.g. "Plain Washer, ISO 7089, M12, 200HV, Zinc"
+ * @returns {Object} ISO washer specification
  */
 export const parseWasherSpec = (str) => {
   if (!str || typeof str !== 'string') {
-    throw new Error("Invalid Input: String required for ISO washer parsing pipeline.")
+    throw new Error("Missing string parameter; str")
   }
 
   const upperStr = str.toUpperCase()

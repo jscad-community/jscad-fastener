@@ -56,7 +56,7 @@ const ASME_B18_2_8_CLEARANCE_HOLES = {
  * NOTE: All returned specifications are inches.
  * 
  * @memberof jscad-fastener/asme
- * @param {string} spec - specification
+ * @param {String} spec - specification
  * @returns {Object} ASME bolt specification
  */
 export const parseBoltSpec = (spec) => {
@@ -132,7 +132,7 @@ export const parseBoltSpec = (spec) => {
  * NOTE: All returned specifications are inches.
  * 
  * @memberof jscad-fastener/asme
- * @param {string} spec - specification
+ * @param {String} spec - specification
  * @returns {Object} ASME nut specification
  */
 export const parseNutSpec = (spec) => {
@@ -239,7 +239,7 @@ export const parseNutSpec = (spec) => {
  * NOTE: All returned specifications are inches.
  * 
  * @memberof jscad-fastener/asme
- * @param {string} spec - specification
+ * @param {String} spec - specification
  * @returns {Object} ASME washer specification
  */
 export const parseWasherSpec = (spec) => {

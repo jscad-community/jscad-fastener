@@ -234,7 +234,7 @@ const standards = {
 /**
  * Get the ASME Hex Bolt dimensions for the given specification.
  *
- * @see parseBoltSpec() for parsing of specifications
+ * @see parseBoltSpec() for parsing of text specifications
  *
  * NOTE: All dimensions are inches.
  *

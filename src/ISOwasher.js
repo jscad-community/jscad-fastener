@@ -16,7 +16,7 @@ export const TH_INDEX = 2      // Thickness
  *
  * Profile Geometry: Flat, square outer edge (No chamfer)
  *
- * "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -73,7 +73,7 @@ export const ISO_7089 = {
  *
  * Profile Geometry: Chamfered (beveled/sloped) outer edge
  *
- * Dimensions: Normal series. (Outer diameter ≈ 2× nominal thread size)
+ * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -91,7 +91,7 @@ export const ISO_7090 = ISO_7089
  * Dimensions: Normal series. The outer diameter matches ISO 7089/7090,
  * but the inner diameter is punched significantly looser (larger tolerances) to accommodate lower-grade fasteners.
  *
- * "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -150,7 +150,7 @@ export const ISO_7091 = {
  *
  * Dimensions: Small series. The outer diameter is tightly constrained, roughly 1.5× to 1.8× the thread size
  *
- * "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -209,7 +209,7 @@ export const ISO_7092 = {
  *
  * Dimensions: Large series. The outer diameter is dramatically enlarged, roughly 3× the nominal thread size
  *
- * "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -259,11 +259,9 @@ export const ISO_7093 = {
  *
  * Range Covered: M1.6 to M30 (Complete Official German Standard Bounds)
  *
- * Schema Layout: "Designation": [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
- *
- * Maintained strictly in precise decimal Millimeters (mm).
- * 
  * Note: Sizes below M1.6 and sizes larger than M30 do not exist under DIN 6797.
+ *
+ * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -297,15 +295,13 @@ export const DIN_6797_A = {
  *
  * Range Covered: M2 to M30 (Complete Official German Standard Bounds)
  *
- * Schema Layout: "Designation": [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
- *
- * Maintained strictly in precise decimal Millimeters (mm).
- * 
  * Note: Per the official DIN standard authority limits:
  *   - Sizes M1, M1.2, and M1.6 are completely omitted as internal tooth geometry
  *     at micro-scales causes structural metal stress fractures.
  *   - Sizes larger than M30 do not exist because thin internal tabs easily 
  *     flatten or strip out under heavy industrial structural preload torques.
+ *
+ * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
  * @type {Object}
@@ -338,9 +334,7 @@ export const DIN_6797_J = {
  *
  * Exact Sizing Envelope Range: M2 to M48 (All standard physical sizes)
  *
- * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
- *
- * Maintained strictly in precise decimal Millimeters (mm).
+ * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
  * @type {Object}
@@ -379,12 +373,10 @@ export const DIN_7980 = {
 /**
  * EN 14399-6 (Formerly DIN 6916) High-Strength Preload Structural Washers
  *
- * Schema Layout: "Designation": [insideDiameter (d1), outsideDiameter (d2), thickness (h)]
- *
- * Maintained strictly in precise decimal Millimeters (mm).
- * 
  * Note: These washers feature an explicit external perimeter chamfer and 
  * are tightly bounded between M12 and M64 due to heavy engineering rules.
+ *
+ * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
  * @type {Object}
@@ -412,6 +404,8 @@ export const EN_14399_6 = {
 
 /**
  * DIN 127 B Helical Spring Split Lock Washers with square ends
+ *
+ * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
  * @type {Object}
@@ -450,6 +444,8 @@ export const DIN_127_B = {
 
 /**
  * ISO 7094 Plain washers — Extra large series — Product grade C
+ *
+ * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
  * @type {Object}
@@ -493,14 +489,14 @@ const standards = {
  *
  * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
- * @param {String} [spec.size] - required, size of ISO / ASME washer, see lists above
+ * @param {String} spec.size - required, size of ISO / ASME washer, see lists above
  * @param {String} [spec.standard=null] - ISO standard or none (use type to choose)
  * @param {Boolean} [spec.isLocking=false] - get locking washer dimensions
  * @param {String} [spec.type='REGULAR'] - type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL)
  * @param {Number} [spec.idOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.odOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
- * @returns {Object} washer dimensions: innerRadius, outerRadius, thickness (mm)
+ * @returns {Object} ISO specification with washer dimensions: innerRadius, outerRadius, thickness
  */
 export const getWasherDimensions = (spec) => {
   let {
@@ -576,7 +572,12 @@ export const getWasherDimensions = (spec) => {
  * NOTE: All dimensions are millimeters
  * 
  * @memberof jscad-fastener/iso
- * @param {object} specifications - washer specifications
+ * @param {object} spec - washer specifications
+ * @returns {Geom3} washer, centered on XYZ
+ *
+ * @example
+ * const spec = getWasherDimensions({size: 'M22', type: 'HEAVY'})
+ * const nut = generateWasher(spec)
  */
 export const generateWasher = (spec) => {
   const {

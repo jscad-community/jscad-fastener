@@ -6,7 +6,7 @@ import { HexNut } from './nut.js'
 
 // Dimensions Offsets
 const WIDTH_ACROSS_FLATS = 0
-const STANDARD_HEIGHT = 1
+const HEX_HEIGHT = 1
 const TOTAL_HEIGHT = 2
 
 /**
@@ -19,7 +19,7 @@ const TOTAL_HEIGHT = 2
  * - Features standard ISO Width Across Flats (WAF) requirements for M10 (16mm), M12 (18mm), and M14 (21mm).
  * - Incorporates a precision circular underside bearing face to minimize thread-axis angularity errors.
  * 
- * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
  * @type {Object}
@@ -67,7 +67,7 @@ export const ISO_4032_HEX_STANDARD = {
  * - Designed with a heavy thickness profile to reliably match high-strength structural bolts (e.g., ISO 7411 / EN 14399-4).
  * - Features tightly managed perpendicularity tolerances on the circular bearing face surface.
  * 
- * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
  * @type {Object}
@@ -93,7 +93,7 @@ export const ISO_7414_HEX_STRUCTURAL_HEAVY = {
  * - Increased height provides extended thread engagement length to fully develop high clamping preloads.
  * - Adheres to standard ISO WAF dimensions (e.g., M10=16mm, M12=18mm).
  * 
- * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
  * @type {Object}
@@ -128,7 +128,7 @@ export const ISO_4033_HEX_HIGH = {
  * - Double-chamfered profile allows either flat face to function as a reliable bearing surface.
  * - Frequently jammed against standard Style 1 or Style 2 nuts to freeze thread movement mechanically.
  * 
- * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
  * @type {Object}
@@ -176,7 +176,7 @@ export const ISO_4035_HEX_THIN_JAM = {
  * - Height array elements explicitly isolate the wrenching driving body height from the total top crowning collar height.
  * - Strictly directional; the flat, non-insert bottom face serves as the designated circular bearing surface.
  * 
- * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
@@ -208,7 +208,7 @@ export const ISO_7040_LOCK_STANDARD = {
  * - Combines the thin mechanical body behavior of a jam nut with dynamic prevailing torque vibration resistance.
  * - Possesses reduced load-bearing capacity compared to the standard ISO 7040 locking counterpart.
  * 
- * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
@@ -240,7 +240,7 @@ export const ISO_10511_LOCK_THIN = {
  * - Extended driving height (m_min) ensures robust wrench socket engagement while accommodating higher-tensile loads.
  * - Thick profile ensures maximum thread engagement inside the locking zone before reaching the plastic boundary collar.
  * 
- * Pattern: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
  * @type {Object}
@@ -273,7 +273,7 @@ export const ISO_7041_LOCK_HIGH = {
  * - Features a single-sided top chamfer, leaving the bottom face completely flat to optimize the circular bearing face contact area.
  * - Width across flats (s) requirements remain identical to early companion DIN hex standards to utilize matching open-ended spanners.
  * 
- * Pattern: [Width Across Flats (s), Nut Height (m_min), Total Height / Corner Extension (h_max)]
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
  * @type {Object}
@@ -297,8 +297,6 @@ export const DIN_557_SQUARE = {
 }
 
 // TBD Support square nuts
-// Calculate outer corner radius directly for the 4-corner square profile
-// const squareOuterRadius = +((widthAcrossFlats * 1.4142) / 2).toFixed(3)
 // TBD Support flange nuts
 
 const standards = {
@@ -312,7 +310,11 @@ const standards = {
 }
 
 /**
- * Get the hex nut dimensions for the given ISO specification.
+ * Get the hex nut dimensions for the given ISO nut specification.
+ *
+ * @see parseNutSpec() for parsing of text specifications
+ *
+ * NOTE: All dimensions are millimeters.
  *
  * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
@@ -320,7 +322,7 @@ const standards = {
  * @param {String} [spec.type='STANDARD'] - type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
- * @returns {Object} hex nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
+ * @returns {Object} ISO specification with nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
  */
 export const getNutDimensions = (spec = {}) => {
   let {
@@ -357,7 +359,7 @@ export const getNutDimensions = (spec = {}) => {
   if (!dim) return null
 
   const widthAcrossFlats = dim[WIDTH_ACROSS_FLATS] + (flatOffset * 2)
-  const height = dim[STANDARD_HEIGHT] + (heightOffset * 2)
+  const height = dim[HEX_HEIGHT] + (heightOffset * 2)
   
   // height prioritization logic sequence
   // let totalHeight = stdH
@@ -396,16 +398,18 @@ export const getNutDimensions = (spec = {}) => {
 /**
  * Generate a ISO Hex from the given specification.
  *
- * @see getNutDimensions
+ * @see getNutDimensions() for obtaining correct dimensions
+ *
+ * NOTE: All dimensions are millimeters.
  *
  * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
- * @param {String} [spec.type] - type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD
+ * @param {String} spec.type - type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)
  * @param {Number} spec.bearingFaceHeight - height of the bottom bearing step (C), may be zero
- * @param {Number} spec.segments=36 - number of segments per full turn
- * @returns {Geom3} hex nut, centered on XYZ
+ * @param {Number} [spec.segments=36] - number of segments per full turn
+ * @returns {Geom3} ISO nut, centered on XYZ
  *
  * @example
  * const spec = getNutDimensions({size: 'M10', isHeavy: true})

@@ -510,7 +510,7 @@ const standards = {
 /**
  * Get the overall washer dimensions for the given specification.
  *
- * @see parseWasherSpec() for parsing of specifications
+ * @see parseWasherSpec() for parsing of text specifications
  *
  * NOTE: Returned dimensions are inches.
  *
@@ -597,7 +597,7 @@ export const getWasherDimensions = (spec) => {
  * NOTE: All dimensions are inches
  * 
  * @memberof jscad-fastener/asme
- * @param {object} specifications - washer specifications
+ * @param {object} spec - washer specifications
  * @returns {Geom3} washer, centered on XYZ
  *
  * @example
