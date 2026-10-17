@@ -317,8 +317,7 @@ const standards = {
  * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ISO nut, see lists above
- * @param {Boolean} [spec.isHeavy=false] - generate nuts with heavy dimensions
- * @param {Boolean} [spec.isThin=false] - generate nuts with thin (jam) dimensions
+ * @param {String} [spec.type='STANDARD'] - type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
  * @returns {Object} hex nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
@@ -327,24 +326,30 @@ export const getNutDimensions = (spec = {}) => {
   let {
     size,
     standard = null,
-    isHeavy = false,
-    isThin = false,
+    type = 'STANDARD',
     flatOffset = 0,
     heightOffset = 0,
   } = spec
 
   if (!size) return null
 
-  standard = standard ? standard : 'ISO'
-
-  let dataset = standards[standard]
+  type = type.toUpperCase()
 
   // select ISO standard using the given options
-  if (!dataset) {
-    if (!dataset && isThin) dataset = ISO_4035_HEX_THIN_JAM
-    if (!dataset && isHeavy) dataset = ISO_4033_HEX_HIGH
-    if (!dataset) dataset = ISO_4032_HEX_STANDARD
+  if (!standard) {
+    if (type === 'THIN' || type === 'JAM') {
+      standard = 'ISO_4035_HEX_THIN_JAM'
+    } else if (type === 'HIGH' || type === 'HEAVY') {
+      standard = 'ISO_4033_HEX_HIGH'
+    } else if (type === 'STRUCTURAL') {
+      standard = 'ISO_7414_HEX_STRUCTURAL_HEAVY'
+    } else {
+      type = 'STANDARD'
+      standard = 'ISO_4032_HEX_STANDARD'
+    }
   }
+
+  let dataset = standards[standard]
   if (!dataset) return null
 
   // get the dimensions for the requested size
@@ -380,8 +385,7 @@ export const getNutDimensions = (spec = {}) => {
     // spec
     size,
     standard,
-    isHeavy,
-    isThin,
+    type,
     // dimensions
     widthAcrossFlats,
     height,
@@ -396,6 +400,7 @@ export const getNutDimensions = (spec = {}) => {
  *
  * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
+ * @param {String} [spec.type] - type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)
  * @param {Number} spec.bearingFaceHeight - height of the bottom bearing step (C), may be zero
@@ -408,6 +413,7 @@ export const getNutDimensions = (spec = {}) => {
  */
 export const generateNut = (spec = {}) => {
   const {
+    type,
     widthAcrossFlats,
     height,
     bearingFaceHeight,

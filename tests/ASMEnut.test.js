@@ -14,54 +14,60 @@ test('asme.getNutDimensions', () => {
   expect(asme.getNutDimensions({size: "1/2"})).toStrictEqual(
   {
     "height": 11.112,
-    "isHeavy": false,
-    "isThin": false,
     "size": "1/2",
-    "standard": "ASME",
+    "standard": "ASME_B18_2_2_NORMAL",
+    "type": "STANDARD",
     "bearingFaceHeight": 0,
     "widthAcrossFlats": 19.05,
   }
   )
-  expect(asme.getNutDimensions({size: "1/2", isHeavy: true})).toStrictEqual(
+  expect(asme.getNutDimensions({size: "1/2", type: 'HEAVY'})).toStrictEqual(
   {
     "height": 12.304,
-    "isHeavy": true,
-    "isThin": false,
     "size": "1/2",
-    "standard": "ASME",
+    "standard": "ASME_B18_2_2_HEAVY",
+    "type": "HEAVY",
     "bearingFaceHeight": 0.016,
     "widthAcrossFlats": 22.225,
   }
   )
-  expect(asme.getNutDimensions({size: "1/2", isThin: true})).toStrictEqual(
+  expect(asme.getNutDimensions({size: "1/2", type: 'thin'})).toStrictEqual(
   {
     "height": 7.938,
-    "isHeavy": false,
-    "isThin": true,
     "size": "1/2",
-    "standard": "ASME",
+    "standard": "ASME_B18_2_2_JAM",
+    "type": "THIN",
     "bearingFaceHeight": 0,
     "widthAcrossFlats": 19.05,
   }
   )
-  expect(asme.getNutDimensions({size: "1/2", isThin: true, isHeavy: true})).toStrictEqual(
+  expect(asme.getNutDimensions({size: "1/2", type: 'JAM'})).toStrictEqual(
   {
     "height": 7.938,
-    "isHeavy": true,
-    "isThin": true,
     "size": "1/2",
-    "standard": "ASME",
-    "bearingFaceHeight": 0.016,
-    "widthAcrossFlats": 22.225,
+    "standard": "ASME_B18_2_2_JAM",
+    "type": "JAM",
+    "bearingFaceHeight": 0,
+    "widthAcrossFlats": 19.05,
   }
   )
+  expect(asme.getNutDimensions({size: "1-1/4", type: 'structural'})).toStrictEqual(
+  {
+    "bearingFaceHeight": 0.015,
+    "height": 19.842,
+    "size": "1-1/4",
+    "standard": "ASME_B18_2_6_STRUCTURAL",
+    "type": "STRUCTURAL",
+    "widthAcrossFlats": 50.8,
+  }
+  )
+
   expect(asme.getNutDimensions({size: "#4", standard: 'ASME_B18_2_2_JAM'})).toStrictEqual(
   {
     "height": 2.383,
-    "isHeavy": false,
-    "isThin": false,
     "size": "#4",
     "standard": "ASME_B18_2_2_JAM",
+    "type": "STANDARD",
     "bearingFaceHeight": 0,
     "widthAcrossFlats": 6.35,
   }

@@ -408,8 +408,7 @@ const calculateLockNutBearingFace = (nominalWaf) => {
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ASME nut, see lists above
  * @param {String} [spec.standard] - ASME standard or none (use other specs to choose)
- * @param {Boolean} [spec.isHeavy=false] - generate nuts with heavy dimensions
- * @param {Boolean} [spec.isThin=false] - generate nuts with thin (jam) dimensions
+ * @param {String} [spec.type='STANDARD'] - type of nut; THIN, JAM, HEAVY, STANDARD
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
  * @returns {Object} hex nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
@@ -418,28 +417,30 @@ export const getNutDimensions = (spec) => {
   let {
     size,
     standard = null,
-    isHeavy = false,
-    isThin = false,
+    type = 'STANDARD',
     flatOffset = 0,
     heightOffset = 0,
   } = spec
 
   if (!size) return null
 
-  standard = standard ? standard : 'ASME'
-
-  let dataset = standards[standard]
+  type = type.toUpperCase()
 
   // select the standard using the given options
-  if (!dataset) {
-    if (isThin) {
-      if (!dataset && isHeavy) dataset = ASME_B18_2_2_HEX_HEAVY_JAM
-      if (!dataset) dataset = ASME_B18_2_2_HEX_THIN_JAM
+  if (!standard) {
+    if (type === 'THIN' || type === 'JAM') {
+      standard = 'ASME_B18_2_2_JAM'
+    } else if (type === 'HEAVY') {
+      standard = 'ASME_B18_2_2_HEAVY'
+    } else if (type === 'STRUCTURAL') {
+      standard = 'ASME_B18_2_6_STRUCTURAL'
     } else {
-      if (!dataset && isHeavy) dataset = ASME_B18_2_2_HEX_HEAVY
-      if (!dataset) dataset = ASME_B18_2_2_HEX_STANDARD
+      type = 'STANDARD'
+      standard = 'ASME_B18_2_2_NORMAL'
     }
   }
+
+  let dataset = standards[standard]
   if (!dataset) return null
 
   // get the dimensions for the requested size
@@ -463,7 +464,7 @@ export const getNutDimensions = (spec) => {
     // apply a bearing surface
     const t = calculateStructuralBearingFace(widthAcrossFlats)
     bearingFaceHeight = t.bearingFaceThicknessMin
-  } else if (isHeavy && widthAcrossFlats >= 0.6875) {
+  } else if (type === 'HEAVY' && widthAcrossFlats >= 0.6875) {
     // add a bearing surface to the bottom of large nuts
     bearingFaceHeight = 0.016 // mm
   }
@@ -476,8 +477,7 @@ export const getNutDimensions = (spec) => {
     // spec
     size,
     standard,
-    isHeavy,
-    isThin,
+    type,
     // dimensions
     widthAcrossFlats,
     height,
@@ -492,6 +492,7 @@ export const getNutDimensions = (spec) => {
  *
  * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
+ * @param {String} [spec.type] - type of nut; THIN, HEAVY, STANDARD
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)
  * @param {Number} spec.bearingFaceHeight - height of the bottom washer step (C), may be zero
@@ -504,6 +505,7 @@ export const getNutDimensions = (spec) => {
  */
 export const generateNut = (spec) => {
   const {
+    type,
     widthAcrossFlats,
     height,
     bearingFaceHeight,

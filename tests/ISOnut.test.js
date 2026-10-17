@@ -10,48 +10,44 @@ test('iso.getNutDimensions', () => {
   expect(iso.getNutDimensions({size: "Z"})).toStrictEqual(null)
   expect(iso.getNutDimensions({size: "Z"})).toStrictEqual(null)
 
-  // ISO dimensions
+  // choose ISO dimensions
   expect(iso.getNutDimensions({size: "M4"})).toStrictEqual(
   {
     "bearingFaceHeight": 0,
     "height": 3.2,
-    "isHeavy": false,
-    "isThin": false,
     "size": "M4",
-    "standard": "ISO",
+    "standard": "ISO_4032_HEX_STANDARD",
+    "type": "STANDARD",
     "widthAcrossFlats": 7,
   }
   )
-  expect(iso.getNutDimensions({size: "M12", isHeavy: true})).toStrictEqual(
+  expect(iso.getNutDimensions({size: "M12", type: 'HEAVY'})).toStrictEqual(
   {
     "bearingFaceHeight": 0.4,
     "height": 12,
-    "isHeavy": true,
-    "isThin": false,
     "size": "M12",
-    "standard": "ISO",
+    "standard": "ISO_4033_HEX_HIGH",
+    "type": "HEAVY",
     "widthAcrossFlats": 18,
   }
   )
-  expect(iso.getNutDimensions({size: "M8", isThin: true})).toStrictEqual(
+  expect(iso.getNutDimensions({size: "M8", type: 'thin'})).toStrictEqual(
   {
     "bearingFaceHeight": 0.4,
     "height": 4,
-    "isHeavy": false,
-    "isThin": true,
     "size": "M8",
-    "standard": "ISO",
+    "standard": "ISO_4035_HEX_THIN_JAM",
+    "type": "THIN",
     "widthAcrossFlats": 13,
   }
   )
-  expect(iso.getNutDimensions({size: "M5", isThin: true, isHeavy: true})).toStrictEqual(
+  expect(iso.getNutDimensions({size: "M5", type: 'JAM'})).toStrictEqual(
   {
     "bearingFaceHeight": 0,
     "height": 2.7,
-    "isHeavy": true,
-    "isThin": true,
     "size": "M5",
-    "standard": "ISO",
+    "standard": "ISO_4035_HEX_THIN_JAM",
+    "type": "JAM",
     "widthAcrossFlats": 8,
   }
   )
@@ -59,10 +55,10 @@ test('iso.getNutDimensions', () => {
 
 test('iso.generateNut', () => {
   // standard hex nut, no washer
-  let w = iso.generateNut({widthAcrossFlats: 19.05, height: 7.938, bearingFaceHeight: 0})
+  let w = iso.generateNut({type: 'STANDARD', widthAcrossFlats: 19.05, height: 7.938, bearingFaceHeight: 0})
   expect(geom3.isA(w)).toBe(true)
 
   // standard hex nut, with washer
-  w = iso.generateNut({widthAcrossFlats: 19.05, height: 7.938, bearingFaceHeight: 0.016})
+  w = iso.generateNut({type: 'STANDARD', widthAcrossFlats: 19.05, height: 7.938, bearingFaceHeight: 0.016})
   expect(geom3.isA(w)).toBe(true)
 })
