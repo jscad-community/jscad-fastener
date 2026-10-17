@@ -233,31 +233,51 @@ const standards = {
 }
 
 /**
- * getHexBoldD
+ * Get the ASME Hex Bolt dimensions for the given specification.
+ *
+ * @see parseBoltSpec()
  *
  * NOTE: All dimensions are inches.
  *
+ * If the standard is not provided then a standard will be select using the isHeavy and isTap options.
+ *
  * @memberof jscad-fastener/asme
+ * @param {Object} spec - bolt specifications
+ * @param {String} spec.size - ASME bolt size identifier
+ * @param {String} [spec.standard=null] - bolt standard; null or valid ASME standard
+ * @param {String} [spec.type='CAP'] - type of bolt; CAP, STRUCTURAL, HEAVY, TAP
+ * @param {String} [spec.threadSeries='UNC'] - thread series of bolt; UNC or UNF
+ * @returns {Object} full ISO bolt specification with dimensions
  */
 export const getHexBoltDimensions = (spec, nominalLength) => {
   let {
     size,
     standard = null,
+    type = 'CAP',
     threadSeries = 'UNC',
-    isHeavy = false,
-    isTap = false,
     flatOffset = 0,
     lengthOffset = 0,
   } = spec
 
   if (!size) return null
 
+  type = type.toUpperCase()
+
   // select the standard using the given options if not provided
   if (!standard) {
-    if (!standard && isTap) standard = 'ASME_B18_2_1_TAP_BOLT'
-    if (!standard && isHeavy) standard = 'ASME_B18_2_1_HEAVY_BOLT'
-    if (!standard) standard = 'ASME_B18_2_1_HEX_BOLT'
-    // TODO cap machine strutural
+    if (type === 'TAP') {
+      standard = 'ASME_B18_2_1_TAP_BOLT'
+    } else if (type === 'MACHINE') {
+      standard = 'ASME_B18_6_3_MACHINE'
+    } else if (type === 'HEAVY') {
+      standard = 'ASME_B18_2_1_HEAVY_BOLT'
+    } else if (type === 'STRUCTURAL') {
+      standard = 'ASME_B18_2_6_STRUCTURAL'
+    } else {
+      type = 'CAP'
+      standard = 'ASME_B18_2_1_HEX_BOLT'
+    }
+    // TODO pan
   }
 
   const dataset = standards[standard]
@@ -315,8 +335,8 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
     // spec
     size,
     standard,
+    type,
     threadSeries,
-    isHeavy,
     // dimensions
     majorDiameter,
     widthAcrossFlats,

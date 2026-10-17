@@ -364,6 +364,7 @@ const standards = {
  * @param {Object} spec - bolt specifications
  * @param {String} spec.size - Dimension identifier (e.g., 'M6' for M6 ISO)
  * @param {String} [spec.standard=null] - Bolt standard; null or valid ISO standard
+ * @param {String} [spec.type='CAP'] - type of bolt; CAP, STRUCTURAL, HEAVY, TAP
  * @param {String} [spec.threadSeries='COARSE'] - Thread series of bolt; coarse or fine
  * @returns {Object} full ISO bolt specification with dimensions
  */
@@ -371,9 +372,8 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
   let {
     size,
     standard = null,
+    type = 'CAP',
     threadSeries = 'COARSE',
-    isHeavy = false,
-    isTap = false,
     flatOffset = 0,
     lengthOffset = 0,
   } = spec
@@ -381,13 +381,23 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
   if (!size) return null
 
   size = size.startsWith("M") ? size : "M" + size
+  type = type.toUpperCase()
 
   // select the standard using the given options if not provided
   if (!standard) {
-    if (!standard && isTap) standard = 'ISO_4017_HEX_SCREW'
-    if (!standard && isHeavy) standard = 'ISO_7411_HEX_STRUCTURAL'
-    if (!standard) standard = 'ISO_4014_HEX_BOLT'
-    // TODO cap machine strutural
+    if (type === 'TAP') {
+      standard = 'ISO_4017_HEX_SCREW'
+    } else if (type === 'PAN') {
+      standard = 'ISO_7045_PAN_MACHINE'
+    } else if (type === 'HEAVY') {
+      standard = 'ISO_4016_HEX_BOLT_C'
+    } else if (type === 'STRUCTURAL') {
+      standard = 'ISO_7411_HEX_STRUCTURAL'
+    } else {
+      type = 'CAP'
+      standard = 'ISO_4014_HEX_BOLT'
+    }
+    // TODO machine
   }
 
   const dataset = standards[standard]
@@ -448,9 +458,8 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
     // spec
     size,
     standard,
+    type,
     threadSeries,
-    isHeavy,
-    isTap,
     // dimensions
     majorDiameter,
     widthAcrossFlats,
@@ -466,8 +475,8 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
  * Generate ISO Hex Bolt from the given specification.
  *
  * @see getHexBoltDimensions() for obtaining the specifications
- * @memberof jscad-fastener/iso
  *
+ * @memberof jscad-fastener/iso
  * @param {Object} spec - bolt specifications
  * @param {String} spec.size - Dimension identifier (e.g., 'M6' for M6 ISO)
  * @param {String} spec.standard - Bolt standard; ISO 4014 or ISO 4017
