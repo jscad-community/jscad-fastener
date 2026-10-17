@@ -16,9 +16,7 @@ const MM_PER_INCH = 25.4
  *
  * ASME B18.22.1 Type A (Narrow / SAE)
  *
- * NOTE: Dimensions are in inches
- *
- * "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -65,9 +63,7 @@ export const ASME_B18_21_1_TYPE_A_NARROW = {
  *
  * ASME B18.22.1 Type A (Wide / USS)
  *
- * NOTE: Dimensions are in inches
- *
- * "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -120,9 +116,7 @@ export const ASME_B18_21_1_TYPE_A_WIDE = {
  * Dimensions: Structural series. The inner diameter is sized to clear high-strength bolt shanks,
  * while the outer diameter and heavy thickness are scaled to match heavy structural bolt heads.
  *
- * NOTE: Dimensions are in inches
- *
- * "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -160,9 +154,7 @@ export const ASTM_F436_STRUCTURAL = {
  *
  * Range Covered: #0 to 4" (Extrapolated using heavy mechanical metrics past 3")
  *
- * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
- *
- * Maintained in precise decimal Inches (in).
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -213,10 +205,9 @@ export const ASME_B18_21_1_LOCK_REGULAR = {
  * ASME B18.21.1 Heavy Series Helical Spring Lock Washers
  *
  * Range Covered: #0 to 4" (Includes heavy machinery scaled boundary allocations)
- *
- * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
- *
  * Features expanded outside diameters and massive thickness walls to handle high torque.
+ *
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -268,15 +259,11 @@ export const ASME_B18_21_1_LOCK_HEAVY = {
  *
  * Range Covered: #2 to 1-3/4" (Complete Official Standard Bounds)
  *
- * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
- *
- * Maintained in precise decimal Inches (in).
- *
  * Outer diameter bounds map to the furthest biting tooth perimeter apex.
  * 
  * Note: Sizes #0, #1, and sizes larger than 1-3/4" do not exist under ASME B18.21.1.
  *
- * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -315,11 +302,9 @@ export const ASME_B18_21_1_TOOTH_EXTERNAL = {
  *
  * Range Covered: #2 to 1-3/4" (Complete Official Standard Bounds)
  *
- * Schema Layout: "Designation": [insideDiameter, outsideDiameter, thickness]
- *
- * Maintained in precise decimal Inches (in).
- * 
  * Note: Sizes #0, #1, and sizes larger than 1-3/4" do not exist under ASME B18.21.1.
+ *
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -364,7 +349,7 @@ export const ASME_B18_21_1_TOOTH_INTERNAL = {
  *   predictable torque-tension performance are vital.
  * - Supersedes and incorporates the refined dimensional baseline of the historical ASME B18.22.1 standard.
  * 
- * Pattern: [insideDiameter, outsideDiameter, thickness]
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -416,7 +401,7 @@ export const ASME_B18_21_1_TYPE_B_REGULAR = {
  *   but maintains the tighter manufacturing and flatness tolerances required by the Type B precision class.
  * - Reduces surface area contact, meaning it should be paired with higher-strength mating materials to avoid crushing.
  * 
- * Pattern: [insideDiameter, outsideDiameter, thickness]
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -468,7 +453,7 @@ export const ASME_B18_21_1_TYPE_B_NARROW = {
  *   or thin-gauge mating materials (e.g., aluminum, plastics, sheet metal panels).
  * - Aligns closely with traditional USS washer footprints but maintains the superior flatness and precision of the Type B standard.
  * 
- * Pattern: [insideDiameter, outsideDiameter, thickness]
+ * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
  * @type {Object}
@@ -613,6 +598,11 @@ export const getWasherDimensions = (spec) => {
  * 
  * @memberof jscad-fastener/asme
  * @param {object} specifications - washer specifications
+ * @returns {Geom3} washer, centered on XYZ
+ *
+ * @example
+ * const spec = getWasherDimensions({size: '1-1/4', type: 'HEAVY'})
+ * const nut = generateWasher(spec)
  */
 export const generateWasher = (spec) => {
   let {

@@ -111,10 +111,19 @@ const generateInternalStarWasher = (innerDiameter, outerDiameter, thickness, seg
   return subtract(washerRing, cutouts)
 }
 
-/*
- * Generates a 3D simulated helical split-ring lock washer.
+/**
+ * Generates a simulated helical split-ring lock washer,
+ * which slices a thin radial gap through one side of the ring.
  *
- * Slices a thin radial gap through one side of the ring.
+ * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
+ *
+ * @memberof jscad-fastener
+ * @param {Object} spec - washer specifications, ALL ARE REQUIRED
+ * @param {Number} spec.innerDiameter - inner diameter of washer, i.e. hole
+ * @param {Number} spec.outerDiameter - outer diameter of washer
+ * @param {Number} spec.thickness - thickness of washer
+ * @param {Number} spec.segments - segments per full rotation
+ * @returns {Geom3} spring washer, centered XYZ
  */
 export const SpringWasher = (spec) => {
   const { innerDiameter, outerDiameter, thickness, segments } = spec
@@ -144,7 +153,19 @@ export const SpringWasher = (spec) => {
   return subtract(washerRing, positionedSlice)
 }
 
-// standard washer
+/**
+ * Generates a simulated standard washer.
+ *
+ * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
+ *
+ * @memberof jscad-fastener
+ * @param {Object} spec - washer specifications, ALL ARE REQUIRED
+ * @param {Number} spec.innerDiameter - inner diameter of washer, i.e. hole
+ * @param {Number} spec.outerDiameter - outer diameter of washer
+ * @param {Number} spec.thickness - thickness of washer
+ * @param {Number} spec.segments - segments per full rotation
+ * @returns {Geom3} standard washer, centered XYZ
+ */
 export const Washer = (spec) => {
   const { innerDiameter, outerDiameter, thickness, segments } = spec
   const outerRadius = outerDiameter / 2
@@ -156,6 +177,20 @@ export const Washer = (spec) => {
   return subtract(baseOuterCylinder, baseInnerCylinder)
 }
 
+/**
+ * Generates a simulated star lock washer.
+ *
+ * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
+ *
+ * @memberof jscad-fastener
+ * @param {Object} spec - washer specifications, ALL ARE REQUIRED
+ * @param {Number} spec.innerDiameter - inner diameter of washer, i.e. hole
+ * @param {Number} spec.outerDiameter - outer diameter of washer
+ * @param {Number} spec.thickness - thickness of washer
+ * @param {Boolean} spec.isInternal - false for external star, true for internal star
+ * @param {Number} spec.segments - segments per full rotation
+ * @returns {Geom3} star washer, centered XYZ
+ */
 export const StarWasher = (spec) => {
   const { isInternal, innerDiameter, outerDiameter, thickness, segments } = spec
   if (isInternal) {

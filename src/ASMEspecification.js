@@ -1,4 +1,4 @@
-/**
+/*
  * ASME B18.2.8 Bolt Clearance Hole Diameters (all values in inches)
  *
  * Sourced natively from #0 to 1-1/2", scaled proportionally to 4" 
@@ -10,7 +10,7 @@
  * @type {Object}
  * @memberof jscad-fastener/asme
  */
-export const ASME_B18_2_8_CLEARANCE_HOLES = {
+const ASME_B18_2_8_CLEARANCE_HOLES = {
   // Numbered Machine Screw Sizes (#0 to #12)
   "0":  { close: 0.067, normal: 0.076, loose: 0.094 },
   "1":  { close: 0.081, normal: 0.089, loose: 0.104 },
@@ -57,7 +57,7 @@ export const ASME_B18_2_8_CLEARANCE_HOLES = {
  * 
  * @memberof jscad-fastener/asme
  * @param {string} spec - specification
- * @returns {Object} Standardized token payload
+ * @returns {Object} ASME bolt specification
  */
 export const parseBoltSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
@@ -133,7 +133,7 @@ export const parseBoltSpec = (spec) => {
  * 
  * @memberof jscad-fastener/asme
  * @param {string} spec - specification
- * @returns {Object} Perfectly structured token array with metric drilling limits
+ * @returns {Object} ASME nut specification
  */
 export const parseNutSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
@@ -240,7 +240,7 @@ export const parseNutSpec = (spec) => {
  * 
  * @memberof jscad-fastener/asme
  * @param {string} spec - specification
- * @returns {Object} Clean token matching the exact structure of your ISO washer parser.
+ * @returns {Object} ASME washer specification
  */
 export const parseWasherSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {

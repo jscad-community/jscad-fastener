@@ -110,8 +110,10 @@ export const HexHead = (spec) => {
  * @param {Object} spec - shank specifications, ALL ARE REQUIRED
  * @param {Number} spec.threadLength - length of the threaded section (b) in mm
  * @param {Number} spec.unthreadedLength - length of smooth shank section in mm
+ * @param {Number} spec.majorDiameter - nominal (major) diameter (d) in mm
+ * @param {Number} spec.pitch - pitch of threads
  * @param {Number} spec.segments - segments per full rotation
- * @returns {Geom3} bolt shank, centered on XY, extending downwards from Z
+ * @returns {Geom3} bolt shank, centered on XY, extending downwards from Z=0
  */
 export const Shank = (spec) => {
   const { threadLength, unthreadedLength, majorDiameter, pitch, segments } = spec

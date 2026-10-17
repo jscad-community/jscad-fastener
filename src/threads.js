@@ -7,12 +7,12 @@ import { cylinderElliptic, polygon, intersect, union, subtract, extrudeHelical, 
  *
  * @memberof jscad-fastener
  * @param {Object} spec - thread specifications, ALL ARE REQUIRED
- * @param {Number} spec.majorDiameter - Major diameter of thread body
- * @param {Number} spec.pitch - Pitch of threads
- * @param {Number} spec.tolerance - Radial offset value in mm (e.g. 0.15 for 3D prints)
- * @param {Number} spec.segments - Segments per full rotation
- * @param {Boolean} spec.isInternal - False for bolt/external, True for nut/internal
- * @param {Number} length - Total length of the thread to generate
+ * @param {Number} spec.majorDiameter - major diameter of thread body
+ * @param {Number} spec.pitch - pitch of threads
+ * @param {Number} spec.tolerance - radial offset value in mm
+ * @param {Boolean} spec.isInternal - false for bolt/external, True for nut/internal
+ * @param {Number} spec.segments - segments per full rotation
+ * @param {Number} length - total length of the thread to generate
  * @returns {Geom3} thread body, centered XY, extending up from Z
  */
 export const Thread = (spec, length) => {

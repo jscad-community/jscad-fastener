@@ -20,14 +20,13 @@ const FILLET_RADIUS = 4
  * - Features a mandatory, precision-machined circular washer face (dw) on the head underside to prevent corner gouging.
  * - Standard sizes range from 1/4" up to 3" within typical commercial inventory catalogs.
  * 
- * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
  * @type {Object}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_CAP_SCREW = {
-  // Pattern: [majorDiameter, widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius]
   "1/4":   [0.2500, 0.4375, 0.1630, 0.4010, 0.015],
   "5/16":  [0.3125, 0.5000, 0.2110, 0.4600, 0.015],
   "3/8":   [0.3750, 0.5625, 0.2430, 0.5180, 0.015],
@@ -60,7 +59,7 @@ export const ASME_B18_2_1_CAP_SCREW = {
  * - Features a tightly controlled, flat underside washer-faced bearing surface (dw) to control perpendicularity.
  * - Size scope is structurally capped by the standard from 1/2" up to 1-1/2" diameters.
  * 
- * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
  * @type {Object}
@@ -87,7 +86,7 @@ export const ASME_B18_2_6_STRUCTURAL = {
  * - Head heights (k) are noticeably thicker to withstand massive high-preload clamping stresses.
  * - Lacks an isolated circular washer face step under the head, bounding dw directly to the broad hex profile.
  * 
- * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
  * @type {Object}
@@ -121,7 +120,7 @@ export const ASME_B18_2_1_HEAVY_BOLT = {
  * - Features a radically different head geometric footprint that does not scale with heavy structural profiles.
  * - Head profiles can be indented hex or flat hex configurations depending on specified sub-manufacturing codes.
  * 
- * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
  * @type {Object}
@@ -158,7 +157,7 @@ export const ASME_B18_6_3_MACHINE = {
  * - Under engineering practice, the bearing surface diameter (dw) is bounded directly to the basic width across flats (s).
  * - Standard sizes range from 1/4" up to 3" diameters.
  * 
- * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
  * @type {Object}
@@ -196,7 +195,7 @@ export const ASME_B18_2_1_HEX_BOLT = {
  * - Head dimensions (WAF and height) align completely with standard raw Hex Bolts rather than Cap Screws.
  * - Head underside is non-machined, bounding the bearingFaceDiameter (dw) directly to the width across flats (s).
  * 
- * Pattern: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
+ * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
  * @type {Object}
@@ -235,11 +234,11 @@ const standards = {
 /**
  * Get the ASME Hex Bolt dimensions for the given specification.
  *
- * @see parseBoltSpec()
+ * @see parseBoltSpec() for parsing of specifications
  *
  * NOTE: All dimensions are inches.
  *
- * If the standard is not provided then a standard will be select using the isHeavy and isTap options.
+ * If the standard is not provided then a standard will be selected from the type of bolt
  *
  * @memberof jscad-fastener/asme
  * @param {Object} spec - bolt specifications
@@ -247,7 +246,7 @@ const standards = {
  * @param {String} [spec.standard=null] - bolt standard; null or valid ASME standard
  * @param {String} [spec.type='CAP'] - type of bolt; CAP, STRUCTURAL, HEAVY, TAP
  * @param {String} [spec.threadSeries='UNC'] - thread series of bolt; UNC or UNF
- * @returns {Object} full ISO bolt specification with dimensions
+ * @returns {Object} full ASME bolt specification with dimensions
  */
 export const getHexBoltDimensions = (spec, nominalLength) => {
   let {
@@ -351,13 +350,14 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
 /**
  * Generate ASME Hex Bolt from the given specification.
  *
- * @see getHexBoltDimensions()
+ * @see getHexBoltDimensions() to obtain correct dimensions
+ *
+ * NOTE: All dimensions are inches.
  *
  * @memberof jscad-fastener/asme
  * @param {Object} spec - bolt specification
- * @param {String} spec.size - Dimension identifier (e.g., '#1' or `1/2`)
- * @param {String} spec.standard - Bolt standard; ASME_B18_2_1_CAP_SCREW, etc
- * @param {String} spec.threadSeries - Thread series of bolt; UNF or UNC
+ * @param {String} spec.size - ASME size identifier (e.g., '#1' or `1/2`)
+ * @param {String} spec.threadSeries - thread series of bolt; UNF or UNC
  * @returns {Geom3} ASME bolt, centered on X-Y, head above Z, shank below Z
  */
 export const generateHexBolt = (spec) => {

@@ -21,14 +21,14 @@ test('asme.getNutDimensions', () => {
     "widthAcrossFlats": 19.05,
   }
   )
-  expect(asme.getNutDimensions({size: "1/2", type: 'HEAVY'})).toStrictEqual(
+  expect(asme.getNutDimensions({size: "7/8", type: 'HEAVY'})).toStrictEqual(
   {
-    "height": 12.304,
-    "size": "1/2",
+    "height": 21.829,
+    "size": "7/8",
     "standard": "ASME_B18_2_2_HEAVY",
     "type": "HEAVY",
-    "bearingFaceHeight": 0.016,
-    "widthAcrossFlats": 22.225,
+    "bearingFaceHeight": 0.00063,
+    "widthAcrossFlats": 36.512,
   }
   )
   expect(asme.getNutDimensions({size: "1/2", type: 'thin'})).toStrictEqual(
@@ -80,6 +80,6 @@ test('asme.generateNut', () => {
   expect(geom3.isA(w)).toBe(true)
 
   // standard hex nut, with washer
-  w = asme.generateNut({widthAcrossFlats: 19.05, height: 7.938, bearingFaceHeight: 0.016})
+  w = asme.generateNut({widthAcrossFlats: 19.05, height: 7.938, bearingFaceHeight: 0.00063})
   expect(geom3.isA(w)).toBe(true)
 })

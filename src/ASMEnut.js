@@ -14,9 +14,7 @@ const MM_PER_INCH = 25.4
 /**
  * ASME B18.2.2 Hex Standard Nut (Finished Hex Nut) 
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -64,9 +62,7 @@ export const ASME_B18_2_2_HEX_STANDARD = {
 /**
  * ASME B18.2.2 Hex Heavy Nut
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -103,8 +99,7 @@ export const ASME_B18_2_2_HEX_HEAVY = {
 /**
  * ASME B18.2.2 Regular Square Nut
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -141,9 +136,7 @@ export const ASME_B18_2_2_SQUARE = {
 /**
  * ASME B18.2.2 Thin Jam Nut
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -191,9 +184,7 @@ export const ASME_B18_2_2_HEX_THIN_JAM = {
 /**
  * ASME B18.2.2 Heavy Jam Nut
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -241,9 +232,7 @@ export const ASME_B18_2_2_HEX_HEAVY_JAM = {
 /**
  * ASME B18.2.6 Heavy Hex Nuts
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), height (H)]
- *
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -264,9 +253,7 @@ export const ASME_B18_2_6_HEX_STRUCTURAL = {
 /**
  * ASME B18.16.6 Style NE Standard Nylon-Insert Lock Nuts
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), hex height (min), total height(max)]
- *
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -300,9 +287,7 @@ export const ASME_B18_16_6_HEX_LOCK_STANDARD = {
 /**
  * ASME B18.16.6 Style NE Thin Nylon-Insert Lock Nuts
  *
- * Schema Layout: "Designation": [widthAcrossFlats (W), hex height (min), total height(max)]
- *
- * Maintained in precise decimal inches (in).
+ * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
  * @type {Object}
@@ -334,11 +319,7 @@ export const ASME_B18_16_6_HEX_LOCK_THIN = {
 }
 
 // TBD Support square nuts
-// Calculate outer corner radius directly for the 4-corner square profile
-// const squareOuterRadius = +((widthAcrossFlats * 1.4142) / 2).toFixed(3)
 // TBD Support flange nuts
-
-// NOTE: See ASMEspecification.js for parseNutSpec()
 
 const standards = {
   'ASME_B18_2_2_NORMAL': ASME_B18_2_2_HEX_STANDARD,
@@ -404,6 +385,10 @@ const calculateLockNutBearingFace = (nominalWaf) => {
 /**
  * Get the hex nut dimensions for the given ASME nut specification.
  *
+ * @see parseNutSpec() for parsing of specifications
+ *
+ * NOTE: All dimensions are inches.
+ *
  * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
  * @param {String} [spec.size] - required, size of ASME nut, see lists above
@@ -411,7 +396,7 @@ const calculateLockNutBearingFace = (nominalWaf) => {
  * @param {String} [spec.type='STANDARD'] - type of nut; THIN, JAM, HEAVY, STANDARD
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
- * @returns {Object} hex nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
+ * @returns {Object} ASME specification with nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
  */
 export const getNutDimensions = (spec) => {
   let {
@@ -464,9 +449,9 @@ export const getNutDimensions = (spec) => {
     // apply a bearing surface
     const t = calculateStructuralBearingFace(widthAcrossFlats)
     bearingFaceHeight = t.bearingFaceThicknessMin
-  } else if (type === 'HEAVY' && widthAcrossFlats >= 0.6875) {
+  } else if (standard === 'ASME_B18_2_2_HEAVY' && widthAcrossFlats >= 0.6875) {
     // add a bearing surface to the bottom of large nuts
-    bearingFaceHeight = 0.016 // mm
+    bearingFaceHeight = 0.00063 // inch
   }
 
   // convert ASME inch dimensions to millimeter
@@ -488,23 +473,25 @@ export const getNutDimensions = (spec) => {
 /**
  * Generate a ASME Nut from the given specification.
  *
- * @see getNutDimensions
+ * @see getNutDimensions() for obtaining correct dimensions
+ *
+ * NOTE: All dimensions are inches.
  *
  * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
- * @param {String} [spec.type] - type of nut; THIN, HEAVY, STANDARD
+ * @param {String} spec.type - type of nut; THIN, HEAVY, STANDARD
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)
  * @param {Number} spec.bearingFaceHeight - height of the bottom washer step (C), may be zero
- * @param {Number} spec.segments=36 - number of segments per full turn
+ * @param {Number} [spec.segments=36] - number of segments per full turn
  * @returns {Geom3} hex nut, centered on XYZ
  *
  * @example
- * const spec = getHexNutDimensions({size: 'M10', isHeavy: true})
+ * const spec = getHexNutDimensions({size: '1-1/4', type: 'HEAVY'})
  * const nut = generateHexNut(spec)
  */
 export const generateNut = (spec) => {
-  const {
+  let {
     type,
     widthAcrossFlats,
     height,
@@ -512,6 +499,11 @@ export const generateNut = (spec) => {
     zOffset = 0,
     segments = 36
   } = spec
+
+  // convert ASME inch dimensions to millimeter
+  widthAcrossFlats = +(widthAcrossFlats * MM_PER_INCH).toFixed(3)
+  height = +(height * MM_PER_INCH).toFixed(3)
+  bearingFaceHeight = +(bearingFaceHeight * MM_PER_INCH).toFixed(3)
 
   // hex nut, beveled, with optional bearing face
   return HexNut({ widthAcrossFlats, height, bearingFaceHeight, zOffset, segments })
