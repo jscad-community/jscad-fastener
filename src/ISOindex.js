@@ -1,5 +1,9 @@
 /**
  * ISO Fasteners
+ * - ISO compound engineering stack description parsing and assembly generation
+ * - ISO bolts with coarse or fine threads
+ * - ISO nuts
+ * - ISO washers
  *
  * @namespace jscad-fastener/iso
  */ 

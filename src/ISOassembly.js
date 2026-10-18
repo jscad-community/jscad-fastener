@@ -148,22 +148,16 @@ export const parseAssembly = (callout) => {
 }
 
 /**
- * Simple structural lookups for minimum physical clearance checks.
- * (Values match standard ISO 7090 normal series thicknesses and standard ISO 4032 regular nut heights)
- */
-const ISO_WASHER_THICKNESS_LOOKUP = { 'M5': 1.0, 'M6': 1.6, 'M8': 1.6, 'M10': 2.0, 'M12': 2.5, 'M16': 3.0, 'M20': 3.0 }
-const ISO_NUT_HEIGHT_LOOKUP = { 'M5': 4.7, 'M6': 5.2, 'M8': 6.8, 'M10': 8.4, 'M12': 10.8, 'M16': 14.8, 'M20': 18.0 }
-
-/**
  * Validate the assembly specifications prior to generation.
  *
  * @see parseAssembly() to obtain specifications from a compound engineering stack description
  *
  * Throws strict, explicit errors if physical or mechanical attributes mismatch.
  * 
+ * @memberof jscad-fastener/iso
  * @param {Object} specifications - the specifications for bolt, nut (optional), and washer (optional)
- * @throws {Error} Detailed report of what failed along with the offending values
  * @returns {Boolean} true if the stack specification passes all validations
+ * @throws {Error} Detailed report of what failed along with the offending values
  */
 export const validateAssembly = (specifications) => {
   if (!specifications || !specifications.bolt) {
@@ -292,6 +286,7 @@ const validateAssemblyB = (assembly) => {
  *
  * @see parseAssembly() for parsing specifications from a compound engineering stack description 
  *
+ * @memberof jscad-fastener/iso
  * @param {Object} specifications - the specifications of the assembly
  * @returns {Array} Array of geometries
  */

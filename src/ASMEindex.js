@@ -1,5 +1,9 @@
 /**
- * ASME Fasteners with UTS threads
+ * ASME Fasteners
+ * - ASME compound engineering stack description parsing and assembly generation
+ * - ASME bolts with UNC or UNF threads
+ * - ASME nuts
+ * - ASME washers
  *
  * @namespace jscad-fastener/asme
  */
