@@ -430,6 +430,7 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
 
   const threadSpec = getThreadSpec(size, threadSeries)
   const pitch = threadSpec.pitch
+
   if (isFullyThreadedStandard) {
     threadLength = nominalLength
     unthreadedLength = 2.5 * pitch

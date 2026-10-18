@@ -324,7 +324,7 @@ const standards = {
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
  * @returns {Object} ISO specification with nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
  */
-export const getNutDimensions = (spec = {}) => {
+export const getNutDimensions = (spec) => {
   let {
     size,
     standard = null,

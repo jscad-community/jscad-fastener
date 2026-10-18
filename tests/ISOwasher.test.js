@@ -77,6 +77,20 @@ test('iso.getWasherDimensions', () => {
     "type": "EXTERNAL",
   }
   )
+
+  // from aa
+  let spec = { size: 'M16', standard: 'ISO_7090', hardnessHV: 200, material: 'Carbon Steel', coating: 'Bare Metal' }
+  expect(iso.getWasherDimensions(spec)).toStrictEqual(
+  {
+    "innerDiameter": 17,
+    "isLocking": false,
+    "outerDiameter": 30,
+    "size": "M16",
+    "standard": "ISO_7090",
+    "thickness": 3,
+    "type": "REGULAR",
+  }
+  )
 })
 
 test('iso.generateWasher', () => {
@@ -90,5 +104,17 @@ test('iso.generateWasher', () => {
   expect(geom3.isA(w)).toBe(true)
 
   w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true})
+  expect(geom3.isA(w)).toBe(true)
+
+  let dims = {
+    "innerDiameter": 17,
+    "isLocking": false,
+    "outerDiameter": 30,
+    "size": "M16",
+    "standard": "ISO_7090",
+    "thickness": 3,
+    "type": "REGULAR",
+  }
+  w = iso.generateWasher(dims)
   expect(geom3.isA(w)).toBe(true)
 })

@@ -1,4 +1,9 @@
-import {parseBoltSpec, parseNutSpec, parseWasherSpec} from './ISOspecification.js'
+import { translate } from '@jscad/modeling'
+
+import { parseBoltSpec, parseNutSpec, parseWasherSpec } from './ISOspecification.js'
+import { getHexBoltDimensions, generateHexBolt } from './ISObolt.js'
+import { getNutDimensions, generateNut } from './ISOnut.js'
+import { getWasherDimensions, generateWasher } from './ISOwasher.js'
 
 /*
  * Full Assembly Parser for ISO / Metric Systems
@@ -11,7 +16,6 @@ import {parseBoltSpec, parseNutSpec, parseWasherSpec} from './ISOspecification.j
  * @memberof jscad-fastener/iso
  * @returns {Object} ISO bolt, nut, and washer specifications
  */
-import { parseBoltSpec, parseNutSpec, parseWasherSpec } from './ISOspecification.js'
 
 /*
  * Procedural Classification Helper
@@ -61,20 +65,16 @@ const determineFastenerType = (chunk) => {
 }
 
 /**
- * Full Assembly Parser for ISO / Metric Systems
- * Breaks a compound engineering stack description into clean parsed specification tokens.
+ * Parse a full ISO compound engineering stack description into specification tokens
+ * for bolt, nut, and washer.
  *
  * @memberof jscad-fastener/iso
- * @param {string} fullAssemblyString - The full compound callout string
+ * @param {string} callout - the full compound engineering callout string
  * @returns {Object} ISO bolt, nut, and washer specifications (nut/washer may be null)
  */
-export const parseAssembly = (fullAssemblyString) => {
-  if (!fullAssemblyString || typeof fullAssemblyString !== 'string') {
-    throw new Error("Invalid or empty assembly string provided.")
-  }
-
+export const parseAssembly = (callout) => {
   // Normalize string spacing and uniform delimiters (+ or ; mapped to standard commas)
-  const normalized = fullAssemblyString.replace(/\s+/g, ' ').replace(/\s*\+\s*/g, ', ').replace(/\s*;\s*/g, ', ').trim()
+  const normalized = callout.replace(/\s+/g, ' ').replace(/\s*\+\s*/g, ', ').replace(/\s*;\s*/g, ', ').trim()
   
   // Split the compound string by commas or explicit "with" / "w/" conjunction boundaries
   const subComponents = normalized.split(/(?:,|\bwith\b|\bw\/\s*)/i)
@@ -99,7 +99,7 @@ export const parseAssembly = (fullAssemblyString) => {
 
   // A bolt string is always mandatory to anchor a fastener assembly
   if (!boltString) {
-    throw new Error("Assembly parsing failed: No identifiable Metric Bolt segment located in the callout string.")
+    throw new Error("ISO assembly parsing failed: No identifiable bolt segment was found.")
   }
 
   // Step 2: Extract explicit sizing context to handle shared shorthand patterns
@@ -108,21 +108,21 @@ export const parseAssembly = (fullAssemblyString) => {
   const threadMatch = boltString.match(multiDimensionRegex)
 
   if (threadMatch) {
-    sharedSizeContext = threadMatch[1]; // The primary diameter (e.g., "12")
+    sharedSizeContext = threadMatch[1] // The primary diameter (e.g., "12")
     
     // Scenario A: Three distinct tokens matched (e.g., M12 x 1.25 x 50)
     if (threadMatch[3]) {
-      sharedPitchContext = threadMatch[2];
+      sharedPitchContext = threadMatch[2]
       // Note: parseBoltSpec(boltString) handles the length mapping internally!
     } 
     // Scenario B: Two distinct tokens matched (e.g., M6 x 40)
     else if (threadMatch[2]) {
-      const secondValue = parseFloat(threadMatch[2]);
-      const containsDecimal = threadMatch[2].includes('.');
+      const secondValue = parseFloat(threadMatch[2])
+      const containsDecimal = threadMatch[2].includes('.')
       
       // If it's a small decimal, it's a pitch context
       if (containsDecimal && secondValue < 4.0) {
-        sharedPitchContext = threadMatch[2];
+        sharedPitchContext = threadMatch[2]
       }
     }
   }
@@ -139,7 +139,7 @@ export const parseAssembly = (fullAssemblyString) => {
     nutString = `M${sharedSizeContext}${pitchSuffix} ${nutString}`
   }
 
-  // Step 4: Route valid chunks or return explicit nulls for optional omissions
+  // Step 4: Return specifications for each of the segments
   return {
     bolt: parseBoltSpec(boltString),
     washer: washerString ? parseWasherSpec(washerString) : null,
@@ -155,38 +155,41 @@ const ISO_WASHER_THICKNESS_LOOKUP = { 'M5': 1.0, 'M6': 1.6, 'M8': 1.6, 'M10': 2.
 const ISO_NUT_HEIGHT_LOOKUP = { 'M5': 4.7, 'M6': 5.2, 'M8': 6.8, 'M10': 8.4, 'M12': 10.8, 'M16': 14.8, 'M20': 18.0 }
 
 /**
- * Validates a parsed metric assembly specification prior to 3D generation.
+ * Validate the assembly specifications prior to generation.
+ *
+ * @see parseAssembly() to obtain specifications from a compound engineering stack description
+ *
  * Throws strict, explicit errors if physical or mechanical attributes mismatch.
  * 
- * @param {Object} parsedAssembly - The output directly from parseAssembly()
+ * @param {Object} specifications - the specifications for bolt, nut (optional), and washer (optional)
  * @throws {Error} Detailed report of what failed along with the offending values
- * @returns {boolean} True if the stack specification passes all clearance and sizing rules
+ * @returns {Boolean} true if the stack specification passes all validations
  */
-export const validateAssemblySpecification = (parsedAssembly) => {
-  if (!parsedAssembly || !parsedAssembly.bolt) {
-    throw new Error("Validation Failed: Missing primary assembly data or anchor Bolt specification object.")
+export const validateAssembly = (specifications) => {
+  if (!specifications || !specifications.bolt) {
+    throw new Error("Invalid Assembly: Missing bolt specification")
   }
 
-  const { bolt, washer, nut } = parsedAssembly
+  const { bolt, washer, nut } = specifications
   const nominalSize = bolt.size // e.g., "M12"
 
   // ---------------------------------------------------------
   // 1. DIAMETER CONSISTENCY CHECKS
   // ---------------------------------------------------------
   if (washer && washer.size !== nominalSize) {
-    throw new Error(`Validation Failed: Nominal diameter mismatch. Bolt is ${nominalSize} but Washer is ${washer.size}.`)
+    throw new Error(`Invalid Assembly: Nominal diameter mismatch; Bolt is ${nominalSize} but Washer is ${washer.size}`)
   }
 
   if (nut && nut.size !== nominalSize) {
-    throw new Error(`Validation Failed: Nominal diameter mismatch. Bolt is ${nominalSize} but Nut is ${nut.size}.`)
+    throw new Error(`Invalid Assembly: Nominal diameter mismatch; Bolt is ${nominalSize} but Nut is ${nut.size}`)
   }
 
   // ---------------------------------------------------------
   // 2. THREAD PITCH COMPATIBILITY CHECKS
   // ---------------------------------------------------------
   if (nut && bolt.pitch && nut.pitch) {
-    if (parseFloat(bolt.pitch) !== parseFloat(nut.pitch)) {
-      throw new Error(`Validation Failed: Thread pitch mismatch. Bolt thread pitch is ${bolt.pitch}mm but Nut thread pitch is ${nut.pitch}mm.`)
+    if (bolt.pitch !== nut.pitch) {
+      throw new Error(`Invalid Assembly: Thread pitch mismatch; Bolt thread pitch is ${bolt.pitch} but Nut thread pitch is ${nut.pitch}`)
     }
   }
 
@@ -194,45 +197,44 @@ export const validateAssemblySpecification = (parsedAssembly) => {
   // 3. MECHANICAL CLEARANCE (BOLT LENGTH CHECK)
   // ---------------------------------------------------------
   if (!bolt.length || isNaN(bolt.length)) {
-    throw new Error(`Validation Failed: Missing or invalid bolt length. Provided value: ${bolt.length}`)
+    throw new Error(`Invalid Assembly: Missing bolt length. See the orginal callout specification`)
   }
 
   let requiredMinimumLength = 0
   
-  // Account for physical hardware stack thickness
+  // account for physical hardware stack thickness
   if (washer) {
-    const washerThickness = ISO_WASHER_THICKNESS_LOOKUP[nominalSize] || 2.0 // Fallback estimate if size out of core sample range
-    requiredMinimumLength += washerThickness
+    const washerSpec = getWasherDimensions(washer)
+    if (!washerSpec) throw new Error(`Invalid Assembly: Missing washer dimensions`)
+
+    requiredMinimumLength += washerSpec.thickness
   }
   
   if (nut) {
-    const nutHeight = ISO_NUT_HEIGHT_LOOKUP[nominalSize] || (parseFloat(nominalSize.replace('M', '')) * 0.8) // Standard fallback rule-of-thumb height
-    requiredMinimumLength += nutHeight
+    const nutSpec = getNutDimensions(nut)
+    if (!nutSpec) throw new Error(`Invalid Assembly: Missing nut dimensions`)
+
+    requiredMinimumLength += nutSpec.height
   }
 
-  // Add a minimum thread engagement safety buffer (at least 2 full thread pitches protruding past the nut face, ~2-3mm average)
-  const safetyProtrusionBuffer = 3.0
+  // add a minimum thread engagement safety buffer (at least 2 full thread pitches protruding past the nut face)
+  const safetyProtrusionBuffer = 2.0 * bolt.pitch
   requiredMinimumLength += safetyProtrusionBuffer
 
   if (bolt.length < requiredMinimumLength) {
     throw new Error(
-      `Validation Failed: Bolt length is too short for this hardware stack. ` +
-      `Requested Length: ${bolt.length}mm. Required Minimum Clearance: ${requiredMinimumLength.toFixed(1)}mm ` +
-      `(Includes calculated stack hardware thickness and safety thread protrusion).`
-    );
+      `Invalid Assembly: Bolt length (${bolt.length}) is too short for the requested assembly, ` +
+      `which requires a minimum length of ${requiredMinimumLength.toFixed(1)}`
+    )
   }
 
   return true
 }
 
-
-
-/**
+/*
  * METRIC ISO ASSEMBLY VALIDATION ENGINE WITH TOLERANCE CHECKS
- * 
- * @memberof jscad-fastener/iso
  */
-export const validateAssembly = (assembly) => {
+const validateAssemblyB = (assembly) => {
   const { bolt, washer, nut } = assembly
   const errors = []
   const warnings = []
@@ -286,73 +288,53 @@ export const validateAssembly = (assembly) => {
 }
 
 /**
- * Procedural 3D Assembly Generator for ISO Fastener Stack in JSCAD V3
- * Handles optional washers and nuts seamlessly without crashing.
+ * Generate a full assembly from the given specifications for bolt, nut, washer.
  *
- * @memberof jscad-fastener/iso
- * @param {Object} assemblyConfig - Specifications for each component (bolt required; washer/nut optional)
- * @param {number} clampThickness - Total material thickness being joined together (mm)
- * @param {Object} modules - Reference pointers to your 3D creation functions
- * @returns {Object} Unified 3D assembly mesh
+ * @see parseAssembly() for parsing specifications from a compound engineering stack description 
+ *
+ * @param {Object} specifications - the specifications of the assembly
+ * @returns {Array} Array of geometries
  */
-export const generateAssembly = (assemblyConfig, clampThickness, modules) => {
-  const { bolt, washer, nut } = assemblyConfig
-  const { createBolt, createWasher, createNut, createThread } = modules
+export const generateAssembly = (specifications) => {
+  // Phase 1: Validate structural integrity and physical clearance rules
+  validateAssembly(specifications)
 
-  // Safety Gate: The bolt is always required as the primary assembly core
-  if (!bolt) {
-    throw new Error("Assembly generation failed: A valid bolt configuration object must be provided.")
-  }
+  const { bolt, washer, nut } = specifications
 
-  const assemblySolids = []
-  let currentZTracking = 0 // Tracks the stacking depth downward along the negative Z-axis
+  // Phase 2: Generate Geometries
+  // Because validation passed, bolt.length is guaranteed to be a valid number here.
+  const stack = []
 
-  // ==========================================
-  // 1. GENERATE AND POSITION THE ISO BOLT
-  // ==========================================
-  // Head is generated above Z=0; shank runs downward into negative Z space
-  const boltSolid = createBolt(bolt)
-  assemblySolids.push(boltSolid)
+  // 1. Build the bolt geometry
+  const boltDims = getHexBoltDimensions(bolt, bolt.length)
+  const boltMesh = generateHexBolt(boltDims)
+  stack.push(boltMesh)
 
-  // ==========================================
-  // 2. OPTIONAL: WASHER CONFIGURATION
-  // ==========================================
+  // 2. Build and position the optional washer if present
+  let currentZOffset = 0 // Stacking downward from the bolt head interface plane
+
   if (washer) {
-    const washerSolid = createWasher(washer)
-    const washerThickness = washer.thickness || 2.0 // Fallback default
-    
-    // Slide washer flush against the underside of the bolt head
-    currentZTracking -= washerThickness
-    const positionedWasher = translate([0, 0, currentZTracking], washerSolid)
-    assemblySolids.push(positionedWasher)
+    const washerDims = getWasherDimensions(washer)
+    let washerMesh = generateWasher(washerDims)
+
+    // Position washer directly flat against the underside of the bolt head
+    currentZOffset -= washerDims.thickness / 2
+    washerMesh = translate([0, 0, currentZOffset], washerMesh)
+    stack.push(washerMesh)
   }
 
-  // ==========================================
-  // 3. OPTIONAL: NUT CONFIGURATION
-  // ==========================================
+  // 3. Build and position the optional nut if present
   if (nut) {
-    const nutSolid = createNut(nut, createThread)
-    const nutHeight = nut.height || 10.0 // Fallback default
-    
-    // Position the nut below the washer (if it exists) and the clamped material block
-    const nutZPosition = currentZTracking - clampThickness - nutHeight
-    
-    const positionedNut = translate([0, 0, nutZPosition], nutSolid)
-    assemblySolids.push(positionedNut)
-    
-    console.log(` -> Nut Seating Level determined at: ${nutZPosition}mm`)
-  } else {
-    console.log(` -> Note: No nut specified. Assuming a tapped blind hole assembly configuration.`)
+    const nutDims = getNutDimensions(nut)
+    let nutMesh = generateNut(nutDims)
+
+    // Position nut flush against either the washer face or the joint material boundary
+    // For a standard through-hole joint, it sits at the end of the clamping package
+    const nutZPosition = 0 - bolt.length + nutDims.height
+    nutMesh = translate([0, 0, nutZPosition], nutMesh)
+    stack.push(nutMesh)
   }
 
-  // ==========================================
-  // 4. UNION AND EXECUTE SOLIDS
-  // ==========================================
-  console.log(`\n📦 Compiling 3D ISO Assembly Stack...`)
-  console.log(` -> Clamped Material Depth: ${clampThickness}mm`)
-  console.log(` -> Structural Stack Parts count: ${assemblySolids.length}`)
-
-  return union(...assemblySolids)
+  return stack
 }
-
 

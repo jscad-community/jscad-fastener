@@ -281,3 +281,67 @@ test('iso.parseAssembly', () => {
   )
 })
 
+test('iso.validateAssembly', () => {
+  expect(() => iso.validateAssembly()).toThrow('Missing bolt specification')
+
+  // invalid bolt spec
+  let bolt = {size: 'M16', pitch: 2 }
+  let assembly = {bolt}
+  expect(() => iso.validateAssembly(assembly)).toThrow('Missing bolt length')
+
+  // valid bolt spec
+  bolt = {size: 'M16', pitch: 2, length: 40 }
+  assembly = {bolt}
+  expect(iso.validateAssembly(assembly)).toStrictEqual(true)
+
+  // diameter checks
+  let washer = {size: 'M12'}
+  assembly = {bolt, washer}
+  expect(() => iso.validateAssembly(assembly)).toThrow('Nominal diameter mismatch')
+
+  let nut = {size: 'M12'}
+  assembly = {bolt, nut}
+  expect(() => iso.validateAssembly(assembly)).toThrow('Nominal diameter mismatch')
+
+  // pitch checks
+  nut = {size: 'M16', pitch: 1.5}
+  assembly = {bolt, nut}
+  expect(() => iso.validateAssembly(assembly)).toThrow('Thread pitch mismatch')
+
+  // mechanical checks
+  bolt = {size: 'M16', pitch: 2, length: 20 }
+  washer = {size: 'M16', standard: 'ISO_7090'}
+  nut = {size: 'M16', standard: 'ISO_4032_HEX_STANDARD', pitch: 2}
+  assembly = {bolt, nut, washer}
+  expect(() => iso.validateAssembly(assembly)).toThrow('Bolt length')
+
+  // full spec
+  bolt = {size: 'M16', pitch: 2, length: 40 }
+  washer = {size: 'M16', standard: 'ISO_7090'}
+  nut = {size: 'M16', standard: 'ISO_4032_HEX_STANDARD', pitch: 2}
+  assembly = {bolt, nut, washer}
+  expect(iso.validateAssembly(assembly)).toStrictEqual(true)
+})
+
+test('iso.generateAssembly', () => {
+  // bolt, nut, washer
+  let specifications = iso.parseAssembly("ISO 4017 Bolt M16 x 60 - 10.9 HDG Finish; ISO 7090 Washer; ISO 4032 Nut")
+
+  let assembly = iso.generateAssembly(specifications)
+  expect(assembly.length).toStrictEqual(3)
+
+  // bolt, washer
+  specifications = iso.parseAssembly("ISO 4017 Bolt M16 x 60 - 10.9 HDG Finish; ISO 7090 Washer")
+
+  assembly = iso.generateAssembly(specifications)
+  expect(assembly.length).toStrictEqual(2)
+
+  // bolt, nut
+
+  // bolt
+  specifications = iso.parseAssembly("M6 x 40 Bolt")
+
+  assembly = iso.generateAssembly(specifications)
+  expect(assembly.length).toStrictEqual(1)
+})
+
