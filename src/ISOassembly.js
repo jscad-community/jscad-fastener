@@ -65,7 +65,7 @@ const determineFastenerType = (chunk) => {
 }
 
 /**
- * Parse a full ISO compound engineering stack description into specification tokens
+ * Parse a full ISO compound engineering stack description into specifications
  * for bolt, nut, and washer.
  *
  * @memberof jscad-fastener/iso
@@ -99,7 +99,7 @@ export const parseAssembly = (callout) => {
 
   // A bolt string is always mandatory to anchor a fastener assembly
   if (!boltString) {
-    throw new Error("ISO assembly parsing failed: No identifiable bolt segment was found.")
+    throw new Error("ISO assembly parsing failed: No identifiable bolt segment was found")
   }
 
   // Step 2: Extract explicit sizing context to handle shared shorthand patterns
@@ -306,15 +306,13 @@ export const generateAssembly = (specifications) => {
   stack.push(boltMesh)
 
   // 2. Build and position the optional washer if present
-  let currentZOffset = 0 // Stacking downward from the bolt head interface plane
-
   if (washer) {
     const washerDims = getWasherDimensions(washer)
     let washerMesh = generateWasher(washerDims)
 
     // Position washer directly flat against the underside of the bolt head
-    currentZOffset -= washerDims.thickness / 2
-    washerMesh = translate([0, 0, currentZOffset], washerMesh)
+    const washerZPosition = 0 - (washerDims.thickness / 2)
+    washerMesh = translate([0, 0, washerZPosition], washerMesh)
     stack.push(washerMesh)
   }
 
@@ -325,7 +323,7 @@ export const generateAssembly = (specifications) => {
 
     // Position nut flush against either the washer face or the joint material boundary
     // For a standard through-hole joint, it sits at the end of the clamping package
-    const nutZPosition = 0 - bolt.length + nutDims.height
+    const nutZPosition = 0 - bolt.length + (nutDims.height / 2)
     nutMesh = translate([0, 0, nutZPosition], nutMesh)
     stack.push(nutMesh)
   }

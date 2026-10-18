@@ -64,53 +64,133 @@ export const parseBoltSpec = (spec) => {
     throw new Error("Missing string parameter; spec")
   }
 
-  spec = spec.toUpperCase()
+  const upperStr = spec.toUpperCase()
 
   // 1. Resolve Fastener Standard from Trade Terms
-  let standard = "ASME_B18_2_1_CAP_SCREW" // Default fallback
-  if (spec.includes("HEAVY HEX STRUCTURAL") || spec.includes("ASME B18.2.6") || spec.includes("A325")) {
+  let standard = "ASME_B18_2_1_CAP_SCREW" 
+  if (upperStr.includes("HEAVY HEX STRUCTURAL") || upperStr.includes("ASME B18.2.6") || upperStr.includes("A325") || upperStr.includes("A490") || upperStr.includes("F3125")) {
     standard = "ASME_B18_2_6_STRUCTURAL"
-  } else if (spec.includes("MACHINE SCREW") || spec.includes("ASME B18.6.3")) {
+  } else if (upperStr.includes("MACHINE SCREW") || upperStr.includes("ASME B18.6.3")) {
     standard = "ASME_B18_6_3_MACHINE"
-  } else if (spec.includes("HEAVY HEX BOLT")) {
+  } else if (upperStr.includes("HEAVY HEX BOLT")) {
     standard = "ASME_B18_2_1_HEAVY_BOLT"
-  } else if (spec.includes("HEX BOLT")) {
+  } else if (upperStr.includes("HEX BOLT")) {
     standard = "ASME_B18_2_1_HEX_BOLT"
-  } else if (spec.includes("TAP BOLT")) {
-    standard = "ASME_B18_2_1_TAP_BOLT" // Fully threaded
+  } else if (upperStr.includes("TAP BOLT")) {
+    standard = "ASME_B18_2_1_TAP_BOLT" 
   }
 
-  // 2. Structural Thread Regex Extraction
-  const threadRegex = /(?:#)?(\d+(?:\/\d+)?)-(\d+)\s*(UNC|UNF)?/i
-  const threadMatch = spec.match(threadRegex)
-  if (!threadMatch) throw new Error("Failed to extract ASME thread parameters")
+  // 2. PARSE THREAD SPECIFICATION & LENGTH PARAMETERS
+  // ---------------------------------------------------------
+  // 2. PARSE THREAD SPECIFICATION & LENGTH PARAMETERS (AIRTIGHT SPLIT)
+  // ---------------------------------------------------------
+  
+  // Procedural Multiplier Index Search: Finds an 'X' or 'x' that is a true geometric separator
+  let splitIndex = -1
+  const xPatterns = [/ \s*X\s*/gi, /\d\s*X\s*/gi, /UNC\s*X\s*/gi, /UNF\s*X\s*/gi]
 
-  const size = threadMatch[1] // e.g., "1/2" or "10"
-  const pitch = parseInt(threadMatch[2], 10) // Threads per inch acting as pitch token
-  const threadSeries = threadMatch[3] ? threadMatch[3].toUpperCase() : "UNC"
+  for (const pattern of xPatterns) {
+    const match = upperStr.match(pattern)
+    if (match) {
+      // Find the absolute position of the 'X' or 'x' token within the text
+      splitIndex = upperStr.indexOf(match[0]) + match[0].toUpperCase().indexOf('X')
+      break
+    }
+  }
+
+  if (splitIndex === -1) {
+    throw new Error("Failed to locate structural length boundary marker ('x') in bolt spec.")
+  }
+
+  // Isolate the text into two independent strings centered around the multiplier index
+  const threadPart = upperStr.slice(0, splitIndex).trim()
+  const lengthPart = upperStr.slice(splitIndex + 1).trim()
+
+  // Step A: Extract the Size and Pitch from the thread side string chunk
+  const threadRegex = /(?:#|NO\.?\s*)?((?<![A-Z0-9\.])\d+(?:\/\d+)?(?:-\d+\/\d+)?)\s*-\s*(\d+(?:\.\d+)?)/i
+  const threadMatch = threadPart.match(threadRegex)
+  if (!threadMatch) {
+    throw new Error("Failed to extract ASME thread parameters from bolt string.")
+  }
+
+  const size = threadMatch[1] // e.g., "1/4", "10", "7/8", "1-3/4"
+  const pitch = parseFloat(threadMatch[2]) // Handles integer TPI or decimal TPI like 4.5
+
+  // Step B: Extract the raw numeric length token from the start of the length side string chunk
+  // Ordering ensures fractions and decimals match completely before looking for raw integers
+  const lengthRegex = /^(\d+-\d+\/\d+|\d+\/\d+|\d+\.\d+|\d+)/
+  const lengthMatch = lengthPart.match(lengthRegex)
+  if (!lengthMatch) {
+    throw new Error("Failed to parse structural length token from bolt string.")
+  }
+  const lengthRaw = lengthMatch[1]
+
+  // Step C: Translate the isolated length token string into a numeric float representation
+  let length = null
+  if (lengthRaw) {
+    if (lengthRaw.includes("-")) { 
+      const lengthParts = lengthRaw.split("-")
+      const fracParts = lengthParts[1].split("/")
+      length = parseFloat(lengthParts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]))
+    } else if (lengthRaw.includes("/")) { 
+      const fracParts = lengthRaw.split("/")
+      length = parseFloat(fracParts[0]) / parseFloat(fracParts[1])
+    } else { 
+      length = parseFloat(lengthRaw)
+    }
+  }
+
+
+  // Extract thread series classification cleanly
+  const seriesMatch = upperStr.match(/\b(UNC|UNF)\b/)
+  const threadSeries = seriesMatch ? seriesMatch[1] : "UNC"
 
   // 3. Extract Material Grades & Properties
-  const propertyClassMatch = spec.match(/(A325|GRADE\s*8|GRADE\s*5|A2-70|8\.8)/i)
-  const propertyClass = propertyClassMatch ? propertyClassMatch[1].toUpperCase() : "8.8"
+  const propertyClassMatch = upperStr.match(/(A325|A490|GRADE\s*8|GRADE\s*5|GRADE\s*2|A2-70|8\.8|A307\s*GRADE\s*A|CASE\s*HARDENED)/i)
+  const propertyClass = propertyClassMatch ? propertyClassMatch[1] : "GRADE 2"
   
   let material = "Carbon Steel"
-  if (spec.includes("STAINLESS")) material = "Stainless Steel"
-  else if (propertyClass === "A325") material = "Hardened Structural Steel"
+  if (upperStr.includes("STAINLESS")) material = "Stainless Steel"
+  else if (propertyClass === "A325" || propertyClass === "A490") material = "Hardened Structural Steel"
+  else if (propertyClass.includes("A307")) material = "Low Carbon Steel"
 
   let coating = "Bare Metal"
-  if (spec.includes("ZINC")) coating = "Zinc Plated"
-  else if (spec.includes("GALVANIZED") || spec.includes("HDG")) coating = "Hot Dip Galvanized"
+  if (upperStr.includes("ZINC")) coating = "Zinc Plated"
+  else if (upperStr.includes("GALVANIZED") || upperStr.includes("HDG")) coating = "Hot Dip Galvanized"
+  else if (upperStr.includes("BLACK OXIDE")) coating = "Black Oxide"
 
-  // 4. Lookup ASME clearance hole dimensions for the bolt
-  // Custom imperial clearances based on standard fraction increments
-  const d = size.includes("/") ? eval(size) : parseInt(size, 10) * 0.013 + 0.060 // Approximates gauge widths safely
+  // 4. LOOKUP ASME CLEARANCE HOLE DIMENSIONS (INCHES)
+  let d = 0
+  if (size.includes("/")) {
+    if (size.includes("-")) { 
+      const parts = size.split("-")
+      const fracParts = parts[1].split("/")
+      d = parseFloat(parts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]))
+    } else {
+      const parts = size.split("/")
+      d = parseFloat(parts[0]) / parseFloat(parts[1])
+    }
+  } else {
+    const numericSize = parseFloat(size)
+    
+    // Explicit standard boundary check: Machine screws use the standard gauge width factor formula
+    if (standard === "ASME_B18_6_3_MACHINE") {
+      d = (numericSize * 0.013) + 0.060 // #10 maps properly to 0.190 inches
+    } else {
+      // Standard large whole integer fractional sizes (e.g., 1", 2", 3", 4")
+      d = numericSize
+    }
+  }
+
+  // Calculate standard fractional clearance boundary layers relative to the true decimal diameter
   const fineHole = d + 0.015
-  const mediumHole = d + 0.032 // Standard ~1/32" shop floor oversized drilling boundary
+  const mediumHole = d + 0.032 
   const coarseHole = d + 0.062
 
   return {
     size,
     pitch,
+    length,
     threadSeries,
     standard,
     threadTolerance: "2A",
@@ -283,14 +363,24 @@ export const parseWasherSpec = (spec) => {
     }
   }
 
-  // 2. Capture sizing bounds like "1/2 inch" or "1/2 in" or "#10"
-  // Group 1 catches things like "#4", "# 4", "No. 4", "No 4"
-  // Group 2 catches standard fractional layouts like "1/2" or decimal sizes
-  const washerRegex = /(?:#|NO\.?)\s*(\d+)|(\d+(?:\/\d+)?)\s*(?:INCH|IN|\"|\$|SCREW\s+SIZE)/i
-  const match = spec.match(washerRegex)
+  // 2. Capture sizing bounds securely without letting standard numbers (B18) poison the match
+  // - Pattern 1: Explicit machine screw indicators (#10, #6, #4)
+  // - Pattern 2: Fractional/integer size explicitly followed by units (\b1/4 inch\b, \b5/16 in\b, \b#10 inch\b)
+  // - Pattern 3: Explicit machine screw indicator trailing unit (e.g., #4 Screw Size)
+  // - Pattern 4: A clean leading number or fraction right at the start of the string (from your backward injector layer)
+  const washerRegex = /(?:#|NO\.?)\s*(\d+)|\b(\d+(?:\/\d+)?)\s*(?:INCH|IN|\"|\$|SCREW\s+SIZE)\b|^(\d+(?:\/\d+)?)(?:\s|\$)/i
+  const match = spec.trim().match(washerRegex)
   if (!match) throw new Error("Failed to parse mechanical size limits from Washer string.")
 
-  const size = match[1] ? `#${match[1]}` : match[2]
+  // Safely extract the active group capture index
+  let size = ""
+  if (match[1]) {
+    size = `#${match[1]}` // Machine screw size (e.g., "#4")
+  } else if (match[2]) {
+    size = match[2]      // Standard anchored size (e.g., "1/4", "1")
+  } else if (match[3]) {
+    size = match[3]      // Backward-injected leading size (e.g., "1/2")
+  }
 
   // 3. Dynamic Material, Coating & Vickers Hardness (HV) Mapping
   let material = "Carbon Steel"

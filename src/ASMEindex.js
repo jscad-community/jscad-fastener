@@ -7,6 +7,7 @@
  *
  * @namespace jscad-fastener/asme
  */
+export * from './ASMEassembly.js'
 export * from './ASMEspecification.js'
 export * from './ASMEbolt.js'
 export * from './ASMEnut.js'

@@ -347,7 +347,8 @@ export const parseWasherSpec = (str) => {
   } else if (upperStr.includes("NARROW") || upperStr.includes("SMALL")) {
     standard = "ISO_7092" // Small Series Washer
   } else if (standardMatch) {
-    standard = `ISO_${standardMatch[1]}`
+    const prefix = standardMatch[0].startsWith('DIN') ? 'DIN' : 'ISO'
+    standard = `${prefix}_${standardMatch[1]}`
   }
 
   // 3. Dynamic Vickers Hardness (HV) Target Configuration
