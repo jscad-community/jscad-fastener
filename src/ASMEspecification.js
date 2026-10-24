@@ -61,7 +61,7 @@ const ASME_B18_2_8_CLEARANCE_HOLES = {
  */
 export const parseBoltSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
-    throw new Error("Missing string parameter; spec")
+    throw new Error("Missing spec parameter")
   }
 
   const upperStr = spec.toUpperCase().trim()
@@ -116,9 +116,9 @@ export const parseBoltSpec = (spec) => {
   let size = threadMatch[1].replace(/-/g, ' ').trim() // e.g., "1/4", "10", "7/8", "1-3/4"
   // enforce the # prefix consistency rule only for actual ASME machine screw numbers
   if (/^\d+$/.test(size)) {
-    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12'];
+    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12']
     if (validNumberedSizes.includes(size)) {
-      size = `#${size}`;
+      size = `#${size}`
     }
   }
   const pitch = parseFloat(threadMatch[2]) // Handles integer TPI or decimal TPI like 4.5
@@ -167,27 +167,27 @@ export const parseBoltSpec = (spec) => {
   else if (upperStr.includes("BLACK OXIDE")) coating = "Black Oxide"
 
   // 4. LOOKUP/CALCULATE ASME MAJOR DIAMETER (INCHES)
-  let d = 0;
+  let d = 0
 
   if (size.startsWith("#")) {
     // Extract the number after the # symbol (e.g., "#10" -> 10)
-    const numericSize = parseInt(size.replace("#", ""), 10);
+    const numericSize = parseInt(size.replace("#", ""), 10)
     
     // Standard ASME machine screw major diameter formula: (Size * 0.013) + 0.060
-    d = (numericSize * 0.013) + 0.060; 
+    d = (numericSize * 0.013) + 0.060 
   } else if (size.includes("/")) {
     // Handles fractional sizes like "1/4" or "1 1/4"
     if (size.includes(" ")) { 
-      const parts = size.split(" ");
-      const fracParts = parts[1].split("/");
-      d = parseFloat(parts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]));
+      const parts = size.split(" ")
+      const fracParts = parts[1].split("/")
+      d = parseFloat(parts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]))
     } else {
-      const parts = size.split("/");
-      d = parseFloat(parts[0]) / parseFloat(parts[1]);
+      const parts = size.split("/")
+      d = parseFloat(parts[0]) / parseFloat(parts[1])
     }
   } else {
     // Standard large whole integer sizes (e.g., "1", "2")
-    d = parseFloat(size);
+    d = parseFloat(size)
   }
 
   // Calculate standard fractional clearance boundary layers relative to the true decimal diameter
@@ -225,7 +225,7 @@ export const parseBoltSpec = (spec) => {
  */
 export const parseNutSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
-    throw new Error("Missing string parameter; spec")
+    throw new Error("Missing spec parameter")
   }
 
   spec = spec.toUpperCase().trim()
@@ -264,9 +264,9 @@ export const parseNutSpec = (spec) => {
 
   // enforce the # prefix consistency rule for numbered machine screw nuts (0 to 12)
   if (/^\d+$/.test(size)) {
-    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12'];
+    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12']
     if (validNumberedSizes.includes(size)) {
-      size = `#${size}`;
+      size = `#${size}`
     }
   }
 
@@ -348,7 +348,7 @@ export const parseNutSpec = (spec) => {
  */
 export const parseWasherSpec = (spec) => {
   if (!spec || typeof spec !== 'string') {
-    throw new Error("Missing string parameter; spec")
+    throw new Error("Missing spec parameter")
   }
 
   spec = spec.toUpperCase().trim()
@@ -389,19 +389,19 @@ export const parseWasherSpec = (spec) => {
 
   // 2. Erase the standard numbers entirely so they can't poison our sizes
   // This cleanly deletes things like "B18.21.1", "B18.22.1", etc.
-  const cleanSpec = spec.replace(/B\d{2}\.\d{2}\.\d+/i, '');
+  const cleanSpec = spec.replace(/B\d{2}\.\d{2}\.\d+/i, '')
 
   // 3. Define small, distinct, readable regex patterns
-  const numberedPattern = /(?:#|NO\.?)\s*(\d+)/i;
-  const anchoredPattern = /\b(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)\s*(?:INCH|IN|\"|\$|SCREW\s+SIZE)\b/i;
-  const leadingPattern  = /^(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)(?:\s|\$)/i;
+  const numberedPattern = /(?:#|NO\.?)\s*(\d+)/i
+  const anchoredPattern = /\b(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)\s*(?:INCH|IN|\"|\$|SCREW\s+SIZE)\b/i
+  const leadingPattern  = /^(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)(?:\s|\$)/i
 
-  let rawSize = "";
+  let rawSize = ""
 
   // 4. Run matching sequentially (Highest priority first)
-  const numMatch = cleanSpec.match(numberedPattern);
-  const anchMatch = cleanSpec.match(anchoredPattern);
-  const leadMatch = cleanSpec.match(leadingPattern);
+  const numMatch = cleanSpec.match(numberedPattern)
+  const anchMatch = cleanSpec.match(anchoredPattern)
+  const leadMatch = cleanSpec.match(leadingPattern)
 
   if (numMatch) {
     rawSize = `#${numMatch[1]}`
@@ -414,13 +414,13 @@ export const parseWasherSpec = (spec) => {
   }
 
   // 5. Final Key Normalization Layer
-  let size = rawSize.replace(/-/g, ' ').trim();
+  let size = rawSize.replace(/-/g, ' ').trim()
 
   // Enforce the consistent # prefix for raw numbered sizes (0 to 12)
   if (/^\d+$/.test(size)) {
-    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12'];
+    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12']
     if (validNumberedSizes.includes(size)) {
-      size = `#${size}`;
+      size = `#${size}`
     }
   }
 
