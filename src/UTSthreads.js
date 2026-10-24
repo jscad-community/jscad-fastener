@@ -42,19 +42,19 @@ export const UTS_THREADS = {
   '1':     [ 1.0000, 8,    12   ],
   // --- Heavy Industrial / Fractional Sizes (1-1/8" to 4") ---
   // Large diameters typically shift to 8UN series instead of UNF for fine settings
-  '1-1/8': [ 1.1250, 7,    12   ],
-  '1-1/4': [ 1.2500, 7,    12   ], // 12 TPI used for fine/constant pitch series
-  '1-3/8': [ 1.3750, 6,    12   ],
-  '1-1/2': [ 1.5000, 6,    12   ],
-  '1-3/4': [ 1.7500, 5,    8    ], // High-load threads swap over to 8 TPI constant pitch limits
+  '1 1/8': [ 1.1250, 7,    12   ],
+  '1 1/4': [ 1.2500, 7,    12   ], // 12 TPI used for fine/constant pitch series
+  '1 3/8': [ 1.3750, 6,    12   ],
+  '1 1/2': [ 1.5000, 6,    12   ],
+  '1 3/4': [ 1.7500, 5,    8    ], // High-load threads swap over to 8 TPI constant pitch limits
   '2':     [ 2.0000, 4.5,  8    ],
-  '2-1/4': [ 2.2500, 4.5,  8    ],
-  '2-1/2': [ 2.5000, 4,    8    ],
-  '2-3/4': [ 2.7500, 4,    8    ],
+  '2 1/4': [ 2.2500, 4.5,  8    ],
+  '2 1/2': [ 2.5000, 4,    8    ],
+  '2 3/4': [ 2.7500, 4,    8    ],
   '3':     [ 3.0000, 4,    8    ],
-  '3-1/4': [ 3.2500, 4,    8    ],
-  '3-1/2': [ 3.5000, 4,    8    ],
-  '3-3/4': [ 3.7500, 4,    8    ],
+  '3 1/4': [ 3.2500, 4,    8    ],
+  '3 1/2': [ 3.5000, 4,    8    ],
+  '3 3/4': [ 3.7500, 4,    8    ],
 }
 
 /**

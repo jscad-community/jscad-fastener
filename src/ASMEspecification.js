@@ -64,7 +64,7 @@ export const parseBoltSpec = (spec) => {
     throw new Error("Missing string parameter; spec")
   }
 
-  const upperStr = spec.toUpperCase()
+  const upperStr = spec.toUpperCase().trim()
 
   // 1. Resolve Fastener Standard from Trade Terms
   let standard = "ASME_B18_2_1_CAP_SCREW" 
@@ -113,7 +113,14 @@ export const parseBoltSpec = (spec) => {
     throw new Error("Failed to extract ASME thread parameters from bolt string.")
   }
 
-  const size = threadMatch[1] // e.g., "1/4", "10", "7/8", "1-3/4"
+  let size = threadMatch[1].replace(/-/g, ' ').trim() // e.g., "1/4", "10", "7/8", "1-3/4"
+  // enforce the # prefix consistency rule only for actual ASME machine screw numbers
+  if (/^\d+$/.test(size)) {
+    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12'];
+    if (validNumberedSizes.includes(size)) {
+      size = `#${size}`;
+    }
+  }
   const pitch = parseFloat(threadMatch[2]) // Handles integer TPI or decimal TPI like 4.5
 
   // Step B: Extract the raw numeric length token from the start of the length side string chunk
@@ -159,27 +166,28 @@ export const parseBoltSpec = (spec) => {
   else if (upperStr.includes("GALVANIZED") || upperStr.includes("HDG")) coating = "Hot Dip Galvanized"
   else if (upperStr.includes("BLACK OXIDE")) coating = "Black Oxide"
 
-  // 4. LOOKUP ASME CLEARANCE HOLE DIMENSIONS (INCHES)
-  let d = 0
-  if (size.includes("/")) {
-    if (size.includes("-")) { 
-      const parts = size.split("-")
-      const fracParts = parts[1].split("/")
-      d = parseFloat(parts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]))
+  // 4. LOOKUP/CALCULATE ASME MAJOR DIAMETER (INCHES)
+  let d = 0;
+
+  if (size.startsWith("#")) {
+    // Extract the number after the # symbol (e.g., "#10" -> 10)
+    const numericSize = parseInt(size.replace("#", ""), 10);
+    
+    // Standard ASME machine screw major diameter formula: (Size * 0.013) + 0.060
+    d = (numericSize * 0.013) + 0.060; 
+  } else if (size.includes("/")) {
+    // Handles fractional sizes like "1/4" or "1 1/4"
+    if (size.includes(" ")) { 
+      const parts = size.split(" ");
+      const fracParts = parts[1].split("/");
+      d = parseFloat(parts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]));
     } else {
-      const parts = size.split("/")
-      d = parseFloat(parts[0]) / parseFloat(parts[1])
+      const parts = size.split("/");
+      d = parseFloat(parts[0]) / parseFloat(parts[1]);
     }
   } else {
-    const numericSize = parseFloat(size)
-    
-    // Explicit standard boundary check: Machine screws use the standard gauge width factor formula
-    if (standard === "ASME_B18_6_3_MACHINE") {
-      d = (numericSize * 0.013) + 0.060 // #10 maps properly to 0.190 inches
-    } else {
-      // Standard large whole integer fractional sizes (e.g., 1", 2", 3", 4")
-      d = numericSize
-    }
+    // Standard large whole integer sizes (e.g., "1", "2")
+    d = parseFloat(size);
   }
 
   // Calculate standard fractional clearance boundary layers relative to the true decimal diameter
@@ -220,7 +228,7 @@ export const parseNutSpec = (spec) => {
     throw new Error("Missing string parameter; spec")
   }
 
-  spec = spec.toUpperCase()
+  spec = spec.toUpperCase().trim()
 
   // 1. Resolve Standard Names
   let standard = "ASME_B18_2_2_NORMAL"
@@ -244,15 +252,25 @@ export const parseNutSpec = (spec) => {
   }
 
   // 2. Structural Regex Thread Extraction
-  const nutRegex = /(?:#)?(\d+(?:\/\d+)?)(?:\s*INCH|\s*IN|\")?(?:\s*-\s*|\s+)(\d+)\s*(UNC|UNF)?/i
+  //const nutRegex = /(?:#)?((?<![A-Z0-9\.])\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)(?:\s*INCH|\s*IN|\")?(?:\s*-\s*|\s+)(\d+)\s*(UNC|UNF)?/i
+  const nutRegex = /(?:#)?((?<![A-Z0-9\.])\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)(?:\s*INCH|\s*IN|\")?(?:\s*-\s*|\s+)(\d+)(?![0-9\/])\s*(UNC|UNF)?/i
   const match = spec.match(nutRegex)
   if (!match) throw new Error("Failed to parse internal thread ASME criteria from Nut string.")
 
-  const size = match[1]
+  // clean up and normalize the size string (e.g., "1-1/4" -> "1 1/4")
+  let size = match[1].replace(/-/g, ' ').trim()
   const pitch = parseInt(match[2], 10) // threads per inch
   const threadSeries = match[3] ? match[3].toUpperCase() : "UNC"
 
-  // Resolve thread fit class (Class 2B is standard commercial off-the-shelf)
+  // enforce the # prefix consistency rule for numbered machine screw nuts (0 to 12)
+  if (/^\d+$/.test(size)) {
+    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12'];
+    if (validNumberedSizes.includes(size)) {
+      size = `#${size}`;
+    }
+  }
+
+  // resolve thread fit class (Class 2B is standard commercial off-the-shelf)
   let threadTolerance = "2B"
   if (spec.includes("3B")) threadTolerance = "3B"
   else if (spec.includes("1B")) threadTolerance = "1B"
@@ -271,18 +289,24 @@ export const parseNutSpec = (spec) => {
   // 4. Calculate ASME B1.1 Tapped Hole Limits
   // Convert fractional or gauge sizes to numerical decimal inches first
   let dInches = 0
-  if (size.includes("/")) {
-    const parts = size.split("/")
-    dInches = parseFloat(parts[0]) / parseFloat(parts[1])
-  } else {
-    if (standard === "ASME_B18_2_2_HEAVY") {
-      // for this standard, sizes start from 1 inch
-      dInches = parseInt(size, 10)
+
+  if (size.startsWith("#")) {
+    // Strips the "#" prefix cleanly (e.g., "#10" -> 10)
+    const gaugeNum = parseInt(size.replace("#", ""), 10)
+    dInches = (gaugeNum * 0.013) + 0.060
+  } else if (size.includes("/")) {
+    // Handles mixed fractions safely (e.g., "1 1/4") or simple fractions (e.g., "1/4")
+    if (size.includes(" ")) { 
+      const parts = size.split(" ")
+      const fracParts = parts[1].split("/")
+      dInches = parseFloat(parts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]))
     } else {
-      // a machine number size (#2 to #12)
-      const gaugeNum = parseInt(size, 10)
-      dInches = (gaugeNum * 0.013) + 0.060
+      const parts = size.split("/")
+      dInches = parseFloat(parts[0]) / parseFloat(parts[1])
     }
+  } else {
+    // Correctly captures whole-inch integer sizes (e.g., "1", "2")
+    dInches = parseFloat(size)
   }
 
   // Apply ASME B1.1 foundational thread geometry constant paths (in inches)
@@ -327,7 +351,7 @@ export const parseWasherSpec = (spec) => {
     throw new Error("Missing string parameter; spec")
   }
 
-  spec = spec.toUpperCase()
+  spec = spec.toUpperCase().trim()
 
   // 1. Resolve Structural Standard Profile Labels
   let standard = "ASME_B18_21_1_TYPE_A_NARROW"
@@ -363,23 +387,41 @@ export const parseWasherSpec = (spec) => {
     }
   }
 
-  // 2. Capture sizing bounds securely without letting standard numbers (B18) poison the match
-  // - Pattern 1: Explicit machine screw indicators (#10, #6, #4)
-  // - Pattern 2: Fractional/integer size explicitly followed by units (\b1/4 inch\b, \b5/16 in\b, \b#10 inch\b)
-  // - Pattern 3: Explicit machine screw indicator trailing unit (e.g., #4 Screw Size)
-  // - Pattern 4: A clean leading number or fraction right at the start of the string (from your backward injector layer)
-  const washerRegex = /(?:#|NO\.?)\s*(\d+)|\b(\d+(?:\/\d+)?)\s*(?:INCH|IN|\"|\$|SCREW\s+SIZE)\b|^(\d+(?:\/\d+)?)(?:\s|\$)/i
-  const match = spec.trim().match(washerRegex)
-  if (!match) throw new Error("Failed to parse mechanical size limits from Washer string.")
+  // 2. Erase the standard numbers entirely so they can't poison our sizes
+  // This cleanly deletes things like "B18.21.1", "B18.22.1", etc.
+  const cleanSpec = spec.replace(/B\d{2}\.\d{2}\.\d+/i, '');
 
-  // Safely extract the active group capture index
-  let size = ""
-  if (match[1]) {
-    size = `#${match[1]}` // Machine screw size (e.g., "#4")
-  } else if (match[2]) {
-    size = match[2]      // Standard anchored size (e.g., "1/4", "1")
-  } else if (match[3]) {
-    size = match[3]      // Backward-injected leading size (e.g., "1/2")
+  // 3. Define small, distinct, readable regex patterns
+  const numberedPattern = /(?:#|NO\.?)\s*(\d+)/i;
+  const anchoredPattern = /\b(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)\s*(?:INCH|IN|\"|\$|SCREW\s+SIZE)\b/i;
+  const leadingPattern  = /^(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)(?:\s|\$)/i;
+
+  let rawSize = "";
+
+  // 4. Run matching sequentially (Highest priority first)
+  const numMatch = cleanSpec.match(numberedPattern);
+  const anchMatch = cleanSpec.match(anchoredPattern);
+  const leadMatch = cleanSpec.match(leadingPattern);
+
+  if (numMatch) {
+    rawSize = `#${numMatch[1]}`
+  } else if (anchMatch) {
+    rawSize = anchMatch[1]
+  } else if (leadMatch) {
+    rawSize = leadMatch[1]
+  } else {
+    throw new Error("Failed to parse mechanical size limits")
+  }
+
+  // 5. Final Key Normalization Layer
+  let size = rawSize.replace(/-/g, ' ').trim();
+
+  // Enforce the consistent # prefix for raw numbered sizes (0 to 12)
+  if (/^\d+$/.test(size)) {
+    const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12'];
+    if (validNumberedSizes.includes(size)) {
+      size = `#${size}`;
+    }
   }
 
   // 3. Dynamic Material, Coating & Vickers Hardness (HV) Mapping

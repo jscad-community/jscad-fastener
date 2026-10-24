@@ -153,7 +153,7 @@ test('asme.parseAssembly', () => {
       "material": "Carbon Steel",
       "pitch": 32,
       "propertyClass": "GRADE 2",
-      "size": "10",
+      "size": "#10",
       "standard": "ASME_B18_6_3_MACHINE",
       "threadSeries": "UNC",
       "threadTolerance": "2A",
@@ -167,7 +167,7 @@ test('asme.parseAssembly', () => {
       },
       "material": "Carbon Steel",
       "pitch": 32,
-      "size": "10",
+      "size": "#10",
       "standard": "ASME_B18_16_6_LOCK_STANDARD",
       "threadSeries": "UNC",
       "threadTolerance": "2B",
@@ -185,9 +185,9 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 8.062,
-        "fineFitHole": 8.015,
-        "mediumFitHole": 8.032,
+        "coarseFitHole": 0.226,
+        "fineFitHole": 0.179,
+        "mediumFitHole": 0.196,
         "standardBody": "ASME B1.1",
       },
       "coating": "Bare Metal",
@@ -195,7 +195,7 @@ test('asme.parseAssembly', () => {
       "material": "Carbon Steel",
       "pitch": 32,
       "propertyClass": "GRADE 2",
-      "size": "8",
+      "size": "#8",
       "standard": "ASME_B18_2_1_CAP_SCREW",
       "threadSeries": "UNC",
       "threadTolerance": "2A",
@@ -209,7 +209,7 @@ test('asme.parseAssembly', () => {
       },
       "material": "Carbon Steel",
       "pitch": 32,
-      "size": "8",
+      "size": "#8",
       "standard": "ASME_B18_2_2_NORMAL",
       "threadSeries": "UNC",
       "threadTolerance": "2B",
@@ -304,7 +304,7 @@ test('asme.parseAssembly', () => {
       "material": "Carbon Steel",
       "pitch": 7,
       "propertyClass": "GRADE 8",
-      "size": "1-1/4",
+      "size": "1 1/4",
       "standard": "ASME_B18_2_1_HEX_BOLT",
       "threadSeries": "UNC",
       "threadTolerance": "2A",
@@ -312,13 +312,13 @@ test('asme.parseAssembly', () => {
     "nut": {
       "coating": "Bare Metal",
       "drillingSpecifications": {
-        "allowableHoleMaximum": 0.35,
-        "allowableHoleMinimum": -0.083,
-        "recommendedDrillBitSize": -0.299,
+        "allowableHoleMaximum": 1.157,
+        "allowableHoleMinimum": 1.095,
+        "recommendedDrillBitSize": 1.064,
       },
       "material": "Carbon Steel",
-      "pitch": 1,
-      "size": "1",
+      "pitch": 7,
+      "size": "1 1/4",
       "standard": "ASME_B18_2_2_HEAVY",
       "threadSeries": "UNC",
       "threadTolerance": "2B",
@@ -327,7 +327,7 @@ test('asme.parseAssembly', () => {
       "coating": "Bare Metal",
       "hardnessHV": 110,
       "material": "Carbon Steel",
-      "size": "1",
+      "size": "1 1/4",
       "standard": "ASME_B18_21_1_TYPE_A_WIDE",
     },
   }
@@ -335,3 +335,55 @@ test('asme.parseAssembly', () => {
 
 })
 
+test('asme.validateAssembly', () => {
+  expect(() => asme.validateAssembly()).toThrow('Missing bolt specification')
+
+  // invalid bolt spec
+  let bolt = {size: '1 1/4', pitch: 2 }
+  let assembly = {bolt}
+  expect(() => asme.validateAssembly(assembly)).toThrow('Missing bolt length')
+
+  // valid bolt spec
+  bolt = {size: '1 1/4', pitch: 7, length: 5.5 }
+  assembly = {bolt}
+  expect(asme.validateAssembly(assembly)).toStrictEqual(true)
+
+  // size checks
+  let washer = {size: '1 1/2'}
+  assembly = {bolt, washer}
+  expect(() => asme.validateAssembly(assembly)).toThrow('Size mismatch')
+
+  let nut = {size: '1 1/2'}
+  assembly = {bolt, nut}
+  expect(() => asme.validateAssembly(assembly)).toThrow('Size mismatch')
+
+  // thread pitch checks
+  nut = {size: '1 1/4', pitch: 5}
+  assembly = {bolt, nut}
+  expect(() => asme.validateAssembly(assembly)).toThrow('Thread pitch mismatch')
+
+  // mechanical checks
+  bolt = {size: '1 1/4', pitch: 7, length: 1.5 }
+  washer = {size: '1 1/4', standard: 'ASME_B18_21_1_TYPE_A_WIDE'}
+  nut = {size: '1 1/4', standard: 'ASME_B18_2_2_HEAVY', pitch: 7}
+  assembly = {bolt, nut, washer}
+  expect(() => asme.validateAssembly(assembly)).toThrow('Bolt length')
+})
+
+test('asme.generateAssembly', () => {
+  // bolt, nut, washer
+  let specifications = asme.parseAssembly("1-1/4-7 x 5.50 Hex Bolt - Grade 8 Zinc Plated; B18.22.1 Wide Washer; B18.2.2 Heavy Hex Nut")
+
+  let assembly = asme.generateAssembly(specifications)
+  expect(assembly.length).toStrictEqual(3)
+
+  // bolt, washer
+
+  // bolt, nut
+
+  // bolt
+  specifications = asme.parseAssembly("1-1/4-7 x 5.50 Hex Bolt")
+
+  assembly = asme.generateAssembly(specifications)
+  expect(assembly.length).toStrictEqual(1)
+})

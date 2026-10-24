@@ -167,9 +167,7 @@ export const validateAssembly = (specifications) => {
   const { bolt, washer, nut } = specifications
   const nominalSize = bolt.size // e.g., "M12"
 
-  // ---------------------------------------------------------
   // 1. DIAMETER CONSISTENCY CHECKS
-  // ---------------------------------------------------------
   if (washer && washer.size !== nominalSize) {
     throw new Error(`Invalid Assembly: Nominal diameter mismatch; Bolt is ${nominalSize} but Washer is ${washer.size}`)
   }
@@ -178,18 +176,14 @@ export const validateAssembly = (specifications) => {
     throw new Error(`Invalid Assembly: Nominal diameter mismatch; Bolt is ${nominalSize} but Nut is ${nut.size}`)
   }
 
-  // ---------------------------------------------------------
   // 2. THREAD PITCH COMPATIBILITY CHECKS
-  // ---------------------------------------------------------
   if (nut && bolt.pitch && nut.pitch) {
     if (bolt.pitch !== nut.pitch) {
       throw new Error(`Invalid Assembly: Thread pitch mismatch; Bolt thread pitch is ${bolt.pitch} but Nut thread pitch is ${nut.pitch}`)
     }
   }
 
-  // ---------------------------------------------------------
   // 3. MECHANICAL CLEARANCE (BOLT LENGTH CHECK)
-  // ---------------------------------------------------------
   if (!bolt.length || isNaN(bolt.length)) {
     throw new Error(`Invalid Assembly: Missing bolt length. See the orginal callout specification`)
   }
