@@ -418,9 +418,21 @@ test('iso.parseNutSpec parsing', () => {
     "threadTolerance": "6H",
   }
   )
-return
-  expect(iso.parseNutSpec(aa)).toStrictEqual(
+
+  expect(iso.parseNutSpec("M12 x 1.25 Nut")).toStrictEqual(
   {
+    "coating": "Plain Finish",
+    "drillingSpecifications": {
+      "allowableHoleMaximum": 10.859,
+      "allowableHoleMinimum": 10.647,
+      "recommendedDrillBitSize": 10.75,
+    },
+    "material": "Carbon Steel",
+    "pitch": 1.25,
+    "size": "M12",
+    "standard": "ISO_4032_HEX_STANDARD",
+    "threadSeries": "FINE",
+    "threadTolerance": "6H",
   }
   )
 })

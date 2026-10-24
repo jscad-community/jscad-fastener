@@ -172,7 +172,7 @@ test('iso.getHexBoltDimensions', () => {
     "threadLength": 40,
     "threadSeries": "FINE",
     "type": "TAP",
-    "unthreadedLength": 3.75,
+    "unthreadedLength": 3.13,
     "widthAcrossFlats": 16,
   }
   )

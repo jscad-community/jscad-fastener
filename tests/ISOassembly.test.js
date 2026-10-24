@@ -56,12 +56,12 @@ test('iso.parseAssembly', () => {
     "nut": {
       "coating": "Plain Finish",
       "drillingSpecifications": {
-        "allowableHoleMaximum": 10.371,
-        "allowableHoleMinimum": 10.106,
-        "recommendedDrillBitSize": 10.25,
+        "allowableHoleMaximum": 10.859,
+        "allowableHoleMinimum": 10.647,
+        "recommendedDrillBitSize": 10.75,
       },
       "material": "Carbon Steel",
-      "pitch": 1.75,
+      "pitch": 1.25,
       "size": "M12",
       "standard": "ISO_4032_HEX_STANDARD",
       "threadSeries": "FINE",
@@ -217,12 +217,12 @@ test('iso.parseAssembly', () => {
     "nut": {
       "coating": "Plain Finish",
       "drillingSpecifications": {
-        "allowableHoleMaximum": 5.107,
-        "allowableHoleMinimum": 4.917,
-        "recommendedDrillBitSize": 5,
+        "allowableHoleMaximum": 5.338,
+        "allowableHoleMinimum": 5.188,
+        "recommendedDrillBitSize": 5.25,
       },
       "material": "Carbon Steel",
-      "pitch": 1,
+      "pitch": 0.75,
       "size": "M6",
       "standard": "ISO_4032_HEX_STANDARD",
       "threadSeries": "FINE",
@@ -343,5 +343,10 @@ test('iso.generateAssembly', () => {
 
   assembly = iso.generateAssembly(specifications)
   expect(assembly.length).toStrictEqual(1)
+
+  // special
+  specifications = iso.parseAssembly("M12 x 1.25 x 50 Bolt, Washer, Nut")
+  assembly = iso.generateAssembly(specifications)
+  expect(assembly.length).toStrictEqual(3)
 })
 

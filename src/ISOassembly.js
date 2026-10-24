@@ -133,13 +133,15 @@ export const parseAssembly = (callout) => {
   // Step 3: Inject fallback sizing patterns to optional stacked hardware if present
   const checkMTextRegex = /M\d+/i
 
+  const numericSize = sharedSizeContext ? sharedSizeContext.toString().replace(/^M/i, '') : ''
+
   if (washerString && !washerString.match(checkMTextRegex) && sharedSizeContext) {
-    washerString = `M${sharedSizeContext} ${washerString}`
+    washerString = `M${numericSize} ${washerString}`
   }
 
   if (nutString && !nutString.match(checkMTextRegex) && sharedSizeContext) {
     const pitchSuffix = sharedPitchContext ? ` x ${sharedPitchContext}` : ''
-    nutString = `M${sharedSizeContext}${pitchSuffix} ${nutString}`
+    nutString = `M${numericSize}${pitchSuffix} ${nutString}`
   }
 
   // Step 4: Return specifications for each of the segments

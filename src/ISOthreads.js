@@ -70,13 +70,14 @@ export const ISO_THREADS = {
 export const getThreadSpec = (size, threadSeries) => {
   // adjust size if necessary 
   size = size.startsWith("M") ? size : "M" + size
+  threadSeries = threadSeries.toUpperCase().trim()
 
   const isoData = ISO_THREADS[size]
   if (!isoData) {
     throw new Error(`ISO thread size ${size} is unavailable`)
   }
 
-  const isFine = (threadSeries.toUpperCase === 'FINE')
+  const isFine = (threadSeries === 'FINE')
   const pitch = isFine ? isoData[FINE_TPI] : isoData[COARSE_TPI]
   if (!pitch) throw new Error(`ISO thread series ${threadSeries} for ${size} is unavailable`)
 
