@@ -318,7 +318,8 @@ const standards = {
  *
  * @memberof jscad-fastener/iso
  * @param {Object} spec - specification for construction
- * @param {String} [spec.size] - required, size of ISO nut, see lists above
+ * @param {String} spec.size - required, size of ISO nut, see lists above
+ * @param {String} [spec.standard=null] - ISO standard or none (use other specs to choose)
  * @param {String} [spec.type='STANDARD'] - type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
@@ -408,7 +409,7 @@ export const getNutDimensions = (spec) => {
  * NOTE: All dimensions are millimeters.
  *
  * @memberof jscad-fastener/iso
- * @param {Object} spec - specification for construction
+ * @param {Object} spec - full nut specification with dimensions
  * @param {String} spec.type - type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)

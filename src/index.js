@@ -5,6 +5,10 @@
  * @author Google Gemini (AI Collaborator) and others
  * @requires @jscad/modeling@^3.0.0
  * @namespace jscad-fastener
+ * @example
+ * import {asme} from 'jscad-fastener'
+ * import {iso} from 'jscad-fastener'
+ * import {HexHead, Shank, HexNut, Thread, SpringWasker, Washer, StarWasher} from 'jscad-fastener'
  */
 export * from './bolt.js'
 export * from './nut.js'

@@ -375,7 +375,7 @@ const standards = {
  *
  * @example
  * const dims = getBoltDimensions({size: "M6"}, 20.0)
- * const dims = getBoltDimensions({size: "M12", type: "heavy"}, 4)
+ * const dims = getBoltDimensions({size: "M12", type: "heavy"}, 40.0)
  * const dims = getBoltDimensions({size: "M20", standard: "ISO_7411_HEX_STRUCTURAL"}, 60.0)
  */
 export const getHexBoltDimensions = (spec, nominalLength) => {
@@ -490,7 +490,7 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
  * NOTE: All dimensions are millimeters.
  *
  * @memberof jscad-fastener/iso
- * @param {Object} spec - bolt specifications
+ * @param {Object} spec - full bolt specifications with dimensions
  * @param {String} spec.size - ISO size identifier (e.g., 'M6' for M6 ISO)
  * @param {String} spec.threadSeries - thread series of bolt; COARSE or FINE
  * @returns {Geom3} ISO bolt, centered on X-Y, head above Z, shank below Z

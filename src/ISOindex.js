@@ -9,8 +9,8 @@
  * @example
  * import {iso} from 'jscad-fastener'
  *
- * const specs = parseAssembly("Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032")
- * const parts = generateAssembly(specs)
+ * const specs = iso.parseAssembly("Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032")
+ * const parts = iso.generateAssembly(specs)
  */ 
 export * from './ISOassembly.js'
 export * from './ISOspecification.js'

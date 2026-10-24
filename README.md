@@ -34,6 +34,13 @@ ASME Fasteners
 - ASME washers
 
 **Kind**: global namespace  
+**Example**  
+```js
+import {asme} from 'jscad-fastener'
+
+const specs = asme.parseAssembly("Hex cap screw ASME B18.2.1 - 1/2-13 x 2.5 - Grade 5, with Plain washer ASME B18.22.1, Hex nut ASME B18.2.2")
+const parts = asme.generateAssembly(specs)
+```
 
 * [jscad-fastener/asme](#jscad-fastener/asme) : <code>object</code>
     * [.exports.parseAssembly](#jscad-fastener/asme.exports.parseAssembly) ⇒ <code>Object</code>
@@ -344,8 +351,8 @@ NOTE: All dimensions are inches.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | spec | <code>Object</code> |  | specification for construction |
-| [spec.size] | <code>String</code> |  | required, size of ASME nut, see lists above |
-| [spec.standard] | <code>String</code> |  | ASME standard or none (use other specs to choose) |
+| spec.size | <code>String</code> |  | required, size of ASME nut, see lists above |
+| [spec.standard] | <code>String</code> | <code></code> | ASME standard or none (use other specs to choose) |
 | [spec.type] | <code>String</code> | <code>&#x27;STANDARD&#x27;</code> | type of nut; THIN, JAM, HEAVY, STANDARD |
 | [spec.flatOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.heightOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
@@ -369,7 +376,7 @@ NOTE: All dimensions are inches.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| spec | <code>Object</code> |  | specification for construction |
+| spec | <code>Object</code> |  | full nut specification with dimensions |
 | spec.type | <code>String</code> |  | type of nut; THIN, HEAVY, STANDARD |
 | spec.widthAcrossFlats | <code>Number</code> |  | width across the flats, i.e. wrench size (WAF) |
 | spec.height | <code>Number</code> |  | total thickness/height of the nut (H) |
@@ -565,10 +572,10 @@ NOTE: Returned dimensions are inches.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | spec | <code>Object</code> |  | specification for construction |
-| [spec.size] | <code>String</code> |  | required, size of ASME washer, see lists above |
+| spec.size | <code>String</code> |  | required, size of ASME washer, see lists above |
 | [spec.standard] | <code>String</code> | <code></code> | ASME standard or none (use type to choose) |
-| [spec.isLocking] | <code>Boolean</code> | <code>false</code> | get locking washer dimensions |
 | [spec.type] | <code>String</code> | <code>&#x27;REGULAR&#x27;</code> | type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL) |
+| [spec.isLocking] | <code>Boolean</code> | <code>false</code> | get locking washer dimensions |
 | [spec.idOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.odOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.thicknessOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
@@ -590,9 +597,15 @@ Generate a solid washer manifold using the given dimensions.
 
 NOTE: All dimensions are inches  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| spec | <code>object</code> | washer specifications |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| spec | <code>object</code> |  | full washer specifications with dimensions |
+| spec.type | <code>String</code> |  | type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL) |
+| spec.isLocking | <code>Boolean</code> |  | true to generate locking washer |
+| spec.innerDiameter | <code>Number</code> |  | diameter of inside of washer |
+| spec.outerDiameter | <code>Number</code> |  | diameter of outside of washer |
+| spec.thickness | <code>Number</code> |  | thickness of washer |
+| [spec.segments] | <code>Number</code> | <code>36</code> | segments per full rotation |
 
 **Example**  
 ```js
@@ -636,6 +649,12 @@ Create ASME and ISO fasteners for JSCAD designs.
 **Requires**: <code>module:@jscad/modeling@^3.0.0</code>  
 **Author**: Google Gemini (AI Collaborator) and others  
 **License**: MIT  
+**Example**  
+```js
+import {asme} from 'jscad-fastener'
+import {iso} from 'jscad-fastener'
+import {HexHead, Shank, HexNut, Thread, SpringWasker, Washer, StarWasher} from 'jscad-fastener'
+```
 
 * [jscad-fastener](#jscad-fastener) : <code>object</code>
     * [.exports.HexHead](#jscad-fastener.exports.HexHead) ⇒ <code>Geom3</code>
@@ -794,8 +813,8 @@ ISO Fasteners
 ```js
 import {iso} from 'jscad-fastener'
 
-const specs = parseAssembly("Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032")
-const parts = generateAssembly(specs)
+const specs = iso.parseAssembly("Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032")
+const parts = iso.generateAssembly(specs)
 ```
 
 * [jscad-fastener/iso](#jscad-fastener/iso) : <code>object</code>
@@ -1071,7 +1090,7 @@ If the standard is not provided then a standard will be select using the type of
 **Example**  
 ```js
 const dims = getBoltDimensions({size: "M6"}, 20.0)
-const dims = getBoltDimensions({size: "M12", type: "heavy"}, 4)
+const dims = getBoltDimensions({size: "M12", type: "heavy"}, 40.0)
 const dims = getBoltDimensions({size: "M20", standard: "ISO_7411_HEX_STRUCTURAL"}, 60.0)
 ```
 <a name="jscad-fastener/iso.exports.generateHexBolt"></a>
@@ -1087,7 +1106,7 @@ NOTE: All dimensions are millimeters.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| spec | <code>Object</code> | bolt specifications |
+| spec | <code>Object</code> | full bolt specifications with dimensions |
 | spec.size | <code>String</code> | ISO size identifier (e.g., 'M6' for M6 ISO) |
 | spec.threadSeries | <code>String</code> | thread series of bolt; COARSE or FINE |
 
@@ -1225,7 +1244,8 @@ NOTE: All dimensions are millimeters.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | spec | <code>Object</code> |  | specification for construction |
-| [spec.size] | <code>String</code> |  | required, size of ISO nut, see lists above |
+| spec.size | <code>String</code> |  | required, size of ISO nut, see lists above |
+| [spec.standard] | <code>String</code> | <code></code> | ISO standard or none (use other specs to choose) |
 | [spec.type] | <code>String</code> | <code>&#x27;STANDARD&#x27;</code> | type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD |
 | [spec.flatOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.heightOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
@@ -1249,7 +1269,7 @@ NOTE: All dimensions are millimeters.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| spec | <code>Object</code> |  | specification for construction |
+| spec | <code>Object</code> |  | full nut specification with dimensions |
 | spec.type | <code>String</code> |  | type of nut; THIN, JAM, HIGH, HEAVY, STRUCTURAL, STANDARD |
 | spec.widthAcrossFlats | <code>Number</code> |  | width across the flats, i.e. wrench size (WAF) |
 | spec.height | <code>Number</code> |  | total thickness/height of the nut (H) |
@@ -1476,8 +1496,8 @@ NOTE: Returned dimensions are millimeters.
 | spec | <code>Object</code> |  | specification for construction |
 | spec.size | <code>String</code> |  | required, size of ISO / ASME washer, see lists above |
 | [spec.standard] | <code>String</code> | <code></code> | ISO standard or none (use type to choose) |
-| [spec.isLocking] | <code>Boolean</code> | <code>false</code> | get locking washer dimensions |
 | [spec.type] | <code>String</code> | <code>&#x27;REGULAR&#x27;</code> | type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL) |
+| [spec.isLocking] | <code>Boolean</code> | <code>false</code> | get locking washer dimensions |
 | [spec.idOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.odOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.thicknessOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
@@ -1499,9 +1519,15 @@ Generate a solid washer manifold using the given dimensions.
 
 NOTE: All dimensions are millimeters  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| spec | <code>object</code> | washer specifications |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| spec | <code>object</code> |  | full washer specifications with dimensions |
+| spec.type | <code>String</code> |  | type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL) |
+| spec.isLocking | <code>Boolean</code> |  | true to generate locking washer |
+| spec.innerDiameter | <code>Number</code> |  | diameter of inside of washer |
+| spec.outerDiameter | <code>Number</code> |  | diameter of outside of washer |
+| spec.thickness | <code>Number</code> |  | thickness of washer |
+| [spec.segments] | <code>Number</code> | <code>36</code> | segments per full rotation |
 
 **Example**  
 ```js

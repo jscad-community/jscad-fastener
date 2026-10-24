@@ -391,8 +391,8 @@ const calculateLockNutBearingFace = (nominalWaf) => {
  *
  * @memberof jscad-fastener/asme
  * @param {Object} spec - specification for construction
- * @param {String} [spec.size] - required, size of ASME nut, see lists above
- * @param {String} [spec.standard] - ASME standard or none (use other specs to choose)
+ * @param {String} spec.size - required, size of ASME nut, see lists above
+ * @param {String} [spec.standard=null] - ASME standard or none (use other specs to choose)
  * @param {String} [spec.type='STANDARD'] - type of nut; THIN, JAM, HEAVY, STANDARD
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
@@ -481,7 +481,7 @@ export const getNutDimensions = (spec) => {
  * NOTE: All dimensions are inches.
  *
  * @memberof jscad-fastener/asme
- * @param {Object} spec - specification for construction
+ * @param {Object} spec - full nut specification with dimensions
  * @param {String} spec.type - type of nut; THIN, HEAVY, STANDARD
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)

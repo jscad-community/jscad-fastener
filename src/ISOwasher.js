@@ -491,8 +491,8 @@ const standards = {
  * @param {Object} spec - specification for construction
  * @param {String} spec.size - required, size of ISO / ASME washer, see lists above
  * @param {String} [spec.standard=null] - ISO standard or none (use type to choose)
- * @param {Boolean} [spec.isLocking=false] - get locking washer dimensions
  * @param {String} [spec.type='REGULAR'] - type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL)
+ * @param {Boolean} [spec.isLocking=false] - get locking washer dimensions
  * @param {Number} [spec.idOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.odOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
@@ -577,7 +577,13 @@ export const getWasherDimensions = (spec) => {
  * NOTE: All dimensions are millimeters
  * 
  * @memberof jscad-fastener/iso
- * @param {object} spec - washer specifications
+ * @param {object} spec - full washer specifications with dimensions
+ * @param {String} spec.type - type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL)
+ * @param {Boolean} spec.isLocking - true to generate locking washer
+ * @param {Number} spec.innerDiameter - diameter of inside of washer
+ * @param {Number} spec.outerDiameter - diameter of outside of washer
+ * @param {Number} spec.thickness - thickness of washer
+ * @param {Number} [spec.segments=36] - segments per full rotation
  * @returns {Geom3} washer, centered on XYZ
  *
  * @example
