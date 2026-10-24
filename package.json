@@ -1,41 +1,51 @@
 {
-  "name": "jscad-hardware",
+  "name": "jscad-fastener",
   "version": "3.0.0",
-  "description": "JSCAD Hardware Library",
-  "main": "src/index.js",
+  "description": "JSCAD Fastener Library",
+  "main": "./src/index.js",
+  "exports": {
+    "node": "./src/index.js",
+    "default": "./dist/jscad-fastener.js"
+  },
   "type": "module",
   "scripts": {
+    "build": "rollup --config",
     "docs": "jsdoc2md --files 'src/*.js' > README.md",
     "lint": "npx eslint",
     "test": "vitest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/z3dev/jscad-hardware.git"
+    "url": "git+https://github.com/z3dev/jscad-fastener.git"
   },
   "keywords": [
     "jscad",
+    "assembly",
     "bolt",
     "nut",
     "washer",
     "thread",
     "ISO",
     "ASME",
-    "specifications",
+    "callout",
+    "specification",
     "design"
   ],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/z3dev/jscad-hardware/issues"
+    "url": "https://github.com/z3dev/jscad-fastener/issues"
   },
-  "homepage": "https://github.com/z3dev/jscad-hardware#readme",
+  "homepage": "https://github.com/z3dev/jscad-fastener#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.0",
     "@jscad/modeling": "3.0.7-alpha.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^1.0.2",
     "eslint": "^10.7.0",
     "globals": "^17.7.0",
     "jsdoc-to-markdown": "^9.1.3",
+    "rollup": "^4.65.0",
     "vitest": "^5.0.1"
   }
 }
