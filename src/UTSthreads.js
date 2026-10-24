@@ -19,7 +19,7 @@ export const FINE_TPI = 2
  */
 export const UTS_THREADS = {
   // --- Machine Screw Sizes ---
-  '#0':  [ 0.0600, null, 80   ], // 80 TPI is exclusively a UNF designation
+  '#0':  [ 0.0600, null, 80   ], // #0 TPI is exclusively a UNF designation
   '#1':  [ 0.0730, 64,   72   ],
   '#2':  [ 0.0860, 56,   64   ],
   '#3':  [ 0.0990, 48,   56   ],
@@ -63,7 +63,7 @@ export const UTS_THREADS = {
  * NOTE: All dimensions are inches
  *
  * @memberof jscad-fastener/asme
- * @param {Number|String} size - Dimension identifier; #0 or '1/2'
+ * @param {Number|String} size - size identifier; '#0' or '1/2'
  * @param {String} threadSeries - Thread series of bolt; UNC or UNF
  * @return {Object} specification with majorDiameter, pitch, isFine
  */

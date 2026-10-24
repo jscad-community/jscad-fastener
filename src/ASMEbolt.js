@@ -234,7 +234,7 @@ const standards = {
 /**
  * Get the ASME Hex Bolt dimensions for the given specification.
  *
- * @see parseBoltSpec() for parsing of text specifications
+ * @see parseBoltSpec() for parsing of ASME callout specifications
  *
  * NOTE: All dimensions are inches.
  *
@@ -246,7 +246,13 @@ const standards = {
  * @param {String} [spec.standard=null] - bolt standard; null or valid ASME standard
  * @param {String} [spec.type='CAP'] - type of bolt; CAP, STRUCTURAL, HEAVY, TAP
  * @param {String} [spec.threadSeries='UNC'] - thread series of bolt; UNC or UNF
+ * @param {Number} nominalLength - total length of the bolt shank and threads
  * @returns {Object} full ASME bolt specification with dimensions
+ *
+ * @example
+ * const dims = getBoltDimensions({size: "1/2"}, 4)
+ * const dims = getBoltDimensions({size: "1/2", type: "heavy"}, 4)
+ * const dims = getBoltDimensions({size: "1/2", standard: "ASME_B18_2_1_TAP_BOLT"}, 4)
  */
 export const getBoltDimensions = (spec, nominalLength) => {
   let {
@@ -262,7 +268,7 @@ export const getBoltDimensions = (spec, nominalLength) => {
 
   size = size.replace(/-/g, ' ').trim()
 
-  type = type.toUpperCase()
+  type = type.toUpperCase().trim()
 
   // select the standard using the given options if not provided
   if (!standard) {
@@ -357,10 +363,14 @@ export const getBoltDimensions = (spec, nominalLength) => {
  * NOTE: All dimensions are inches.
  *
  * @memberof jscad-fastener/asme
- * @param {Object} spec - bolt specification
+ * @param {Object} spec - full bolt specification with dimensions
  * @param {String} spec.size - ASME size identifier (e.g., '#1' or `1/2`)
  * @param {String} spec.threadSeries - thread series of bolt; UNF or UNC
  * @returns {Geom3} ASME bolt, centered on X-Y, head above Z, shank below Z
+ *
+ * @example
+ * const dims = getBoltDimensions({size: "1 /14"}, 5.5)
+ * const bolt = generateHexBolt(specs)
  */
 export const generateHexBolt = (spec) => {
   let {

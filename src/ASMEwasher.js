@@ -510,7 +510,7 @@ const standards = {
 /**
  * Get the overall washer dimensions for the given specification.
  *
- * @see parseWasherSpec() for parsing of text specifications
+ * @see parseWasherSpec() for parsing of ASME callout specifications
  *
  * NOTE: Returned dimensions are inches.
  *
@@ -523,7 +523,12 @@ const standards = {
  * @param {Number} [spec.idOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.odOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
- * @returns {Object} washer dimensions: innerRadius, outerRadius, thickness (mm)
+ * @returns {Object} full ASME washer specification with dimensions
+ *
+ * @example
+ * const dims = getWasherDimensions({size: "#4"})
+ * const dims = getWasherDimensions({size: "#4", type: "wide"})
+ * const dims = getWasherDimensions({size: "3/4", standard: "ASME_B18_21_1_LOCK_REGULAR"})
  */
 export const getWasherDimensions = (spec) => {
   let {
@@ -540,7 +545,7 @@ export const getWasherDimensions = (spec) => {
 
   size = size.replace(/-/g, ' ').trim()
 
-  type = type.toUpperCase()
+  type = type.toUpperCase().trim()
 
   // select the ASME washer standard using the given options
   if (!standard) {
@@ -603,7 +608,7 @@ export const getWasherDimensions = (spec) => {
  * @returns {Geom3} washer, centered on XYZ
  *
  * @example
- * const spec = getWasherDimensions({size: '1-1/4', type: 'HEAVY'})
+ * const spec = getWasherDimensions({size: '1 1/4', type: 'HEAVY'})
  * const nut = generateWasher(spec)
  */
 export const generateWasher = (spec) => {

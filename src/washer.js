@@ -113,7 +113,7 @@ const generateInternalStarWasher = (innerDiameter, outerDiameter, thickness, seg
 
 /**
  * Generates a simulated helical split-ring lock washer,
- * which slices a thin radial gap through one side of the ring.
+ * with a thin radial gap through one side of the ring.
  *
  * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
  *

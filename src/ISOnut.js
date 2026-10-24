@@ -312,7 +312,7 @@ const standards = {
 /**
  * Get the hex nut dimensions for the given ISO nut specification.
  *
- * @see parseNutSpec() for parsing of text specifications
+ * @see parseNutSpec() for parsing of ISO callout specifications
  *
  * NOTE: All dimensions are millimeters.
  *
@@ -323,6 +323,11 @@ const standards = {
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
  * @returns {Object} ISO specification with nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)
+ *
+ * @example
+ * const dims = getNutDimensions({size: "M6"})
+ * const dims = getNutDimensions({size: "M8", type: "thin"})
+ * const dims = getNutDimensions({size: "M20", standard: "ISO_7414_HEX_STRUCTURAL_HEAVY"})
  */
 export const getNutDimensions = (spec) => {
   let {
@@ -335,7 +340,7 @@ export const getNutDimensions = (spec) => {
 
   if (!size) return null
 
-  type = type.toUpperCase()
+  type = type.toUpperCase().trim()
 
   // select ISO standard using the given options
   if (!standard) {
@@ -412,7 +417,7 @@ export const getNutDimensions = (spec) => {
  * @returns {Geom3} ISO nut, centered on XYZ
  *
  * @example
- * const spec = getNutDimensions({size: 'M10', isHeavy: true})
+ * const spec = getNutDimensions({size: 'M10', type: 'heavy'})
  * const nut = generateNut(spec)
  */
 export const generateNut = (spec = {}) => {

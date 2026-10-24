@@ -385,7 +385,7 @@ const calculateLockNutBearingFace = (nominalWaf) => {
 /**
  * Get the hex nut dimensions for the given ASME nut specification.
  *
- * @see parseNutSpec() for parsing of specifications
+ * @see parseNutSpec() for parsing of ASME callout specifications
  *
  * NOTE: All dimensions are inches.
  *
@@ -396,7 +396,12 @@ const calculateLockNutBearingFace = (nominalWaf) => {
  * @param {String} [spec.type='STANDARD'] - type of nut; THIN, JAM, HEAVY, STANDARD
  * @param {Number} [spec.flatOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.heightOffset=0] - clearance for oversized cutouts
- * @returns {Object} ASME specification with nut dimensions; widthAcrossFlats, height, bearingFaceHeight
+ * @returns {Object} full ASME nut specification with dimensions
+ *
+ * @example
+ * const dims = getNutDimensions({size: "1/2"})
+ * const dims = getNutDimensions({size: "1/2", type: 'jam'})
+ * const dims = getNutDimensions({size: "1 1/2", standard: 'ASME_B18_2_6_STRUCTURAL'})
  */
 export const getNutDimensions = (spec) => {
   let {
@@ -411,7 +416,7 @@ export const getNutDimensions = (spec) => {
 
   size = size.replace(/-/g, ' ').trim()
 
-  type = type.toUpperCase()
+  type = type.toUpperCase().trim()
 
   // select the standard using the given options
   if (!standard) {
@@ -485,8 +490,8 @@ export const getNutDimensions = (spec) => {
  * @returns {Geom3} hex nut, centered on XYZ
  *
  * @example
- * const spec = getHexNutDimensions({size: '1-1/4', type: 'HEAVY'})
- * const nut = generateHexNut(spec)
+ * const spec = getNutDimensions({size: '1-1/4', type: 'HEAVY'})
+ * const nut = generateNut(spec)
  */
 export const generateNut = (spec) => {
   let {

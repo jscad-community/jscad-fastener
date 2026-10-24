@@ -36,13 +36,16 @@ ASME Fasteners
 **Kind**: global namespace  
 
 * [jscad-fastener/asme](#jscad-fastener/asme) : <code>object</code>
+    * [.exports.parseAssembly](#jscad-fastener/asme.exports.parseAssembly) ⇒ <code>Object</code>
+    * [.exports.validateAssembly](#jscad-fastener/asme.exports.validateAssembly) ⇒ <code>Boolean</code>
+    * [.exports.generateAssembly](#jscad-fastener/asme.exports.generateAssembly) ⇒ <code>Array</code>
     * [.exports.ASME_B18_2_1_CAP_SCREW](#jscad-fastener/asme.exports.ASME_B18_2_1_CAP_SCREW) : <code>Object</code>
     * [.exports.ASME_B18_2_6_STRUCTURAL](#jscad-fastener/asme.exports.ASME_B18_2_6_STRUCTURAL) : <code>Object</code>
     * [.exports.ASME_B18_2_1_HEAVY_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_HEAVY_BOLT) : <code>Object</code>
     * [.exports.ASME_B18_6_3_MACHINE](#jscad-fastener/asme.exports.ASME_B18_6_3_MACHINE) : <code>Object</code>
     * [.exports.ASME_B18_2_1_HEX_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_HEX_BOLT) : <code>Object</code>
     * [.exports.ASME_B18_2_1_TAP_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_TAP_BOLT) : <code>Object</code>
-    * [.exports.getHexBoltDimensions](#jscad-fastener/asme.exports.getHexBoltDimensions) ⇒ <code>Object</code>
+    * [.exports.getBoltDimensions](#jscad-fastener/asme.exports.getBoltDimensions) ⇒ <code>Object</code>
     * [.exports.generateHexBolt](#jscad-fastener/asme.exports.generateHexBolt) ⇒ <code>Geom3</code>
     * [.exports.ASME_B18_2_2_HEX_STANDARD](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_STANDARD) : <code>Object</code>
     * [.exports.ASME_B18_2_2_HEX_HEAVY](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_HEAVY) : <code>Object</code>
@@ -72,6 +75,60 @@ ASME Fasteners
     * [.exports.UTS_THREADS](#jscad-fastener/asme.exports.UTS_THREADS) : <code>Object</code>
     * [.exports.getThreadSpec](#jscad-fastener/asme.exports.getThreadSpec) ⇒ <code>Object</code>
 
+<a name="jscad-fastener/asme.exports.parseAssembly"></a>
+
+### jscad-fastener/asme.exports.parseAssembly ⇒ <code>Object</code>
+Parses an ASME compound engineering stack description into specifications
+for bolt, nut, and washer.
+
+**Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
+**Returns**: <code>Object</code> - ASME bolt, nut, and washer specifications (nut/washer may be null)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| callout | <code>string</code> | the full compound engineering callout string |
+
+**Example**  
+```js
+const specs = parseAssembly("Hex cap screw ASME B18.2.1 - 1/2-13 x 2.5 - Grade 5, with Plain washer ASME B18.22.1, Hex nut ASME B18.2.2")
+```
+<a name="jscad-fastener/asme.exports.validateAssembly"></a>
+
+### jscad-fastener/asme.exports.validateAssembly ⇒ <code>Boolean</code>
+Validate the assembly specifications prior to generation.
+
+**Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
+**Returns**: <code>Boolean</code> - true if the stack specification passes all validations  
+**Throws**:
+
+- <code>Error</code> Detailed report of what failed along with the offending values
+
+**See**: parseAssembly() to obtain specifications from a compound engineering stack description
+
+Throws strict, explicit errors if physical or mechanical attributes mismatch.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| specifications | <code>Object</code> | the specifications for bolt, nut (optional), and washer (optional) |
+
+<a name="jscad-fastener/asme.exports.generateAssembly"></a>
+
+### jscad-fastener/asme.exports.generateAssembly ⇒ <code>Array</code>
+Generate a full assembly from the given specifications for bolt, nut, washer.
+
+**Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
+**Returns**: <code>Array</code> - Array of geometries  
+**See**: parseAssembly() for parsing specifications from a compound engineering stack description  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| specifications | <code>Object</code> | the specifications of the assembly |
+
+**Example**  
+```js
+const specs = parseAssembly("Hex Head Cap Screw 5/16-18 UNC x 2, Grade 8, Yellow Zinc")
+const parts = generateAssembly(specs)
+```
 <a name="jscad-fastener/asme.exports.ASME_B18_2_1_CAP_SCREW"></a>
 
 ### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_CAP\_SCREW : <code>Object</code>
@@ -159,14 +216,14 @@ DESIGN NOTES:
 Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
-<a name="jscad-fastener/asme.exports.getHexBoltDimensions"></a>
+<a name="jscad-fastener/asme.exports.getBoltDimensions"></a>
 
-### jscad-fastener/asme.exports.getHexBoltDimensions ⇒ <code>Object</code>
+### jscad-fastener/asme.exports.getBoltDimensions ⇒ <code>Object</code>
 Get the ASME Hex Bolt dimensions for the given specification.
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 **Returns**: <code>Object</code> - full ASME bolt specification with dimensions  
-**See**: parseBoltSpec() for parsing of text specifications
+**See**: parseBoltSpec() for parsing of ASME callout specifications
 
 NOTE: All dimensions are inches.
 
@@ -179,7 +236,14 @@ If the standard is not provided then a standard will be selected from the type o
 | [spec.standard] | <code>String</code> | <code></code> | bolt standard; null or valid ASME standard |
 | [spec.type] | <code>String</code> | <code>&#x27;CAP&#x27;</code> | type of bolt; CAP, STRUCTURAL, HEAVY, TAP |
 | [spec.threadSeries] | <code>String</code> | <code>&#x27;UNC&#x27;</code> | thread series of bolt; UNC or UNF |
+| nominalLength | <code>Number</code> |  | total length of the bolt shank and threads |
 
+**Example**  
+```js
+const dims = getBoltDimensions({size: "1/2"}, 4)
+const dims = getBoltDimensions({size: "1/2", type: "heavy"}, 4)
+const dims = getBoltDimensions({size: "1/2", standard: "ASME_B18_2_1_TAP_BOLT"}, 4)
+```
 <a name="jscad-fastener/asme.exports.generateHexBolt"></a>
 
 ### jscad-fastener/asme.exports.generateHexBolt ⇒ <code>Geom3</code>
@@ -193,10 +257,15 @@ NOTE: All dimensions are inches.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| spec | <code>Object</code> | bolt specification |
+| spec | <code>Object</code> | full bolt specification with dimensions |
 | spec.size | <code>String</code> | ASME size identifier (e.g., '#1' or `1/2`) |
 | spec.threadSeries | <code>String</code> | thread series of bolt; UNF or UNC |
 
+**Example**  
+```js
+const dims = getBoltDimensions({size: "1 /14"}, 5.5)
+const bolt = generateHexBolt(specs)
+```
 <a name="jscad-fastener/asme.exports.ASME_B18_2_2_HEX_STANDARD"></a>
 
 ### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_STANDARD : <code>Object</code>
@@ -267,8 +336,8 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 Get the hex nut dimensions for the given ASME nut specification.
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
-**Returns**: <code>Object</code> - ASME specification with nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)  
-**See**: parseNutSpec() for parsing of specifications
+**Returns**: <code>Object</code> - full ASME nut specification with dimensions  
+**See**: parseNutSpec() for parsing of ASME callout specifications
 
 NOTE: All dimensions are inches.  
 
@@ -281,6 +350,12 @@ NOTE: All dimensions are inches.
 | [spec.flatOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.heightOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 
+**Example**  
+```js
+const dims = getNutDimensions({size: "1/2"})
+const dims = getNutDimensions({size: "1/2", type: 'jam'})
+const dims = getNutDimensions({size: "1 1/2", standard: 'ASME_B18_2_6_STRUCTURAL'})
+```
 <a name="jscad-fastener/asme.exports.generateNut"></a>
 
 ### jscad-fastener/asme.exports.generateNut ⇒ <code>Geom3</code>
@@ -303,8 +378,8 @@ NOTE: All dimensions are inches.
 
 **Example**  
 ```js
-const spec = getHexNutDimensions({size: '1-1/4', type: 'HEAVY'})
-const nut = generateHexNut(spec)
+const spec = getNutDimensions({size: '1-1/4', type: 'HEAVY'})
+const nut = generateNut(spec)
 ```
 <a name="jscad-fastener/asme.exports.parseBoltSpec"></a>
 
@@ -411,7 +486,7 @@ Range Covered: #2 to 1-3/4" (Complete Official Standard Bounds)
 
 Outer diameter bounds map to the furthest biting tooth perimeter apex.
 
-Note: Sizes #0, #1, and sizes larger than 1-3/4" do not exist under ASME B18.21.1.
+Note: Sizes #0, #1, and sizes larger than 1 3/4 do not exist under ASME B18.21.1.
 
 Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 
@@ -421,9 +496,9 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 ### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TOOTH\_INTERNAL : <code>Object</code>
 ASME B18.21.1 Internal Tooth Lock (Star) Washers
 
-Range Covered: #2 to 1-3/4" (Complete Official Standard Bounds)
+Range Covered: #2 to 1 3/4 (Complete Official Standard Bounds)
 
-Note: Sizes #0, #1, and sizes larger than 1-3/4" do not exist under ASME B18.21.1.
+Note: Sizes #0, #1, and sizes larger than 1 3/4 do not exist under ASME B18.21.1.
 
 Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 
@@ -482,8 +557,8 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 Get the overall washer dimensions for the given specification.
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
-**Returns**: <code>Object</code> - washer dimensions: innerRadius, outerRadius, thickness (mm)  
-**See**: parseWasherSpec() for parsing of text specifications
+**Returns**: <code>Object</code> - full ASME washer specification with dimensions  
+**See**: parseWasherSpec() for parsing of ASME callout specifications
 
 NOTE: Returned dimensions are inches.  
 
@@ -491,13 +566,19 @@ NOTE: Returned dimensions are inches.
 | --- | --- | --- | --- |
 | spec | <code>Object</code> |  | specification for construction |
 | [spec.size] | <code>String</code> |  | required, size of ASME washer, see lists above |
-| [spec.standard] | <code>String</code> | <code></code> | ISO standard or none (use type to choose) |
+| [spec.standard] | <code>String</code> | <code></code> | ASME standard or none (use type to choose) |
 | [spec.isLocking] | <code>Boolean</code> | <code>false</code> | get locking washer dimensions |
 | [spec.type] | <code>String</code> | <code>&#x27;REGULAR&#x27;</code> | type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL) |
 | [spec.idOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.odOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.thicknessOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 
+**Example**  
+```js
+const dims = getWasherDimensions({size: "#4"})
+const dims = getWasherDimensions({size: "#4", type: "wide"})
+const dims = getWasherDimensions({size: "3/4", standard: "ASME_B18_21_1_LOCK_REGULAR"})
+```
 <a name="jscad-fastener/asme.exports.generateWasher"></a>
 
 ### jscad-fastener/asme.exports.generateWasher ⇒ <code>Geom3</code>
@@ -515,7 +596,7 @@ NOTE: All dimensions are inches
 
 **Example**  
 ```js
-const spec = getWasherDimensions({size: '1-1/4', type: 'HEAVY'})
+const spec = getWasherDimensions({size: '1 1/4', type: 'HEAVY'})
 const nut = generateWasher(spec)
 ```
 <a name="jscad-fastener/asme.exports.UTS_THREADS"></a>
@@ -543,7 +624,7 @@ NOTE: All dimensions are inches
 
 | Param | Type | Description |
 | --- | --- | --- |
-| size | <code>Number</code> \| <code>String</code> | Dimension identifier; #0 or '1/2' |
+| size | <code>Number</code> \| <code>String</code> | size identifier; '#0' or '1/2' |
 | threadSeries | <code>String</code> | Thread series of bolt; UNC or UNF |
 
 <a name="jscad-fastener"></a>
@@ -647,7 +728,7 @@ NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
 
 ### jscad-fastener.exports.SpringWasher ⇒ <code>Geom3</code>
 Generates a simulated helical split-ring lock washer,
-which slices a thin radial gap through one side of the ring.
+with a thin radial gap through one side of the ring.
 
 NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
 
@@ -709,14 +790,18 @@ ISO Fasteners
 - ISO washers
 
 **Kind**: global namespace  
+**Example**  
+```js
+import {iso} from 'jscad-fastener'
+
+const specs = parseAssembly("Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032")
+const parts = generateAssembly(specs)
+```
 
 * [jscad-fastener/iso](#jscad-fastener/iso) : <code>object</code>
     * [.exports.parseAssembly](#jscad-fastener/iso.exports.parseAssembly) ⇒ <code>Object</code>
     * [.exports.validateAssembly](#jscad-fastener/iso.exports.validateAssembly) ⇒ <code>Boolean</code>
     * [.exports.generateAssembly](#jscad-fastener/iso.exports.generateAssembly) ⇒ <code>Array</code>
-    * [.exports.parseAssembly](#jscad-fastener/iso.exports.parseAssembly) ⇒ <code>Object</code>
-    * [.exports.validateAssembly](#jscad-fastener/iso.exports.validateAssembly)
-    * [.exports.generateAssembly](#jscad-fastener/iso.exports.generateAssembly) ⇒ <code>Object</code>
     * [.exports.ISO_4014_HEX_BOLT](#jscad-fastener/iso.exports.ISO_4014_HEX_BOLT) : <code>Object</code>
     * [.exports.ISO_4016_HEX_BOLT_C](#jscad-fastener/iso.exports.ISO_4016_HEX_BOLT_C) : <code>Object</code>
     * [.exports.ISO_4017_HEX_SCREW](#jscad-fastener/iso.exports.ISO_4017_HEX_SCREW) : <code>Object</code>
@@ -761,7 +846,7 @@ ISO Fasteners
 <a name="jscad-fastener/iso.exports.parseAssembly"></a>
 
 ### jscad-fastener/iso.exports.parseAssembly ⇒ <code>Object</code>
-Parse a full ISO compound engineering stack description into specification tokens
+Parse a full ISO compound engineering stack description into specifications
 for bolt, nut, and washer.
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
@@ -771,6 +856,10 @@ for bolt, nut, and washer.
 | --- | --- | --- |
 | callout | <code>string</code> | the full compound engineering callout string |
 
+**Example**  
+```js
+const specs = parseAssembly("M12 x 1.25 x 50 Bolt, Washer, Nut")
+```
 <a name="jscad-fastener/iso.exports.validateAssembly"></a>
 
 ### jscad-fastener/iso.exports.validateAssembly ⇒ <code>Boolean</code>
@@ -803,39 +892,11 @@ Generate a full assembly from the given specifications for bolt, nut, washer.
 | --- | --- | --- |
 | specifications | <code>Object</code> | the specifications of the assembly |
 
-<a name="jscad-fastener/iso.exports.parseAssembly"></a>
-
-### jscad-fastener/iso.exports.parseAssembly ⇒ <code>Object</code>
-Full Assembly Parser for ISO / Metric Systems
-Takes a compound engineering stack description and breaks it into parsed tokens.
-Supported Formats:
- - "Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032"
- - "M6 x 0.75 x 40 Bolt + ISO 7092 Washer + ISO 4032 Nut"
- - "ISO 4017 Bolt M16 x 60 - 10.9 HDG Finish; ISO 7090 Washer; ISO 4032 Nut"
-
-**Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
-**Returns**: <code>Object</code> - ISO bolt, nut, and washer specifications  
-<a name="jscad-fastener/iso.exports.validateAssembly"></a>
-
-### jscad-fastener/iso.exports.validateAssembly
-METRIC ISO ASSEMBLY VALIDATION ENGINE WITH TOLERANCE CHECKS
-
-**Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
-<a name="jscad-fastener/iso.exports.generateAssembly"></a>
-
-### jscad-fastener/iso.exports.generateAssembly ⇒ <code>Object</code>
-Procedural 3D Assembly Generator for ISO Fastener Stack in JSCAD V3
-Handles optional washers and nuts seamlessly without crashing.
-
-**Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
-**Returns**: <code>Object</code> - Unified 3D assembly mesh  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| assemblyConfig | <code>Object</code> | Specifications for each component (bolt required; washer/nut optional) |
-| clampThickness | <code>number</code> | Total material thickness being joined together (mm) |
-| modules | <code>Object</code> | Reference pointers to your 3D creation functions |
-
+**Example**  
+```js
+const specs = parseAssembly("Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032")
+const parts = generateAssembly(specs)
+```
 <a name="jscad-fastener/iso.exports.ISO_4014_HEX_BOLT"></a>
 
 ### jscad-fastener/iso.exports.ISO\_4014\_HEX\_BOLT : <code>Object</code>
@@ -1005,7 +1066,14 @@ If the standard is not provided then a standard will be select using the type of
 | [spec.standard] | <code>String</code> | <code></code> | bolt standard; null or valid ISO standard |
 | [spec.type] | <code>String</code> | <code>&#x27;CAP&#x27;</code> | type of bolt; CAP, STRUCTURAL, HEAVY, TAP |
 | [spec.threadSeries] | <code>String</code> | <code>&#x27;COARSE&#x27;</code> | thread series of bolt; COARSE or FINE |
+| nominalLength | <code>Number</code> |  | total length of the bolt shank and threads |
 
+**Example**  
+```js
+const dims = getBoltDimensions({size: "M6"}, 20.0)
+const dims = getBoltDimensions({size: "M12", type: "heavy"}, 4)
+const dims = getBoltDimensions({size: "M20", standard: "ISO_7411_HEX_STRUCTURAL"}, 60.0)
+```
 <a name="jscad-fastener/iso.exports.generateHexBolt"></a>
 
 ### jscad-fastener/iso.exports.generateHexBolt ⇒ <code>Geom3</code>
@@ -1023,6 +1091,11 @@ NOTE: All dimensions are millimeters.
 | spec.size | <code>String</code> | ISO size identifier (e.g., 'M6' for M6 ISO) |
 | spec.threadSeries | <code>String</code> | thread series of bolt; COARSE or FINE |
 
+**Example**  
+```js
+const dims = getBoltDimensions({size: "M6"}, 20.0)
+const bolt = generateHexBolt(specs)
+```
 <a name="jscad-fastener/iso.exports.ISO_4032_HEX_STANDARD"></a>
 
 ### jscad-fastener/iso.exports.ISO\_4032\_HEX\_STANDARD : <code>Object</code>
@@ -1145,7 +1218,7 @@ Get the hex nut dimensions for the given ISO nut specification.
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 **Returns**: <code>Object</code> - ISO specification with nut dimensions; widthAcrossFlats, height, bearingFaceHeight (mm)  
-**See**: parseNutSpec() for parsing of text specifications
+**See**: parseNutSpec() for parsing of ISO callout specifications
 
 NOTE: All dimensions are millimeters.  
 
@@ -1157,6 +1230,12 @@ NOTE: All dimensions are millimeters.
 | [spec.flatOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.heightOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 
+**Example**  
+```js
+const dims = getNutDimensions({size: "M6"})
+const dims = getNutDimensions({size: "M8", type: "thin"})
+const dims = getNutDimensions({size: "M20", standard: "ISO_7414_HEX_STRUCTURAL_HEAVY"})
+```
 <a name="jscad-fastener/iso.exports.generateNut"></a>
 
 ### jscad-fastener/iso.exports.generateNut ⇒ <code>Geom3</code>
@@ -1179,7 +1258,7 @@ NOTE: All dimensions are millimeters.
 
 **Example**  
 ```js
-const spec = getNutDimensions({size: 'M10', isHeavy: true})
+const spec = getNutDimensions({size: 'M10', type: 'heavy'})
 const nut = generateNut(spec)
 ```
 <a name="jscad-fastener/iso.exports.parseBoltSpec"></a>
@@ -1403,6 +1482,12 @@ NOTE: Returned dimensions are millimeters.
 | [spec.odOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 | [spec.thicknessOffset] | <code>Number</code> | <code>0</code> | clearance for oversized cutouts |
 
+**Example**  
+```js
+const dims = getWasherDimensions({size: 'M6'})
+const dims = getWasherDimensions({size: 'M16', type: 'HEAVY'})
+const dims = getWasherDimensions({size: 'M22', standard: 'ISO_7093'})
+```
 <a name="jscad-fastener/iso.exports.generateWasher"></a>
 
 ### jscad-fastener/iso.exports.generateWasher ⇒ <code>Geom3</code>
@@ -1420,6 +1505,6 @@ NOTE: All dimensions are millimeters
 
 **Example**  
 ```js
-const spec = getWasherDimensions({size: 'M22', type: 'HEAVY'})
+const dims = getWasherDimensions({size: 'M22', type: 'HEAVY'})
 const nut = generateWasher(spec)
 ```

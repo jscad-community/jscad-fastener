@@ -497,6 +497,11 @@ const standards = {
  * @param {Number} [spec.odOffset=0] - clearance for oversized cutouts
  * @param {Number} [spec.thicknessOffset=0] - clearance for oversized cutouts
  * @returns {Object} ISO specification with washer dimensions: innerRadius, outerRadius, thickness
+ *
+ * @example
+ * const dims = getWasherDimensions({size: 'M6'})
+ * const dims = getWasherDimensions({size: 'M16', type: 'HEAVY'})
+ * const dims = getWasherDimensions({size: 'M22', standard: 'ISO_7093'})
  */
 export const getWasherDimensions = (spec) => {
   let {
@@ -576,7 +581,7 @@ export const getWasherDimensions = (spec) => {
  * @returns {Geom3} washer, centered on XYZ
  *
  * @example
- * const spec = getWasherDimensions({size: 'M22', type: 'HEAVY'})
+ * const dims = getWasherDimensions({size: 'M22', type: 'HEAVY'})
  * const nut = generateWasher(spec)
  */
 export const generateWasher = (spec) => {

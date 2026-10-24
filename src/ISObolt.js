@@ -370,7 +370,13 @@ const standards = {
  * @param {String} [spec.standard=null] - bolt standard; null or valid ISO standard
  * @param {String} [spec.type='CAP'] - type of bolt; CAP, STRUCTURAL, HEAVY, TAP
  * @param {String} [spec.threadSeries='COARSE'] - thread series of bolt; COARSE or FINE
+ * @param {Number} nominalLength - total length of the bolt shank and threads
  * @returns {Object} full ISO bolt specification with dimensions
+ *
+ * @example
+ * const dims = getBoltDimensions({size: "M6"}, 20.0)
+ * const dims = getBoltDimensions({size: "M12", type: "heavy"}, 4)
+ * const dims = getBoltDimensions({size: "M20", standard: "ISO_7411_HEX_STRUCTURAL"}, 60.0)
  */
 export const getHexBoltDimensions = (spec, nominalLength) => {
   let {
@@ -385,7 +391,7 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
   if (!size) return null
 
   size = size.startsWith("M") ? size : "M" + size
-  type = type.toUpperCase()
+  type = type.toUpperCase().trim()
 
   // select the standard using the given options if not provided
   if (!standard) {
@@ -488,6 +494,10 @@ export const getHexBoltDimensions = (spec, nominalLength) => {
  * @param {String} spec.size - ISO size identifier (e.g., 'M6' for M6 ISO)
  * @param {String} spec.threadSeries - thread series of bolt; COARSE or FINE
  * @returns {Geom3} ISO bolt, centered on X-Y, head above Z, shank below Z
+ *
+ * @example
+ * const dims = getBoltDimensions({size: "M6"}, 20.0)
+ * const bolt = generateHexBolt(specs)
  */
 export const generateHexBolt = (spec) => {
   const {

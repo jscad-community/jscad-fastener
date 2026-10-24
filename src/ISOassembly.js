@@ -71,6 +71,9 @@ const determineFastenerType = (chunk) => {
  * @memberof jscad-fastener/iso
  * @param {string} callout - the full compound engineering callout string
  * @returns {Object} ISO bolt, nut, and washer specifications (nut/washer may be null)
+ *
+ * @example
+ * const specs = parseAssembly("M12 x 1.25 x 50 Bolt, Washer, Nut")
  */
 export const parseAssembly = (callout) => {
   // Normalize string spacing and uniform delimiters (+ or ; mapped to standard commas)
@@ -219,62 +222,6 @@ export const validateAssembly = (specifications) => {
   return true
 }
 
-/*
- * METRIC ISO ASSEMBLY VALIDATION ENGINE WITH TOLERANCE CHECKS
- */
-const validateAssemblyB = (assembly) => {
-  const { bolt, washer, nut } = assembly
-  const errors = []
-  const warnings = []
-
-  console.log(`\n⚙️ Evaluating Metric Joint with Tolerance Controls:`)
-  console.log(` -> Bolt:   ${bolt.size} Pitch:${bolt.pitch}mm Tolerance:${bolt.threadTolerance}`)
-  console.log(` -> Washer: ${washer.standard} (${washer.material})`)
-  console.log(` -> Nut:    ${nut.size} Pitch:${nut.pitch}mm Tolerance:${nut.threadTolerance}`)
-
-  // 1. Thread Sizing & Interface Layout Matching Check
-  if (bolt.pitch !== nut.pitch) {
-    errors.push(`CRITICAL: Thread pitch mismatch! Bolt pitch is ${bolt.pitch}mm, but Nut pitch is ${nut.pitch}mm.`)
-  }
-  if (bolt.size !== washer.size || bolt.size !== nut.size) {
-    errors.push(`CRITICAL: Diameter Interface mismatch! Components must share exact nominal steps.`)
-  }
-
-  // 2. ISO 965 Allowance & Interference Mechanical Fit Evaluation
-  const bTol = bolt.threadTolerance.toLowerCase() // Lower-case external zone check
-  const nTol = nut.threadTolerance.toUpperCase()   // Upper-case internal zone check
-
-  if (bolt.coating === 'Hot-Dip Galvanized') {
-    // Structural Rule: Galvanized shanks are too thick for tight '6g' external limits unless oversized '6G' nuts are explicitly selected
-    if (bTol === '6g' && nTol === '6H') {
-      errors.push(`CRITICAL: Thread Interference Hazard! A Hot-Dip Galvanized bolt coating will jam inside a standard 6H nut profile. Requires an over-tapped 6G structural internal nut fit.`)
-    }
-  } else {
-    // Standard Coating Rule: Heavy clearance configurations should not be mixed unnecessarily
-    if (bTol === '6e' && nTol === '6H') {
-      warnings.push(`WARNING: Slack fit assembly. Loose clearance position '6e' bolt paired with standard '6H' internal nut. Acceptable for high-temperature settings, but tracks higher vibration play.`)
-    }
-  }
-
-  // 3. Material Compatibility (Preventing Galvanic Corrosion)
-  const isBoltStainless = bolt.material.includes('Stainless')
-  const isWasherStainless = washer.material.includes('Stainless')
-  if (isBoltStainless !== isWasherStainless) {
-    errors.push(`CRITICAL: Galvanic Corrosion Risk! Mixing Stainless Steel components alongside regular Carbon Steels.`)
-  }
-
-  // Final Verdict
-  if (errors.length === 0) {
-    console.log("✅ Validation successfully PASSED. Structural tolerance and alignment checks are compliant.")
-    warnings.forEach((w) => console.warn(`⚠️ ${w}`))
-    return { valid: true, errors, warnings }
-  } else {
-    console.error("❌ Validation FAILED.")
-    errors.forEach((e) => console.error(`🛑 ${e}`))
-    return { valid: false, errors, warnings }
-  }
-}
-
 /**
  * Generate a full assembly from the given specifications for bolt, nut, washer.
  *
@@ -283,6 +230,10 @@ const validateAssemblyB = (assembly) => {
  * @memberof jscad-fastener/iso
  * @param {Object} specifications - the specifications of the assembly
  * @returns {Array} Array of geometries
+ *
+ * @example
+ * const specs = parseAssembly("Hexagon head bolt ISO 4014 - M12 x 80 - 8.8, with Plain washer ISO 7090, Hex nut ISO 4032")
+ * const parts = generateAssembly(specs)
  */
 export const generateAssembly = (specifications) => {
   // Phase 1: Validate structural integrity and physical clearance rules
