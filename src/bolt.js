@@ -1,6 +1,7 @@
 import { circle, cylinder, cylinderElliptic, extrudeLinear, intersect, union, rotate, translate, TAU } from '@jscad/modeling'
 
 import { Thread } from './threads.js'
+import { HexNut } from './nut.js'
 
 /**
  * Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.
@@ -20,85 +21,33 @@ import { Thread } from './threads.js'
 export const HexHead = (spec) => {
   const { widthAcrossFlats, headHeight, bearingFaceDiameter, filletRadius, majorDiameter, segments } = spec
 
-  // 1. Establish structural vertical steps
-  // FIXME this should be a parameter
-  const bearingFaceHeight = (bearingFaceDiameter > 0) ? 0.2 : 0
-  const hexPrismHeight = headHeight - bearingFaceHeight
-
-  // 2. Extrude the Base Hexagon Body
-  const hexRadius = (widthAcrossFlats / 2) / Math.cos(TAU / 12)
-  const hex2D = circle({ 
-    radius: hexRadius, 
-    segments: 6,
-  })
-  const hexBody3D = extrudeLinear({ height: hexPrismHeight }, hex2D)
-
-  // 3. Generate the Bevel/Chamfer Tool (Cone intersecting logic)
-  // Per ISO standard rules, the circular bevel crown diameter on top matches the width across flats (s).
-  const bevelCrownRadius = widthAcrossFlats / 2
-  const bevelAngleRad = 30 * (TAU / 360) // Standard 30 degree industrial tool angle
-  
-  const outerDeltaRadius = hexRadius - bevelCrownRadius
-  const bevelCutHeight = outerDeltaRadius / Math.tan(bevelAngleRad)
-
-  let startRadius = [hexRadius + 1, hexRadius + 1]
-  let endRadius = [bevelCrownRadius, bevelCrownRadius]
-  const bevelCutter3D = cylinderElliptic({
-    startRadius, // Oversized bottom to fully clear the prism footprint
-    endRadius, // Tapering down directly onto the flat tangent circle path
-    height: bevelCutHeight,
-    segments
-  })
-
-  const cutterZPosition = hexPrismHeight - (bevelCutHeight / 2)
-  const positionedCutter = translate([0, 0, cutterZPosition], bevelCutter3D)
-
-  const middleCylinderHeight = hexPrismHeight - bevelCutHeight
-  const middleCoreC = circle({ 
-    radius: hexRadius + 1, 
-    segments,
-  })
-  const middleCore = extrudeLinear({ height: middleCylinderHeight }, middleCoreC)
-
-  const cutter = union(positionedCutter, middleCore)
-
+  let zOffset = 0
   const parts = []
 
-  // Apply intersection to get the clean crowned beveled hex body top profile
-  const beveledHexHead3D = intersect(hexBody3D, cutter)
-  parts.push(translate([0, 0, bearingFaceHeight], beveledHexHead3D))
+  // FIXME this should be a parameter
+  const bearingFaceHeight = (bearingFaceDiameter > 0) ? 0.2 : 0
 
-  // 4. Generate the Bottom Washer Face Shoulder (dw)
-  if (bearingFaceHeight > 0) {
-    const bearingFace3D = cylinder({
-      radius: bearingFaceDiameter / 2,
-      height: bearingFaceHeight,
-      segments
-    })
-    parts.push(translate([0, 0, bearingFaceHeight / 2], bearingFace3D))
-  }
+  // 1. Create the hexagon body and position
+  let hexBody = HexNut({widthAcrossFlats, height: headHeight, bearingFaceHeight, bearingFaceDiameter, zOffset: 0, segments})
 
-  // 5. Generate the fillet to connect head to shank
+  zOffset = headHeight / 2
+  hexBody = translate([0, 0, zOffset], hexBody)
+  parts.push(hexBody)
+
+  // 2. Generate the fillet to connect head to shank
   if (filletRadius > 0) {
-    startRadius = [majorDiameter / 2, majorDiameter / 2]
-    endRadius = [majorDiameter / 2 + filletRadius, majorDiameter / 2 + filletRadius]
+    const startRadius = [majorDiameter / 2, majorDiameter / 2]
+    const endRadius = [majorDiameter / 2 + filletRadius, majorDiameter / 2 + filletRadius]
     const filletCone3D = cylinderElliptic({
       startRadius, // Top flare flaring wide outwards to match r radius bounds
       endRadius,   // Bottom matching the shank flush boundary line width
       height: filletRadius,
       segments
     })
-    parts.push(translate([0, 0, -filletRadius / 2], filletCone3D))
+    zOffset = -filletRadius / 2
+    parts.push(translate([0, 0, zOffset], filletCone3D))
   }
-
   return union(parts)
-
-  // 6. Assembly of Stack
-  const alignedWasher = translate([0, 0, bearingFaceHeight / 2], bearingFace3D)
-  const alignedHexHead = translate([0, 0, bearingFaceHeight], beveledHexHead3D)
-  const alignedFillet = translate([0, 0, -filletRadius / 2], filletCone3D)
-
-  return union(alignedWasher, alignedHexHead, alignedFillet)
 }
 
 /**
