@@ -1,10 +1,11 @@
-import { translate } from '@jscad/modeling'
+import { cylinder, mirrorZ, subtract, translate } from '@jscad/modeling'
 
 import { parseBoltSpec, parseNutSpec, parseWasherSpec } from './ASMEspecification.js'
 import { getBoltDimensions, generateHexBolt } from './ASMEbolt.js'
-import { getNutDimensions, generateNut } from './ASMENut.js'
+import { getNutDimensions, generateNut } from './ASMEnut.js'
 import { getWasherDimensions, generateWasher } from './ASMEwasher.js'
 
+const MM_PER_INCH = 25.4
 
 /*
  * Full Assembly Parser for ASME Systems
@@ -231,36 +232,35 @@ export const generateAssembly = (specifications) => {
   const washerDims = washer ? getWasherDimensions(washer) : null
   const nutDims = nut ? getNutDimensions(nut) : null
 
-  // 2. Position the Bolt Mesh
-  // If a washer is present, the underside of the bolt head rests atop the washer body.
-  // Otherwise, the underside of the bolt head sits directly on the joint boundary face (Z = 0).
+  // 2. Generate the bolt mesh
   const boltHeadBaseZ = washerDims ? washerDims.thickness : 0
-  let boltMesh = generateHexBolt(boltDims)
-  
-  // Position bolt shank extending down through the joint from its head seating plane
-  // Adjust by half the head height since the head object origin is centered inside its own primitive boundaries
-  const boltZPosition = boltHeadBaseZ + (boltDims.headHeight / 2)
-  boltMesh = translate([0, 0, boltZPosition], boltMesh)
+  const boltMesh = generateHexBolt(boltDims)
   stack.push(boltMesh)
-
-  // 3. Position the Optional Washer Mesh
-  // The washer rests flat right over the joint channel opening (from Z = 0 to Z = washer thickness)
+  
+  // 3. Generate and position the optional washer mesh
   if (washerDims) {
     let washerMesh = generateWasher(washerDims)
-    const washerZPosition = washerDims.thickness / 2
+
+    const washerZPosition = (-washerDims.thickness / 2) * MM_PER_INCH
     washerMesh = translate([0, 0, washerZPosition], washerMesh)
     stack.push(washerMesh)
   }
 
-  // 4. Position the Optional Nut Mesh
-  // The nut is threaded up from underneath the bottom exit boundary layer of the joint.
-  // In your joint-face orientation, the bottom face of the joint is located at exactly -bolt.length + boltHeadBaseZ.
+  // 4. Generate and position the optional nut mesh
   if (nutDims) {
     let nutMesh = generateNut(nutDims)
-    const jointBottomZ = boltHeadBaseZ - bolt.length
+
+    if (nut.drillingSpecifications && nut.drillingSpecifications.recommendedDrillBitSize) {
+      const radius = (nut.drillingSpecifications.recommendedDrillBitSize / 2) * MM_PER_INCH
+      const height = nutDims.height * MM_PER_INCH + 1.0
+      const drill = cylinder({height, radius, segments: 36})
+      nutMesh = subtract(nutMesh, drill)
+    }
     
-    // Position nut flush against the bottom exit layer, adjusting for its centered origin alignment
-    const nutZPosition = jointBottomZ + (nutDims.height / 2)
+    // flip and position nut to sit at the end of the bolt
+    nutMesh = mirrorZ(nutMesh)
+
+    const nutZPosition = (0 - bolt.length + (nutDims.height / 2)) * MM_PER_INCH
     nutMesh = translate([0, 0, nutZPosition], nutMesh)
     stack.push(nutMesh)
   }

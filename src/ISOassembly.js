@@ -1,4 +1,4 @@
-import { translate } from '@jscad/modeling'
+import { cylinder, mirrorZ, subtract, translate } from '@jscad/modeling'
 
 import { parseBoltSpec, parseNutSpec, parseWasherSpec } from './ISOspecification.js'
 import { getHexBoltDimensions, generateHexBolt } from './ISObolt.js'
@@ -268,8 +268,15 @@ export const generateAssembly = (specifications) => {
     const nutDims = getNutDimensions(nut)
     let nutMesh = generateNut(nutDims)
 
-    // Position nut flush against either the washer face or the joint material boundary
-    // For a standard through-hole joint, it sits at the end of the clamping package
+    if (nut.drillingSpecifications && nut.drillingSpecifications.recommendedDrillBitSize) {
+      const radius =  nut.drillingSpecifications.recommendedDrillBitSize / 2
+      const drill = cylinder({height: nutDims.height + 1.0, radius, segments: 36})
+      nutMesh = subtract(nutMesh, drill)
+    }
+
+    // flip and position to sit at the end of the bolt
+    nutMesh = mirrorZ(nutMesh)
+
     const nutZPosition = 0 - bolt.length + (nutDims.height / 2)
     nutMesh = translate([0, 0, nutZPosition], nutMesh)
     stack.push(nutMesh)

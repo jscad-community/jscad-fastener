@@ -433,5 +433,8 @@ export const generateNut = (spec = {}) => {
 
   // TODO add support for lock nuts
   // hex nut, beveled, with optional bearing
-  return HexNut({widthAcrossFlats, height, bearingFaceHeight, zOffset, segments})
+  // FIXME this should be a parameter
+  const bearingFaceDiameter = +(widthAcrossFlats * 0.95).toFixed(3)
+
+  return HexNut({widthAcrossFlats, height, bearingFaceHeight, bearingFaceDiameter, zOffset, segments})
 }

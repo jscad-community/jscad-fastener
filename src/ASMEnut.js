@@ -508,6 +508,9 @@ export const generateNut = (spec) => {
   height = +(height * MM_PER_INCH).toFixed(3)
   bearingFaceHeight = +(bearingFaceHeight * MM_PER_INCH).toFixed(3)
 
+  // FIXME this should be a parameter
+  const bearingFaceDiameter = +(widthAcrossFlats * 0.95).toFixed(3)
+
   // hex nut, beveled, with optional bearing face
-  return HexNut({ widthAcrossFlats, height, bearingFaceHeight, zOffset, segments })
+  return HexNut({ widthAcrossFlats, height, bearingFaceHeight, bearingFaceDiameter, zOffset, segments })
 }

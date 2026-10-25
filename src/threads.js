@@ -1,4 +1,4 @@
-import { cylinderElliptic, polygon, intersect, union, subtract, extrudeHelical, translate } from '@jscad/modeling'
+import { cylinderElliptic, polygon, intersect, union, snap, subtract, extrudeHelical, translate } from '@jscad/modeling'
 
 /**
  * Create a thread segment supporting ISO and UTS thread standards.
@@ -70,7 +70,7 @@ export const Thread = (spec, length) => {
     })
   )
   
-  const trimmedHelix = intersect(cleanBounds, threadedHelix)
+  const trimmedHelix = snap(intersect(cleanBounds, threadedHelix))
   
   // 7. Assemble core body
   let finalThreadedObject
