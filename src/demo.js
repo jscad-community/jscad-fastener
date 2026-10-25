@@ -10,9 +10,23 @@ import { getNutDimensions, generateNut } from './ISOnut.js'
 import { getWasherDimensions, generateWasher } from './ISOwasher.js'
 */
 
+//import { Thread } from './threads.js'
+
 export const main = () => {
-  // Demonstration: Render a standard M10 Coarse Bolt with a 3D-printer friendly 0.15mm tolerance
-  // Parameters: d=10, length=25, isInternal=false, isFine=false, tolerance=0.15, segments=48
+/*
+  const thread = Thread({
+    majorDiameter: 6.0,
+    pitch: 1.0,
+    tolerance: 0,
+    isInternal: false,
+    bevelStart: true,
+    bevelEnd: true,
+    segments: 36
+  }, 5.0)
+  return thread
+*/
+
+
   //let spec = getThreadSpec('ISO', 'M4', 'coarse')
   //let spec = getThreadSpec('UTS', '#10', 'UNF')
   //let thread = generateThread(spec, 20)

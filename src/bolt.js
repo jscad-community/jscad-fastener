@@ -84,12 +84,13 @@ export const Shank = (spec) => {
 
   // 2. Generate the Threaded Segment
   if (threadLength > 0) {
-    const threadSpec = {majorDiameter, pitch, tolerance: 0, inInternal: false, segments}
+    const threadSpec = {majorDiameter, pitch, tolerance: 0, inInternal: false, bevelStart: false, bevelEnd: true, segments}
+    // NOTE: Thread is centered X/Y/Z
     const threadedSegment3D = Thread(threadSpec, threadLength)
 
     // Positions the threaded module directly beneath the smooth grip boundary
-    const Zoffset = -unthreadedLength
-    const positionedThread = translate([0, 0, Zoffset], rotate([TAU / 2, 0, 0], threadedSegment3D))
+    const Zoffset = -unthreadedLength - (threadLength * 0.5)
+    const positionedThread = translate([0, 0, Zoffset], threadedSegment3D)
     parts.push(positionedThread)
   }
 
