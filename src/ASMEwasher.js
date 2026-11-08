@@ -19,7 +19,7 @@ const MM_PER_INCH = 25.4
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TYPE_A_NARROW = {
@@ -66,7 +66,7 @@ export const ASME_B18_21_1_TYPE_A_NARROW = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TYPE_A_WIDE = {
@@ -119,7 +119,7 @@ export const ASME_B18_21_1_TYPE_A_WIDE = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASTM_F436_STRUCTURAL = {
@@ -157,7 +157,7 @@ export const ASTM_F436_STRUCTURAL = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_LOCK_REGULAR = {
@@ -210,7 +210,7 @@ export const ASME_B18_21_1_LOCK_REGULAR = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_LOCK_HEAVY = {
@@ -266,7 +266,7 @@ export const ASME_B18_21_1_LOCK_HEAVY = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TOOTH_EXTERNAL = {
@@ -307,7 +307,7 @@ export const ASME_B18_21_1_TOOTH_EXTERNAL = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TOOTH_INTERNAL = {
@@ -352,7 +352,7 @@ export const ASME_B18_21_1_TOOTH_INTERNAL = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TYPE_B_REGULAR = {
@@ -404,7 +404,7 @@ export const ASME_B18_21_1_TYPE_B_REGULAR = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TYPE_B_NARROW = {
@@ -456,7 +456,7 @@ export const ASME_B18_21_1_TYPE_B_NARROW = {
  * Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_21_1_TYPE_B_WIDE = {

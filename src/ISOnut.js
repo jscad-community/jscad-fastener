@@ -22,7 +22,7 @@ const TOTAL_HEIGHT = 2
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_4032_HEX_STANDARD = {
@@ -70,7 +70,7 @@ export const ISO_4032_HEX_STANDARD = {
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7414_HEX_STRUCTURAL_HEAVY = {
@@ -96,7 +96,7 @@ export const ISO_7414_HEX_STRUCTURAL_HEAVY = {
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_4033_HEX_HIGH = {
@@ -131,7 +131,7 @@ export const ISO_4033_HEX_HIGH = {
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_4035_HEX_THIN_JAM = {
@@ -179,7 +179,7 @@ export const ISO_4035_HEX_THIN_JAM = {
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7040_LOCK_STANDARD = {
@@ -211,7 +211,7 @@ export const ISO_7040_LOCK_STANDARD = {
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_10511_LOCK_THIN = {
@@ -243,7 +243,7 @@ export const ISO_10511_LOCK_THIN = {
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_max)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7041_LOCK_HIGH = {
@@ -276,7 +276,7 @@ export const ISO_7041_LOCK_HIGH = {
  * Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_557_SQUARE = {

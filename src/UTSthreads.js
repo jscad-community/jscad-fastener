@@ -14,7 +14,7 @@ export const FINE_TPI = 2
  * Note: Uses `null` where a specific coarse/fine TPI does not officially exist.
  *
  * @constant
- * @type {Object}
+ * @type {ThreadDimensions}
  * @memberof jscad-fastener/asme
  */
 export const UTS_THREADS = {
@@ -64,8 +64,8 @@ export const UTS_THREADS = {
  *
  * @memberof jscad-fastener/asme
  * @param {Number|String} size - size identifier; '#0' or '1/2'
- * @param {String} threadSeries - Thread series of bolt; UNC or UNF
- * @return {Object} specification with majorDiameter, pitch, isFine
+ * @param {String} threadSeries - Thread series of bolt; 'UNC' or 'UNF'
+ * @return {Object} specification with standard, size, threadSeries, majorDiameter, pitch, isFine
  */
 export const getThreadSpec = (size, threadSeries) => {
   const utsData = UTS_THREADS[size]

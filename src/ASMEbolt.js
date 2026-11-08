@@ -23,7 +23,7 @@ const FILLET_RADIUS = 4
  * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_CAP_SCREW = {
@@ -62,7 +62,7 @@ export const ASME_B18_2_1_CAP_SCREW = {
  * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_6_STRUCTURAL = {
@@ -89,7 +89,7 @@ export const ASME_B18_2_6_STRUCTURAL = {
  * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_HEAVY_BOLT = {
@@ -123,7 +123,7 @@ export const ASME_B18_2_1_HEAVY_BOLT = {
  * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_6_3_MACHINE = {
@@ -160,7 +160,7 @@ export const ASME_B18_6_3_MACHINE = {
  * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_HEX_BOLT = {
@@ -198,7 +198,7 @@ export const ASME_B18_2_1_HEX_BOLT = {
  * Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_1_TAP_BOLT = {

@@ -22,7 +22,7 @@ const FILLET_RADIUS = 4
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_4014_HEX_BOLT = {
@@ -58,7 +58,7 @@ export const ISO_4014_HEX_BOLT = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_4016_HEX_BOLT_C = {
@@ -92,7 +92,7 @@ export const ISO_4016_HEX_BOLT_C = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_4017_HEX_SCREW = {
@@ -128,7 +128,7 @@ export const ISO_4017_HEX_SCREW = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7411_HEX_STRUCTURAL = {
@@ -155,7 +155,7 @@ export const ISO_7411_HEX_STRUCTURAL = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7045_PAN_MACHINE = {
@@ -182,7 +182,7 @@ export const ISO_7045_PAN_MACHINE = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_601_HEX_BOLT_C = {
@@ -218,7 +218,7 @@ export const DIN_601_HEX_BOLT_C = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_931_HEX_BOLT = {
@@ -258,7 +258,7 @@ export const DIN_931_HEX_BOLT = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_933_HEX_SCREW = {
@@ -298,7 +298,7 @@ export const DIN_933_HEX_SCREW = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_6914_HEX_STRUCTURAL = {
@@ -326,7 +326,7 @@ export const DIN_6914_HEX_STRUCTURAL = {
  * Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bearingFaceDiameter (dw), filletRadius (r)]
  *
  * @constant
- * @type {Object}
+ * @type {BoltDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_7985_PAN_MACHINE = {
@@ -366,7 +366,7 @@ const standards = {
  *
  * @memberof jscad-fastener/iso
  * @param {Object} spec - bolt specifications
- * @param {String} spec.size - ISO bolat size identifier (e.g., 'M6' for M6 ISO)
+ * @param {String} spec.size - ISO bolt size identifier (e.g., 'M6' for M6 ISO)
  * @param {String} [spec.standard=null] - bolt standard; null or valid ISO standard
  * @param {String} [spec.type='CAP'] - type of bolt; CAP, STRUCTURAL, HEAVY, TAP
  * @param {String} [spec.threadSeries='COARSE'] - thread series of bolt; COARSE or FINE

@@ -1,4 +1,36 @@
 /**
+ * @typedef BoltDimensions
+ * @type {Object}
+ * @property {String} size
+ * @property {Array<Number>} dims
+ * @description A static object with bolt sizes and dimensions
+ */
+
+/**
+ * @typedef NutDimensions
+ * @type {Object}
+ * @property {String} size
+ * @property {Array<Number>} dims
+ * @description A static object with nut sizes and dimensions
+ */
+
+/**
+ * @typedef WasherDimensions
+ * @type {Object}
+ * @property {String} size
+ * @property {Array<Number>} dims
+ * @description A static object with nut sizes and dimensions
+ */
+
+/**
+ * @typedef ThreadDimensions
+ * @type {Object}
+ * @property {String} size
+ * @property {Array<Number>} dims
+ * @description A static object with thread sizes and dimensions
+ */
+
+/**
  * Create ASME and ISO fasteners for JSCAD designs.
  *
  * This JSCAD project supplies various fasteners for JSCAD designs.

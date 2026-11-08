@@ -8,10 +8,10 @@ const FINE_TPI = 2
  *
  * NOTE: All dimensions are in millimeters.
  *
- * Entries: ISO size: [Major_Diameter, Coarse_TPI, Fine_TPI]
+ * Entries: ISO size: [ majorDiameter, courseTPI, fineTPI ]
  *
  * @constant
- * @type {Object}
+ * @type {ThreadDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_THREADS = {
@@ -64,8 +64,8 @@ export const ISO_THREADS = {
  *
  * @memberof jscad-fastener/iso
  * @param {Number|String} size - Dimension identifier; 6 or 'M6'
- * @param {String} threadSeries - Thread series of bolt; coarse or fine
- * @return {Object} ISO thread specification with majorDiameter, pitch, isFine
+ * @param {String} threadSeries - Thread series of bolt; 'COARSE' or 'FINE'
+ * @return {Object} ISO thread specification with standard, size, threadSeries, majorDiameter, pitch, isFine
  */
 export const getThreadSpec = (size, threadSeries) => {
   // adjust size if necessary 

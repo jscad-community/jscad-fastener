@@ -19,7 +19,7 @@ export const TH_INDEX = 2      // Thickness
  * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7089 = {
@@ -76,7 +76,7 @@ export const ISO_7089 = {
  * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7090 = ISO_7089
@@ -94,7 +94,7 @@ export const ISO_7090 = ISO_7089
  * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7091 = {
@@ -153,7 +153,7 @@ export const ISO_7091 = {
  * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7092 = {
@@ -212,7 +212,7 @@ export const ISO_7092 = {
  * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7093 = {
@@ -264,7 +264,7 @@ export const ISO_7093 = {
  * Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_6797_A = {
@@ -304,7 +304,7 @@ export const DIN_6797_A = {
  * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_6797_J = {
@@ -337,7 +337,7 @@ export const DIN_6797_J = {
  * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_7980 = {
@@ -379,7 +379,7 @@ export const DIN_7980 = {
  * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const EN_14399_6 = {
@@ -408,7 +408,7 @@ export const EN_14399_6 = {
  * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const DIN_127_B = {
@@ -448,7 +448,7 @@ export const DIN_127_B = {
  * Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
  *
  * @constant
- * @type {Object}
+ * @type {WasherDimensions}
  * @memberof jscad-fastener/iso
  */
 export const ISO_7094 = {

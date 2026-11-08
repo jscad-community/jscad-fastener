@@ -17,7 +17,7 @@ const MM_PER_INCH = 25.4
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_STANDARD = {
@@ -65,7 +65,7 @@ export const ASME_B18_2_2_HEX_STANDARD = {
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_HEAVY = {
@@ -102,7 +102,7 @@ export const ASME_B18_2_2_HEX_HEAVY = {
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_SQUARE = {
@@ -139,7 +139,7 @@ export const ASME_B18_2_2_SQUARE = {
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_THIN_JAM = {
@@ -187,7 +187,7 @@ export const ASME_B18_2_2_HEX_THIN_JAM = {
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_2_HEX_HEAVY_JAM = {
@@ -235,7 +235,7 @@ export const ASME_B18_2_2_HEX_HEAVY_JAM = {
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_2_6_HEX_STRUCTURAL = {
@@ -256,7 +256,7 @@ export const ASME_B18_2_6_HEX_STRUCTURAL = {
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_16_6_HEX_LOCK_STANDARD = {
@@ -290,7 +290,7 @@ export const ASME_B18_16_6_HEX_LOCK_STANDARD = {
  * Entries: ASME size: [widthAcrossFlats (W), height (H)]
  *
  * @constant
- * @type {Object}
+ * @type {NutDimensions}
  * @memberof jscad-fastener/asme
  */
 export const ASME_B18_16_6_HEX_LOCK_THIN = {

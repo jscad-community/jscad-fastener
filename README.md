@@ -30,6 +30,23 @@ ASME/ISO fasteners are generally easier to understand and generate.</p>
 </dd>
 </dl>
 
+## Typedefs
+
+<dl>
+<dt><a href="#BoltDimensions">BoltDimensions</a> : <code>Object</code></dt>
+<dd><p>A static object with bolt sizes and dimensions</p>
+</dd>
+<dt><a href="#NutDimensions">NutDimensions</a> : <code>Object</code></dt>
+<dd><p>A static object with nut sizes and dimensions</p>
+</dd>
+<dt><a href="#WasherDimensions">WasherDimensions</a> : <code>Object</code></dt>
+<dd><p>A static object with nut sizes and dimensions</p>
+</dd>
+<dt><a href="#ThreadDimensions">ThreadDimensions</a> : <code>Object</code></dt>
+<dd><p>A static object with thread sizes and dimensions</p>
+</dd>
+</dl>
+
 <a name="jscad-fastener/asme"></a>
 
 ## jscad-fastener/asme : <code>object</code>
@@ -52,40 +69,40 @@ const parts = asme.generateAssembly(specs)
     * [.exports.parseAssembly](#jscad-fastener/asme.exports.parseAssembly) ⇒ <code>Object</code>
     * [.exports.validateAssembly](#jscad-fastener/asme.exports.validateAssembly) ⇒ <code>Boolean</code>
     * [.exports.generateAssembly](#jscad-fastener/asme.exports.generateAssembly) ⇒ <code>Array</code>
-    * [.exports.ASME_B18_2_1_CAP_SCREW](#jscad-fastener/asme.exports.ASME_B18_2_1_CAP_SCREW) : <code>Object</code>
-    * [.exports.ASME_B18_2_6_STRUCTURAL](#jscad-fastener/asme.exports.ASME_B18_2_6_STRUCTURAL) : <code>Object</code>
-    * [.exports.ASME_B18_2_1_HEAVY_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_HEAVY_BOLT) : <code>Object</code>
-    * [.exports.ASME_B18_6_3_MACHINE](#jscad-fastener/asme.exports.ASME_B18_6_3_MACHINE) : <code>Object</code>
-    * [.exports.ASME_B18_2_1_HEX_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_HEX_BOLT) : <code>Object</code>
-    * [.exports.ASME_B18_2_1_TAP_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_TAP_BOLT) : <code>Object</code>
+    * [.exports.ASME_B18_2_1_CAP_SCREW](#jscad-fastener/asme.exports.ASME_B18_2_1_CAP_SCREW) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ASME_B18_2_6_STRUCTURAL](#jscad-fastener/asme.exports.ASME_B18_2_6_STRUCTURAL) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ASME_B18_2_1_HEAVY_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_HEAVY_BOLT) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ASME_B18_6_3_MACHINE](#jscad-fastener/asme.exports.ASME_B18_6_3_MACHINE) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ASME_B18_2_1_HEX_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_HEX_BOLT) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ASME_B18_2_1_TAP_BOLT](#jscad-fastener/asme.exports.ASME_B18_2_1_TAP_BOLT) : [<code>BoltDimensions</code>](#BoltDimensions)
     * [.exports.getBoltDimensions](#jscad-fastener/asme.exports.getBoltDimensions) ⇒ <code>Object</code>
     * [.exports.generateHexBolt](#jscad-fastener/asme.exports.generateHexBolt) ⇒ <code>Geom3</code>
-    * [.exports.ASME_B18_2_2_HEX_STANDARD](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_STANDARD) : <code>Object</code>
-    * [.exports.ASME_B18_2_2_HEX_HEAVY](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_HEAVY) : <code>Object</code>
-    * [.exports.ASME_B18_2_2_SQUARE](#jscad-fastener/asme.exports.ASME_B18_2_2_SQUARE) : <code>Object</code>
-    * [.exports.ASME_B18_2_2_HEX_THIN_JAM](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_THIN_JAM) : <code>Object</code>
-    * [.exports.ASME_B18_2_2_HEX_HEAVY_JAM](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_HEAVY_JAM) : <code>Object</code>
-    * [.exports.ASME_B18_2_6_HEX_STRUCTURAL](#jscad-fastener/asme.exports.ASME_B18_2_6_HEX_STRUCTURAL) : <code>Object</code>
-    * [.exports.ASME_B18_16_6_HEX_LOCK_STANDARD](#jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_STANDARD) : <code>Object</code>
-    * [.exports.ASME_B18_16_6_HEX_LOCK_THIN](#jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_THIN) : <code>Object</code>
+    * [.exports.ASME_B18_2_2_HEX_STANDARD](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_STANDARD) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ASME_B18_2_2_HEX_HEAVY](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_HEAVY) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ASME_B18_2_2_SQUARE](#jscad-fastener/asme.exports.ASME_B18_2_2_SQUARE) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ASME_B18_2_2_HEX_THIN_JAM](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_THIN_JAM) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ASME_B18_2_2_HEX_HEAVY_JAM](#jscad-fastener/asme.exports.ASME_B18_2_2_HEX_HEAVY_JAM) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ASME_B18_2_6_HEX_STRUCTURAL](#jscad-fastener/asme.exports.ASME_B18_2_6_HEX_STRUCTURAL) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ASME_B18_16_6_HEX_LOCK_STANDARD](#jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_STANDARD) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ASME_B18_16_6_HEX_LOCK_THIN](#jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_THIN) : [<code>NutDimensions</code>](#NutDimensions)
     * [.exports.getNutDimensions](#jscad-fastener/asme.exports.getNutDimensions) ⇒ <code>Object</code>
     * [.exports.generateNut](#jscad-fastener/asme.exports.generateNut) ⇒ <code>Geom3</code>
     * [.exports.parseBoltSpec](#jscad-fastener/asme.exports.parseBoltSpec) ⇒ <code>Object</code>
     * [.exports.parseNutSpec](#jscad-fastener/asme.exports.parseNutSpec) ⇒ <code>Object</code>
     * [.exports.parseWasherSpec](#jscad-fastener/asme.exports.parseWasherSpec) ⇒ <code>Object</code>
-    * [.exports.ASME_B18_21_1_TYPE_A_NARROW](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_A_NARROW) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_TYPE_A_WIDE](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_A_WIDE) : <code>Object</code>
-    * [.exports.ASTM_F436_STRUCTURAL](#jscad-fastener/asme.exports.ASTM_F436_STRUCTURAL) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_LOCK_REGULAR](#jscad-fastener/asme.exports.ASME_B18_21_1_LOCK_REGULAR) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_LOCK_HEAVY](#jscad-fastener/asme.exports.ASME_B18_21_1_LOCK_HEAVY) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_TOOTH_EXTERNAL](#jscad-fastener/asme.exports.ASME_B18_21_1_TOOTH_EXTERNAL) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_TOOTH_INTERNAL](#jscad-fastener/asme.exports.ASME_B18_21_1_TOOTH_INTERNAL) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_TYPE_B_REGULAR](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_REGULAR) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_TYPE_B_NARROW](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_NARROW) : <code>Object</code>
-    * [.exports.ASME_B18_21_1_TYPE_B_WIDE](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_WIDE) : <code>Object</code>
+    * [.exports.ASME_B18_21_1_TYPE_A_NARROW](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_A_NARROW) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_TYPE_A_WIDE](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_A_WIDE) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASTM_F436_STRUCTURAL](#jscad-fastener/asme.exports.ASTM_F436_STRUCTURAL) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_LOCK_REGULAR](#jscad-fastener/asme.exports.ASME_B18_21_1_LOCK_REGULAR) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_LOCK_HEAVY](#jscad-fastener/asme.exports.ASME_B18_21_1_LOCK_HEAVY) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_TOOTH_EXTERNAL](#jscad-fastener/asme.exports.ASME_B18_21_1_TOOTH_EXTERNAL) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_TOOTH_INTERNAL](#jscad-fastener/asme.exports.ASME_B18_21_1_TOOTH_INTERNAL) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_TYPE_B_REGULAR](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_REGULAR) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_TYPE_B_NARROW](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_NARROW) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ASME_B18_21_1_TYPE_B_WIDE](#jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_WIDE) : [<code>WasherDimensions</code>](#WasherDimensions)
     * [.exports.getWasherDimensions](#jscad-fastener/asme.exports.getWasherDimensions) ⇒ <code>Object</code>
     * [.exports.generateWasher](#jscad-fastener/asme.exports.generateWasher) ⇒ <code>Geom3</code>
-    * [.exports.UTS_THREADS](#jscad-fastener/asme.exports.UTS_THREADS) : <code>Object</code>
+    * [.exports.UTS_THREADS](#jscad-fastener/asme.exports.UTS_THREADS) : [<code>ThreadDimensions</code>](#ThreadDimensions)
     * [.exports.getThreadSpec](#jscad-fastener/asme.exports.getThreadSpec) ⇒ <code>Object</code>
 
 <a name="jscad-fastener/asme.exports.parseAssembly"></a>
@@ -144,7 +161,7 @@ const parts = generateAssembly(specs)
 ```
 <a name="jscad-fastener/asme.exports.ASME_B18_2_1_CAP_SCREW"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_CAP\_SCREW : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_CAP\_SCREW : [<code>BoltDimensions</code>](#BoltDimensions)
 ASME B18.2.1: Hex Cap Screws (Inch Series).
 
 DESIGN NOTES:
@@ -159,7 +176,7 @@ Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), be
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_6_STRUCTURAL"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_6\_STRUCTURAL : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_6\_STRUCTURAL : [<code>BoltDimensions</code>](#BoltDimensions)
 ASME B18.2.6: Fasteners for Use in Structural Applications - Heavy Hex Structural Bolts.
 
 DESIGN NOTES:
@@ -174,7 +191,7 @@ Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), be
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_1_HEAVY_BOLT"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_HEAVY\_BOLT : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_HEAVY\_BOLT : [<code>BoltDimensions</code>](#BoltDimensions)
 ASME B18.2.1: Heavy Hex Bolts (Inch Series).
 
 DESIGN NOTES:
@@ -188,7 +205,7 @@ Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), be
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_6_3_MACHINE"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_6\_3\_MACHINE : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_6\_3\_MACHINE : [<code>BoltDimensions</code>](#BoltDimensions)
 ASME B18.6.3: Machine Screws - Hexagon Head Variant (Inch Series).
 
 DESIGN NOTES:
@@ -202,7 +219,7 @@ Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), be
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_1_HEX_BOLT"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_HEX\_BOLT : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_HEX\_BOLT : [<code>BoltDimensions</code>](#BoltDimensions)
 ASME B18.2.1: Hex Bolts - General Purpose (Inch Series).
 
 DESIGN NOTES:
@@ -217,7 +234,7 @@ Entries: ASME size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), be
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_1_TAP_BOLT"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_TAP\_BOLT : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_1\_TAP\_BOLT : [<code>BoltDimensions</code>](#BoltDimensions)
 ASME B18.2.1: Hex Tap Bolts - Fully Threaded (Inch Series).
 
 DESIGN NOTES:
@@ -288,7 +305,7 @@ const bolt = generateHexBolt(specs)
 ```
 <a name="jscad-fastener/asme.exports.ASME_B18_2_2_HEX_STANDARD"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_STANDARD : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_STANDARD : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.2.2 Hex Standard Nut (Finished Hex Nut) 
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -296,7 +313,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_2_HEX_HEAVY"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_HEAVY : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_HEAVY : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.2.2 Hex Heavy Nut
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -304,7 +321,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_2_SQUARE"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_SQUARE : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_SQUARE : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.2.2 Regular Square Nut
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -312,7 +329,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_2_HEX_THIN_JAM"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_THIN\_JAM : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_THIN\_JAM : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.2.2 Thin Jam Nut
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -320,7 +337,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_2_HEX_HEAVY_JAM"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_HEAVY\_JAM : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_2\_HEX\_HEAVY\_JAM : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.2.2 Heavy Jam Nut
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -328,7 +345,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_2_6_HEX_STRUCTURAL"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_2\_6\_HEX\_STRUCTURAL : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_2\_6\_HEX\_STRUCTURAL : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.2.6 Heavy Hex Nuts
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -336,7 +353,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_STANDARD"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_STANDARD : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_STANDARD : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.16.6 Style NE Standard Nylon-Insert Lock Nuts
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -344,7 +361,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_THIN"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_THIN : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_THIN : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.16.6 Style NE Thin Nylon-Insert Lock Nuts
 
 Entries: ASME size: [widthAcrossFlats (W), height (H)]
@@ -445,7 +462,7 @@ NOTE: All returned specifications are inches.
 
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_A_NARROW"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_A\_NARROW : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_A\_NARROW : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.22.1 is now a combined standard, it contains several different dimensions depending on the washer type.
 
 ASME B18.22.1 Type A (Narrow / SAE)
@@ -455,7 +472,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_A_WIDE"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_A\_WIDE : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_A\_WIDE : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.22.1 is now a combined standard, it contains several different dimensions depending on the washer type.
 
 ASME B18.22.1 Type A (Wide / USS)
@@ -465,7 +482,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASTM_F436_STRUCTURAL"></a>
 
-### jscad-fastener/asme.exports.ASTM\_F436\_STRUCTURAL : <code>Object</code>
+### jscad-fastener/asme.exports.ASTM\_F436\_STRUCTURAL : [<code>WasherDimensions</code>](#WasherDimensions)
 ASTM F436 - Standard Specification for Hardened Steel Washers
 
 Profile Geometry: Chamfered outer edge angled between 35° and 45° on at least one face
@@ -478,7 +495,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_LOCK_REGULAR"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_LOCK\_REGULAR : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_LOCK\_REGULAR : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.21.1 Regular Series Helical Spring Lock Washers
 
 Range Covered: #0 to 4" (Extrapolated using heavy mechanical metrics past 3")
@@ -488,7 +505,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_LOCK_HEAVY"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_LOCK\_HEAVY : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_LOCK\_HEAVY : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.21.1 Heavy Series Helical Spring Lock Washers
 
 Range Covered: #0 to 4" (Includes heavy machinery scaled boundary allocations)
@@ -499,7 +516,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TOOTH_EXTERNAL"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TOOTH\_EXTERNAL : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TOOTH\_EXTERNAL : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.21.1 External Tooth Lock (Star) Washers
 
 Range Covered: #2 to 1-3/4" (Complete Official Standard Bounds)
@@ -513,7 +530,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TOOTH_INTERNAL"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TOOTH\_INTERNAL : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TOOTH\_INTERNAL : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.21.1 Internal Tooth Lock (Star) Washers
 
 Range Covered: #2 to 1 3/4 (Complete Official Standard Bounds)
@@ -525,7 +542,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_REGULAR"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_REGULAR : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_REGULAR : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.21.1: Type B Plain Washers - Regular Series (Inch Series).
 
 DESIGN NOTES:
@@ -541,7 +558,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_NARROW"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_NARROW : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_NARROW : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.21.1: Type B Plain Washers - Narrow Series (Inch Series).
 
 DESIGN NOTES:
@@ -557,7 +574,7 @@ Entries: ASME size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_21_1_TYPE_B_WIDE"></a>
 
-### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_WIDE : <code>Object</code>
+### jscad-fastener/asme.exports.ASME\_B18\_21\_1\_TYPE\_B\_WIDE : [<code>WasherDimensions</code>](#WasherDimensions)
 ASME B18.21.1: Type B Plain Washers - Wide Series (Inch Series).
 
 DESIGN NOTES:
@@ -627,7 +644,7 @@ const nut = generateWasher(spec)
 ```
 <a name="jscad-fastener/asme.exports.UTS_THREADS"></a>
 
-### jscad-fastener/asme.exports.UTS\_THREADS : <code>Object</code>
+### jscad-fastener/asme.exports.UTS\_THREADS : [<code>ThreadDimensions</code>](#ThreadDimensions)
 UTS (Unified Thread Standard) Dimensions (inches)
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
@@ -646,12 +663,12 @@ Get the thread specification for the given size and thread series.
 NOTE: All dimensions are inches
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
-**Returns**: <code>Object</code> - specification with majorDiameter, pitch, isFine  
+**Returns**: <code>Object</code> - specification with standard, size, threadSeries, majorDiameter, pitch, isFine  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | size | <code>Number</code> \| <code>String</code> | size identifier; '#0' or '1/2' |
-| threadSeries | <code>String</code> | Thread series of bolt; UNC or UNF |
+| threadSeries | <code>String</code> | Thread series of bolt; 'UNC' or 'UNF' |
 
 <a name="jscad-fastener"></a>
 
@@ -846,44 +863,44 @@ const parts = iso.generateAssembly(specs)
     * [.exports.parseAssembly](#jscad-fastener/iso.exports.parseAssembly) ⇒ <code>Object</code>
     * [.exports.validateAssembly](#jscad-fastener/iso.exports.validateAssembly) ⇒ <code>Boolean</code>
     * [.exports.generateAssembly](#jscad-fastener/iso.exports.generateAssembly) ⇒ <code>Array</code>
-    * [.exports.ISO_4014_HEX_BOLT](#jscad-fastener/iso.exports.ISO_4014_HEX_BOLT) : <code>Object</code>
-    * [.exports.ISO_4016_HEX_BOLT_C](#jscad-fastener/iso.exports.ISO_4016_HEX_BOLT_C) : <code>Object</code>
-    * [.exports.ISO_4017_HEX_SCREW](#jscad-fastener/iso.exports.ISO_4017_HEX_SCREW) : <code>Object</code>
-    * [.exports.ISO_7411_HEX_STRUCTURAL](#jscad-fastener/iso.exports.ISO_7411_HEX_STRUCTURAL) : <code>Object</code>
-    * [.exports.ISO_7045_PAN_MACHINE](#jscad-fastener/iso.exports.ISO_7045_PAN_MACHINE) : <code>Object</code>
-    * [.exports.DIN_601_HEX_BOLT_C](#jscad-fastener/iso.exports.DIN_601_HEX_BOLT_C) : <code>Object</code>
-    * [.exports.DIN_931_HEX_BOLT](#jscad-fastener/iso.exports.DIN_931_HEX_BOLT) : <code>Object</code>
-    * [.exports.DIN_933_HEX_SCREW](#jscad-fastener/iso.exports.DIN_933_HEX_SCREW) : <code>Object</code>
-    * [.exports.DIN_6914_HEX_STRUCTURAL](#jscad-fastener/iso.exports.DIN_6914_HEX_STRUCTURAL) : <code>Object</code>
-    * [.exports.DIN_7985_PAN_MACHINE](#jscad-fastener/iso.exports.DIN_7985_PAN_MACHINE) : <code>Object</code>
+    * [.exports.ISO_4014_HEX_BOLT](#jscad-fastener/iso.exports.ISO_4014_HEX_BOLT) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ISO_4016_HEX_BOLT_C](#jscad-fastener/iso.exports.ISO_4016_HEX_BOLT_C) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ISO_4017_HEX_SCREW](#jscad-fastener/iso.exports.ISO_4017_HEX_SCREW) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ISO_7411_HEX_STRUCTURAL](#jscad-fastener/iso.exports.ISO_7411_HEX_STRUCTURAL) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.ISO_7045_PAN_MACHINE](#jscad-fastener/iso.exports.ISO_7045_PAN_MACHINE) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.DIN_601_HEX_BOLT_C](#jscad-fastener/iso.exports.DIN_601_HEX_BOLT_C) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.DIN_931_HEX_BOLT](#jscad-fastener/iso.exports.DIN_931_HEX_BOLT) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.DIN_933_HEX_SCREW](#jscad-fastener/iso.exports.DIN_933_HEX_SCREW) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.DIN_6914_HEX_STRUCTURAL](#jscad-fastener/iso.exports.DIN_6914_HEX_STRUCTURAL) : [<code>BoltDimensions</code>](#BoltDimensions)
+    * [.exports.DIN_7985_PAN_MACHINE](#jscad-fastener/iso.exports.DIN_7985_PAN_MACHINE) : [<code>BoltDimensions</code>](#BoltDimensions)
     * [.exports.getHexBoltDimensions](#jscad-fastener/iso.exports.getHexBoltDimensions) ⇒ <code>Object</code>
     * [.exports.generateHexBolt](#jscad-fastener/iso.exports.generateHexBolt) ⇒ <code>Geom3</code>
-    * [.exports.ISO_4032_HEX_STANDARD](#jscad-fastener/iso.exports.ISO_4032_HEX_STANDARD) : <code>Object</code>
-    * [.exports.ISO_7414_HEX_STRUCTURAL_HEAVY](#jscad-fastener/iso.exports.ISO_7414_HEX_STRUCTURAL_HEAVY) : <code>Object</code>
-    * [.exports.ISO_4033_HEX_HIGH](#jscad-fastener/iso.exports.ISO_4033_HEX_HIGH) : <code>Object</code>
-    * [.exports.ISO_4035_HEX_THIN_JAM](#jscad-fastener/iso.exports.ISO_4035_HEX_THIN_JAM) : <code>Object</code>
-    * [.exports.ISO_7040_LOCK_STANDARD](#jscad-fastener/iso.exports.ISO_7040_LOCK_STANDARD) : <code>Object</code>
-    * [.exports.ISO_10511_LOCK_THIN](#jscad-fastener/iso.exports.ISO_10511_LOCK_THIN) : <code>Object</code>
-    * [.exports.ISO_7041_LOCK_HIGH](#jscad-fastener/iso.exports.ISO_7041_LOCK_HIGH) : <code>Object</code>
-    * [.exports.DIN_557_SQUARE](#jscad-fastener/iso.exports.DIN_557_SQUARE) : <code>Object</code>
+    * [.exports.ISO_4032_HEX_STANDARD](#jscad-fastener/iso.exports.ISO_4032_HEX_STANDARD) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ISO_7414_HEX_STRUCTURAL_HEAVY](#jscad-fastener/iso.exports.ISO_7414_HEX_STRUCTURAL_HEAVY) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ISO_4033_HEX_HIGH](#jscad-fastener/iso.exports.ISO_4033_HEX_HIGH) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ISO_4035_HEX_THIN_JAM](#jscad-fastener/iso.exports.ISO_4035_HEX_THIN_JAM) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ISO_7040_LOCK_STANDARD](#jscad-fastener/iso.exports.ISO_7040_LOCK_STANDARD) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ISO_10511_LOCK_THIN](#jscad-fastener/iso.exports.ISO_10511_LOCK_THIN) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.ISO_7041_LOCK_HIGH](#jscad-fastener/iso.exports.ISO_7041_LOCK_HIGH) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.DIN_557_SQUARE](#jscad-fastener/iso.exports.DIN_557_SQUARE) : [<code>NutDimensions</code>](#NutDimensions)
     * [.exports.getNutDimensions](#jscad-fastener/iso.exports.getNutDimensions) ⇒ <code>Object</code>
     * [.exports.generateNut](#jscad-fastener/iso.exports.generateNut) ⇒ <code>Geom3</code>
     * [.exports.parseBoltSpec](#jscad-fastener/iso.exports.parseBoltSpec) ⇒ <code>Object</code>
     * [.exports.parseNutSpec](#jscad-fastener/iso.exports.parseNutSpec) ⇒ <code>Object</code>
     * [.exports.parseWasherSpec](#jscad-fastener/iso.exports.parseWasherSpec) ⇒ <code>Object</code>
-    * [.exports.ISO_THREADS](#jscad-fastener/iso.exports.ISO_THREADS) : <code>Object</code>
+    * [.exports.ISO_THREADS](#jscad-fastener/iso.exports.ISO_THREADS) : [<code>ThreadDimensions</code>](#ThreadDimensions)
     * [.exports.getThreadSpec](#jscad-fastener/iso.exports.getThreadSpec) ⇒ <code>Object</code>
-    * [.exports.ISO_7089](#jscad-fastener/iso.exports.ISO_7089) : <code>Object</code>
-    * [.exports.ISO_7090](#jscad-fastener/iso.exports.ISO_7090) : <code>Object</code>
-    * [.exports.ISO_7091](#jscad-fastener/iso.exports.ISO_7091) : <code>Object</code>
-    * [.exports.ISO_7092](#jscad-fastener/iso.exports.ISO_7092) : <code>Object</code>
-    * [.exports.ISO_7093](#jscad-fastener/iso.exports.ISO_7093) : <code>Object</code>
-    * [.exports.DIN_6797_A](#jscad-fastener/iso.exports.DIN_6797_A) : <code>Object</code>
-    * [.exports.DIN_6797_J](#jscad-fastener/iso.exports.DIN_6797_J) : <code>Object</code>
-    * [.exports.DIN_7980](#jscad-fastener/iso.exports.DIN_7980) : <code>Object</code>
-    * [.exports.EN_14399_6](#jscad-fastener/iso.exports.EN_14399_6) : <code>Object</code>
-    * [.exports.DIN_127_B](#jscad-fastener/iso.exports.DIN_127_B) : <code>Object</code>
-    * [.exports.ISO_7094](#jscad-fastener/iso.exports.ISO_7094) : <code>Object</code>
+    * [.exports.ISO_7089](#jscad-fastener/iso.exports.ISO_7089) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ISO_7090](#jscad-fastener/iso.exports.ISO_7090) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ISO_7091](#jscad-fastener/iso.exports.ISO_7091) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ISO_7092](#jscad-fastener/iso.exports.ISO_7092) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ISO_7093](#jscad-fastener/iso.exports.ISO_7093) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.DIN_6797_A](#jscad-fastener/iso.exports.DIN_6797_A) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.DIN_6797_J](#jscad-fastener/iso.exports.DIN_6797_J) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.DIN_7980](#jscad-fastener/iso.exports.DIN_7980) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.EN_14399_6](#jscad-fastener/iso.exports.EN_14399_6) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.DIN_127_B](#jscad-fastener/iso.exports.DIN_127_B) : [<code>WasherDimensions</code>](#WasherDimensions)
+    * [.exports.ISO_7094](#jscad-fastener/iso.exports.ISO_7094) : [<code>WasherDimensions</code>](#WasherDimensions)
     * [.exports.getWasherDimensions](#jscad-fastener/iso.exports.getWasherDimensions) ⇒ <code>Object</code>
     * [.exports.generateWasher](#jscad-fastener/iso.exports.generateWasher) ⇒ <code>Geom3</code>
 
@@ -943,7 +960,7 @@ const parts = generateAssembly(specs)
 ```
 <a name="jscad-fastener/iso.exports.ISO_4014_HEX_BOLT"></a>
 
-### jscad-fastener/iso.exports.ISO\_4014\_HEX\_BOLT : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_4014\_HEX\_BOLT : [<code>BoltDimensions</code>](#BoltDimensions)
 ISO 4014: Hexagon head bolts - Product grades A and B.
 
 DESIGN NOTES:
@@ -957,7 +974,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_4016_HEX_BOLT_C"></a>
 
-### jscad-fastener/iso.exports.ISO\_4016\_HEX\_BOLT\_C : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_4016\_HEX\_BOLT\_C : [<code>BoltDimensions</code>](#BoltDimensions)
 ISO 4016: Hexagon head bolts - Product grade C.
 
 DESIGN NOTES:
@@ -972,7 +989,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_4017_HEX_SCREW"></a>
 
-### jscad-fastener/iso.exports.ISO\_4017\_HEX\_SCREW : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_4017\_HEX\_SCREW : [<code>BoltDimensions</code>](#BoltDimensions)
 ISO 4017: Hexagon head screws - Product grades A and B.
 
 DESIGN NOTES:
@@ -987,7 +1004,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7411_HEX_STRUCTURAL"></a>
 
-### jscad-fastener/iso.exports.ISO\_7411\_HEX\_STRUCTURAL : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7411\_HEX\_STRUCTURAL : [<code>BoltDimensions</code>](#BoltDimensions)
 ISO 7411: Hexagon bolts for high-strength structural bolting with large width across flats.
 
 DESIGN NOTES:
@@ -1002,7 +1019,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7045_PAN_MACHINE"></a>
 
-### jscad-fastener/iso.exports.ISO\_7045\_PAN\_MACHINE : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7045\_PAN\_MACHINE : [<code>BoltDimensions</code>](#BoltDimensions)
 ISO 7045: Pan head screws with type H or type Z cross recess - Product grade A.
 
 DESIGN NOTES:
@@ -1017,7 +1034,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_601_HEX_BOLT_C"></a>
 
-### jscad-fastener/iso.exports.DIN\_601\_HEX\_BOLT\_C : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_601\_HEX\_BOLT\_C : [<code>BoltDimensions</code>](#BoltDimensions)
 DIN 601: Hexagon head bolts with nut - Product grade C.
 
 DESIGN NOTES:
@@ -1031,7 +1048,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_931_HEX_BOLT"></a>
 
-### jscad-fastener/iso.exports.DIN\_931\_HEX\_BOLT : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_931\_HEX\_BOLT : [<code>BoltDimensions</code>](#BoltDimensions)
 DIN 931: Hexagon head bolts with shank - Metric coarse thread.
 
 MAPS TO FUNCTIONAL DOWNSTREAM EQUIVALENT: ISO_4014_HEX_BOLT
@@ -1046,7 +1063,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_933_HEX_SCREW"></a>
 
-### jscad-fastener/iso.exports.DIN\_933\_HEX\_SCREW : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_933\_HEX\_SCREW : [<code>BoltDimensions</code>](#BoltDimensions)
 DIN 933: Hexagon head screws - Threaded up to the head, metric coarse.
 
 MAPS TO FUNCTIONAL DOWNSTREAM EQUIVALENT: ISO_4017_HEX_SCREW
@@ -1061,7 +1078,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_6914_HEX_STRUCTURAL"></a>
 
-### jscad-fastener/iso.exports.DIN\_6914\_HEX\_STRUCTURAL : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_6914\_HEX\_STRUCTURAL : [<code>BoltDimensions</code>](#BoltDimensions)
 DIN 6914: Hexagon bolts for high-strength structural bolting (HV bolts).
 
 MAPS TO FUNCTIONAL DOWNSTREAM EQUIVALENT: ISO_7411_HEX_STRUCTURAL
@@ -1076,7 +1093,7 @@ Entries: ISO size: [majorDiameter (d), widthAcrossFlats (s), headHeight (k), bea
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_7985_PAN_MACHINE"></a>
 
-### jscad-fastener/iso.exports.DIN\_7985\_PAN\_MACHINE : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_7985\_PAN\_MACHINE : [<code>BoltDimensions</code>](#BoltDimensions)
 DIN 7985: Cross recessed pan head screws.
 
 MAPS TO FUNCTIONAL DOWNSTREAM EQUIVALENT: ISO_7045_PAN_MACHINE
@@ -1106,7 +1123,7 @@ If the standard is not provided then a standard will be select using the type of
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | spec | <code>Object</code> |  | bolt specifications |
-| spec.size | <code>String</code> |  | ISO bolat size identifier (e.g., 'M6' for M6 ISO) |
+| spec.size | <code>String</code> |  | ISO bolt size identifier (e.g., 'M6' for M6 ISO) |
 | [spec.standard] | <code>String</code> | <code></code> | bolt standard; null or valid ISO standard |
 | [spec.type] | <code>String</code> | <code>&#x27;CAP&#x27;</code> | type of bolt; CAP, STRUCTURAL, HEAVY, TAP |
 | [spec.threadSeries] | <code>String</code> | <code>&#x27;COARSE&#x27;</code> | thread series of bolt; COARSE or FINE |
@@ -1142,7 +1159,7 @@ const bolt = generateHexBolt(specs)
 ```
 <a name="jscad-fastener/iso.exports.ISO_4032_HEX_STANDARD"></a>
 
-### jscad-fastener/iso.exports.ISO\_4032\_HEX\_STANDARD : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_4032\_HEX\_STANDARD : [<code>NutDimensions</code>](#NutDimensions)
 ISO 4032: Hexagon regular nuts (Style 1) - Product grades A and B.
 
 DESIGN NOTES:
@@ -1157,7 +1174,7 @@ Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7414_HEX_STRUCTURAL_HEAVY"></a>
 
-### jscad-fastener/iso.exports.ISO\_7414\_HEX\_STRUCTURAL\_HEAVY : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7414\_HEX\_STRUCTURAL\_HEAVY : [<code>NutDimensions</code>](#NutDimensions)
 ISO 7414: Hexagon nuts for high-strength structural bolting with large width across flats.
 
 DESIGN NOTES:
@@ -1171,7 +1188,7 @@ Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_4033_HEX_HIGH"></a>
 
-### jscad-fastener/iso.exports.ISO\_4033\_HEX\_HIGH : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_4033\_HEX\_HIGH : [<code>NutDimensions</code>](#NutDimensions)
 ISO 4033: Hexagon high nuts (Style 2) - Product grades A and B.
 
 DESIGN NOTES:
@@ -1185,7 +1202,7 @@ Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_4035_HEX_THIN_JAM"></a>
 
-### jscad-fastener/iso.exports.ISO\_4035\_HEX\_THIN\_JAM : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_4035\_HEX\_THIN\_JAM : [<code>NutDimensions</code>](#NutDimensions)
 ISO 4035: Hexagon thin nuts (chamfered) - Product grades A and B.
 
 DESIGN NOTES:
@@ -1199,7 +1216,7 @@ Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7040_LOCK_STANDARD"></a>
 
-### jscad-fastener/iso.exports.ISO\_7040\_LOCK\_STANDARD : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7040\_LOCK\_STANDARD : [<code>NutDimensions</code>](#NutDimensions)
 ISO 7040: Prevailing torque hexagon regular nuts (with non-metallic insert) - Property classes 5, 8, and 10.
 
 DESIGN NOTES:
@@ -1213,7 +1230,7 @@ Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_10511_LOCK_THIN"></a>
 
-### jscad-fastener/iso.exports.ISO\_10511\_LOCK\_THIN : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_10511\_LOCK\_THIN : [<code>NutDimensions</code>](#NutDimensions)
 ISO 10511: Prevailing torque hexagon thin nuts (with non-metallic insert).
 
 DESIGN NOTES:
@@ -1227,7 +1244,7 @@ Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7041_LOCK_HIGH"></a>
 
-### jscad-fastener/iso.exports.ISO\_7041\_LOCK\_HIGH : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7041\_LOCK\_HIGH : [<code>NutDimensions</code>](#NutDimensions)
 ISO 7041: Prevailing torque hexagon high nuts (with non-metallic insert) - Style 2.
 
 DESIGN NOTES:
@@ -1241,7 +1258,7 @@ Entries: ISO size: [Width Across Flats (s), Hex Height (m_min), Total Height (h_
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_557_SQUARE"></a>
 
-### jscad-fastener/iso.exports.DIN\_557\_SQUARE : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_557\_SQUARE : [<code>NutDimensions</code>](#NutDimensions)
 DIN 557: Square nuts with chamfer - Metric coarse thread.
 
 DESIGN NOTES:
@@ -1350,12 +1367,12 @@ NOTE: All returned specifications are millimeters.
 
 <a name="jscad-fastener/iso.exports.ISO_THREADS"></a>
 
-### jscad-fastener/iso.exports.ISO\_THREADS : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_THREADS : [<code>ThreadDimensions</code>](#ThreadDimensions)
 ISO Metric Threads (ISO 261 / ISO 724)
 
 NOTE: All dimensions are in millimeters.
 
-Entries: ISO size: [Major_Diameter, Coarse_TPI, Fine_TPI]
+Entries: ISO size: [ majorDiameter, courseTPI, fineTPI ]
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.getThreadSpec"></a>
@@ -1366,16 +1383,16 @@ Get the thread specification for the given size and thread series.
 NOTE: All dimensions are in millimeters
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
-**Returns**: <code>Object</code> - ISO thread specification with majorDiameter, pitch, isFine  
+**Returns**: <code>Object</code> - ISO thread specification with standard, size, threadSeries, majorDiameter, pitch, isFine  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | size | <code>Number</code> \| <code>String</code> | Dimension identifier; 6 or 'M6' |
-| threadSeries | <code>String</code> | Thread series of bolt; coarse or fine |
+| threadSeries | <code>String</code> | Thread series of bolt; 'COARSE' or 'FINE' |
 
 <a name="jscad-fastener/iso.exports.ISO_7089"></a>
 
-### jscad-fastener/iso.exports.ISO\_7089 : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7089 : [<code>WasherDimensions</code>](#WasherDimensions)
 ISO 7089 - Plain washers — Normal series — Product grade A
 
 Replaces DIN 125 A
@@ -1387,7 +1404,7 @@ Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7090"></a>
 
-### jscad-fastener/iso.exports.ISO\_7090 : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7090 : [<code>WasherDimensions</code>](#WasherDimensions)
 ISO 7090 - Plain washers with chamfer — Normal series — Product grade A
 
 Replaces DIN 125 B
@@ -1399,7 +1416,7 @@ Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7091"></a>
 
-### jscad-fastener/iso.exports.ISO\_7091 : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7091 : [<code>WasherDimensions</code>](#WasherDimensions)
 ISO 7091 - Plain washers — Normal series — Product grade C
 
 Replaces DIN 126
@@ -1414,7 +1431,7 @@ Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7092"></a>
 
-### jscad-fastener/iso.exports.ISO\_7092 : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7092 : [<code>WasherDimensions</code>](#WasherDimensions)
 ISO 7092 - Plain washers — Small series — Product grade A
 
 Replaces DIN 433
@@ -1428,7 +1445,7 @@ Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7093"></a>
 
-### jscad-fastener/iso.exports.ISO\_7093 : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7093 : [<code>WasherDimensions</code>](#WasherDimensions)
 ISO 7093 - Plain washers — Large series — Product grade A and C
 
 Replaces DIN 9021
@@ -1442,7 +1459,7 @@ Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_6797_A"></a>
 
-### jscad-fastener/iso.exports.DIN\_6797\_A : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_6797\_A : [<code>WasherDimensions</code>](#WasherDimensions)
 DIN 6797 Form A External Tooth Lock (Star) Washers
 
 Range Covered: M1.6 to M30 (Complete Official German Standard Bounds)
@@ -1454,7 +1471,7 @@ Entries: ISO size: [insideDiameter, outsideDiameter, thickness]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_6797_J"></a>
 
-### jscad-fastener/iso.exports.DIN\_6797\_J : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_6797\_J : [<code>WasherDimensions</code>](#WasherDimensions)
 DIN 6797 Form J Internal Tooth Lock (Star) Washers
 
 Range Covered: M2 to M30 (Complete Official German Standard Bounds)
@@ -1470,7 +1487,7 @@ Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_7980"></a>
 
-### jscad-fastener/iso.exports.DIN\_7980 : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_7980 : [<code>WasherDimensions</code>](#WasherDimensions)
 Complete Official DIN 7980 High-Collar Lock Washer Registry
 
 Exact Sizing Envelope Range: M2 to M48 (All standard physical sizes)
@@ -1480,7 +1497,7 @@ Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.EN_14399_6"></a>
 
-### jscad-fastener/iso.exports.EN\_14399\_6 : <code>Object</code>
+### jscad-fastener/iso.exports.EN\_14399\_6 : [<code>WasherDimensions</code>](#WasherDimensions)
 EN 14399-6 (Formerly DIN 6916) High-Strength Preload Structural Washers
 
 Note: These washers feature an explicit external perimeter chamfer and 
@@ -1491,7 +1508,7 @@ Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.DIN_127_B"></a>
 
-### jscad-fastener/iso.exports.DIN\_127\_B : <code>Object</code>
+### jscad-fastener/iso.exports.DIN\_127\_B : [<code>WasherDimensions</code>](#WasherDimensions)
 DIN 127 B Helical Spring Split Lock Washers with square ends
 
 Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
@@ -1499,7 +1516,7 @@ Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.ISO_7094"></a>
 
-### jscad-fastener/iso.exports.ISO\_7094 : <code>Object</code>
+### jscad-fastener/iso.exports.ISO\_7094 : [<code>WasherDimensions</code>](#WasherDimensions)
 ISO 7094 Plain washers — Extra large series — Product grade C
 
 Entries: ISO size: [insideDiameter (d1), outsideDiameter (d2), thickness (s)]
@@ -1559,3 +1576,55 @@ NOTE: All dimensions are millimeters
 const dims = getWasherDimensions({size: 'M22', type: 'HEAVY'})
 const nut = generateWasher(spec)
 ```
+<a name="BoltDimensions"></a>
+
+## BoltDimensions : <code>Object</code>
+A static object with bolt sizes and dimensions
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| size | <code>String</code> | 
+| dims | <code>Array.&lt;Number&gt;</code> | 
+
+<a name="NutDimensions"></a>
+
+## NutDimensions : <code>Object</code>
+A static object with nut sizes and dimensions
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| size | <code>String</code> | 
+| dims | <code>Array.&lt;Number&gt;</code> | 
+
+<a name="WasherDimensions"></a>
+
+## WasherDimensions : <code>Object</code>
+A static object with nut sizes and dimensions
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| size | <code>String</code> | 
+| dims | <code>Array.&lt;Number&gt;</code> | 
+
+<a name="ThreadDimensions"></a>
+
+## ThreadDimensions : <code>Object</code>
+A static object with thread sizes and dimensions
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| size | <code>String</code> | 
+| dims | <code>Array.&lt;Number&gt;</code> | 
+
