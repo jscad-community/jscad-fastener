@@ -366,6 +366,13 @@ export const getBoltDimensions = (spec, nominalLength) => {
  * @param {Object} spec - full bolt specification with dimensions
  * @param {String} spec.size - ASME size identifier (e.g., '#1' or `1/2`)
  * @param {String} spec.threadSeries - thread series of bolt; UNF or UNC
+ * @param {Number} spec.widthAcrossFlats - wrench size across flats (s)
+ * @param {Number} spec.headHeight - total standard head height (k)
+ * @param {Number} spec.bearingFaceDiameter - bearing face diameter (dw)
+ * @param {Number} spec.filletRadius - fillet radius (f)
+ * @param {Number} spec.majorDiameter - nominal (major) diameter (d)
+ * @param {Number} spec.threadLength - length of the threaded section (b)
+ * @param {Number} spec.unthreadedLength - length of smooth shank section
  * @returns {Geom3} ASME bolt, centered on X-Y, head above Z, shank below Z
  *
  * @example
