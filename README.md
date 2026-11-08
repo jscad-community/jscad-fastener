@@ -12,6 +12,12 @@
 </dd>
 <dt><a href="#jscad-fastener">jscad-fastener</a> : <code>object</code></dt>
 <dd><p>Create ASME and ISO fasteners for JSCAD designs.</p>
+<p>This JSCAD project supplies various fasteners for JSCAD designs.</p>
+<p>The default quality is kept as low as possible to keep generation times to a minimum.
+The number of segments (default 18) can be increased but beware.</p>
+<p>Full assemblies can be created from ASME and ISO compound engineering stack descriptions.
+Or specific ASME/ISO bolts, nuts, and washers can be created from standards or parameters.
+ASME/ISO fasteners are generally easier to understand and generate.</p>
 </dd>
 <dt><a href="#jscad-fastener/iso">jscad-fastener/iso</a> : <code>object</code></dt>
 <dd><p>ISO Fasteners</p>
@@ -267,6 +273,13 @@ NOTE: All dimensions are inches.
 | spec | <code>Object</code> | full bolt specification with dimensions |
 | spec.size | <code>String</code> | ASME size identifier (e.g., '#1' or `1/2`) |
 | spec.threadSeries | <code>String</code> | thread series of bolt; UNF or UNC |
+| spec.widthAcrossFlats | <code>Number</code> | wrench size across flats (s) |
+| spec.headHeight | <code>Number</code> | total standard head height (k) |
+| spec.bearingFaceDiameter | <code>Number</code> | bearing face diameter (dw) |
+| spec.filletRadius | <code>Number</code> | fillet radius (f) |
+| spec.majorDiameter | <code>Number</code> | nominal (major) diameter (d) |
+| spec.threadLength | <code>Number</code> | length of the threaded section (b) |
+| spec.unthreadedLength | <code>Number</code> | length of smooth shank section |
 
 **Example**  
 ```js
@@ -381,7 +394,7 @@ NOTE: All dimensions are inches.
 | spec.widthAcrossFlats | <code>Number</code> |  | width across the flats, i.e. wrench size (WAF) |
 | spec.height | <code>Number</code> |  | total thickness/height of the nut (H) |
 | spec.bearingFaceHeight | <code>Number</code> |  | height of the bottom washer step (C), may be zero |
-| [spec.segments] | <code>Number</code> | <code>36</code> | number of segments per full turn |
+| [spec.segments] | <code>Number</code> | <code>18</code> | number of segments per full turn |
 
 **Example**  
 ```js
@@ -605,7 +618,7 @@ NOTE: All dimensions are inches
 | spec.innerDiameter | <code>Number</code> |  | diameter of inside of washer |
 | spec.outerDiameter | <code>Number</code> |  | diameter of outside of washer |
 | spec.thickness | <code>Number</code> |  | thickness of washer |
-| [spec.segments] | <code>Number</code> | <code>36</code> | segments per full rotation |
+| [spec.segments] | <code>Number</code> | <code>18</code> | segments per full rotation |
 
 **Example**  
 ```js
@@ -645,6 +658,15 @@ NOTE: All dimensions are inches
 ## jscad-fastener : <code>object</code>
 Create ASME and ISO fasteners for JSCAD designs.
 
+This JSCAD project supplies various fasteners for JSCAD designs.
+
+The default quality is kept as low as possible to keep generation times to a minimum.
+The number of segments (default 18) can be increased but beware.
+
+Full assemblies can be created from ASME and ISO compound engineering stack descriptions.
+Or specific ASME/ISO bolts, nuts, and washers can be created from standards or parameters.
+ASME/ISO fasteners are generally easier to understand and generate.
+
 **Kind**: global namespace  
 **Requires**: <code>module:@jscad/modeling@^3.0.0</code>  
 **Author**: Google Gemini (AI Collaborator) and others  
@@ -653,7 +675,7 @@ Create ASME and ISO fasteners for JSCAD designs.
 ```js
 import {asme} from 'jscad-fastener'
 import {iso} from 'jscad-fastener'
-import {HexHead, Shank, HexNut, Thread, SpringWasker, Washer, StarWasher} from 'jscad-fastener'
+import {HexHead, Shank, HexNut, Thread, SpringWasher, Washer, StarWasher} from 'jscad-fastener'
 ```
 
 * [jscad-fastener](#jscad-fastener) : <code>object</code>
@@ -719,7 +741,8 @@ NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
 | spec | <code>Object</code> | hex nut specification, ALL ARE REQUIRED |
 | spec.widthAcrossFlats | <code>Number</code> | width across the flats, i.e. wrench size (WAF) |
 | spec.height | <code>Number</code> | total thickness/height of the nut (H) |
-| spec.bearingFaceHeight | <code>Number</code> | height of the bearing washer step (C). May be zero. |
+| spec.bearingFaceHeight | <code>Number</code> | height of the bearing washer step (C). May be zero |
+| spec.bearingFaceDiameter | <code>Number</code> | bearing face diameter (dw). May be zero |
 | spec.zOffset | <code>Number</code> | Z-axis translation offset to position/center the assembly |
 | spec.segments | <code>Number</code> | segments per full rotation |
 
@@ -731,7 +754,7 @@ Create a thread segment supporting ISO and UTS thread standards.
 NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
 
 **Kind**: static constant of [<code>jscad-fastener</code>](#jscad-fastener)  
-**Returns**: <code>Geom3</code> - thread body, centered XY, extending up from Z  
+**Returns**: <code>Geom3</code> - thread body, centered XYZ  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -740,6 +763,8 @@ NOTE: ALL DIMENSIONS ARE IN MILLIMETERS.
 | spec.pitch | <code>Number</code> | pitch of threads |
 | spec.tolerance | <code>Number</code> | radial offset value in mm |
 | spec.isInternal | <code>Boolean</code> | false for bolt/external, True for nut/internal |
+| spec.bevelStart | <code>Boolean</code> | true to bevel the start (above Z) of the thread |
+| spec.bevelEnd | <code>Boolean</code> | true to bevel the end of the thread |
 | spec.segments | <code>Number</code> | segments per full rotation |
 | length | <code>Number</code> | total length of the thread to generate |
 
@@ -1274,7 +1299,7 @@ NOTE: All dimensions are millimeters.
 | spec.widthAcrossFlats | <code>Number</code> |  | width across the flats, i.e. wrench size (WAF) |
 | spec.height | <code>Number</code> |  | total thickness/height of the nut (H) |
 | spec.bearingFaceHeight | <code>Number</code> |  | height of the bottom bearing step (C), may be zero |
-| [spec.segments] | <code>Number</code> | <code>36</code> | number of segments per full turn |
+| [spec.segments] | <code>Number</code> | <code>18</code> | number of segments per full turn |
 
 **Example**  
 ```js
@@ -1527,7 +1552,7 @@ NOTE: All dimensions are millimeters
 | spec.innerDiameter | <code>Number</code> |  | diameter of inside of washer |
 | spec.outerDiameter | <code>Number</code> |  | diameter of outside of washer |
 | spec.thickness | <code>Number</code> |  | thickness of washer |
-| [spec.segments] | <code>Number</code> | <code>36</code> | segments per full rotation |
+| [spec.segments] | <code>Number</code> | <code>18</code> | segments per full rotation |
 
 **Example**  
 ```js
