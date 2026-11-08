@@ -486,7 +486,7 @@ export const getNutDimensions = (spec) => {
  * @param {Number} spec.widthAcrossFlats - width across the flats, i.e. wrench size (WAF)
  * @param {Number} spec.height - total thickness/height of the nut (H)
  * @param {Number} spec.bearingFaceHeight - height of the bottom washer step (C), may be zero
- * @param {Number} [spec.segments=36] - number of segments per full turn
+ * @param {Number} [spec.segments=18] - number of segments per full turn
  * @returns {Geom3} hex nut, centered on XYZ
  *
  * @example
@@ -500,7 +500,7 @@ export const generateNut = (spec) => {
     height,
     bearingFaceHeight,
     zOffset = 0,
-    segments = 36
+    segments = 18
   } = spec
 
   // convert ASME inch dimensions to millimeter

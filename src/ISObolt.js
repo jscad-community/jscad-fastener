@@ -512,7 +512,7 @@ export const generateHexBolt = (spec) => {
     filletRadius,
     threadLength,
     unthreadedLength,
-    segments = 36
+    segments = 18
   } = spec
 
   // create the bolt head from the specifications

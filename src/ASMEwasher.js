@@ -610,7 +610,7 @@ export const getWasherDimensions = (spec) => {
  * @param {Number} spec.innerDiameter - diameter of inside of washer
  * @param {Number} spec.outerDiameter - diameter of outside of washer
  * @param {Number} spec.thickness - thickness of washer
- * @param {Number} [spec.segments=36] - segments per full rotation
+ * @param {Number} [spec.segments=18] - segments per full rotation
  * @returns {Geom3} washer, centered on XYZ
  *
  * @example
@@ -624,7 +624,7 @@ export const generateWasher = (spec) => {
     innerDiameter,
     outerDiameter,
     thickness,
-    segments = 36
+    segments = 18
   } = spec
 
   // convert ASME inches to mm

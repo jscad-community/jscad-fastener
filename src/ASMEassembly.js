@@ -224,7 +224,7 @@ export const generateAssembly = (specifications) => {
   // Guard validation check
   validateAssembly(specifications)
 
-  const { bolt, washer, nut } = specifications
+  const { bolt, washer, nut, segments = 18 } = specifications
   const stack = []
 
   // 1. Calculate Core Component Dimensions
@@ -234,26 +234,35 @@ export const generateAssembly = (specifications) => {
 
   // 2. Generate the bolt mesh
   const boltHeadBaseZ = washerDims ? washerDims.thickness : 0
+  boltDims.segments = segments
   const boltMesh = generateHexBolt(boltDims)
+
+  boltMesh.spec = boltDims
+
   stack.push(boltMesh)
   
   // 3. Generate and position the optional washer mesh
   if (washerDims) {
+    washerDims.segments = segments
     let washerMesh = generateWasher(washerDims)
 
     const washerZPosition = (-washerDims.thickness / 2) * MM_PER_INCH
     washerMesh = translate([0, 0, washerZPosition], washerMesh)
+
+    washerMesh.spec = washerDims
+
     stack.push(washerMesh)
   }
 
   // 4. Generate and position the optional nut mesh
   if (nutDims) {
+    nutDims.segments = segments
     let nutMesh = generateNut(nutDims)
 
     if (nut.drillingSpecifications && nut.drillingSpecifications.recommendedDrillBitSize) {
       const radius = (nut.drillingSpecifications.recommendedDrillBitSize / 2) * MM_PER_INCH
       const height = nutDims.height * MM_PER_INCH + 1.0
-      const drill = cylinder({height, radius, segments: 36})
+      const drill = cylinder({height, radius, segments})
       nutMesh = subtract(nutMesh, drill)
     }
     
@@ -262,6 +271,9 @@ export const generateAssembly = (specifications) => {
 
     const nutZPosition = (0 - bolt.length + (nutDims.height / 2)) * MM_PER_INCH
     nutMesh = translate([0, 0, nutZPosition], nutMesh)
+
+    nutMesh.spec = nutDims
+
     stack.push(nutMesh)
   }
 

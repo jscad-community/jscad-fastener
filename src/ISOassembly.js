@@ -169,7 +169,7 @@ export const validateAssembly = (specifications) => {
     throw new Error("Invalid Assembly: Missing bolt specification")
   }
 
-  const { bolt, washer, nut } = specifications
+  const { bolt, washer, nut, segments = 18 } = specifications
   const nominalSize = bolt.size // e.g., "M12"
 
   // 1. DIAMETER CONSISTENCY CHECKS
@@ -241,7 +241,7 @@ export const generateAssembly = (specifications) => {
   // Phase 1: Validate structural integrity and physical clearance rules
   validateAssembly(specifications)
 
-  const { bolt, washer, nut } = specifications
+  const { bolt, washer, nut, segments = 18 } = specifications
 
   // Phase 2: Generate Geometries
   // Because validation passed, bolt.length is guaranteed to be a valid number here.
@@ -249,12 +249,14 @@ export const generateAssembly = (specifications) => {
 
   // 1. Build the bolt geometry
   const boltDims = getHexBoltDimensions(bolt, bolt.length)
+  boltDims.segments = segments
   const boltMesh = generateHexBolt(boltDims)
   stack.push(boltMesh)
 
   // 2. Build and position the optional washer if present
   if (washer) {
     const washerDims = getWasherDimensions(washer)
+    washerDims.segments = segments
     let washerMesh = generateWasher(washerDims)
 
     // Position washer directly flat against the underside of the bolt head
@@ -266,11 +268,12 @@ export const generateAssembly = (specifications) => {
   // 3. Build and position the optional nut if present
   if (nut) {
     const nutDims = getNutDimensions(nut)
+    nutDims.segments = segments
     let nutMesh = generateNut(nutDims)
 
     if (nut.drillingSpecifications && nut.drillingSpecifications.recommendedDrillBitSize) {
       const radius =  nut.drillingSpecifications.recommendedDrillBitSize / 2
-      const drill = cylinder({height: nutDims.height + 1.0, radius, segments: 36})
+      const drill = cylinder({height: nutDims.height + 1.0, radius, segments})
       nutMesh = subtract(nutMesh, drill)
     }
 

@@ -372,9 +372,9 @@ test('asme.validateAssembly', () => {
 
 test('asme.generateAssembly', () => {
   // bolt, nut, washer
-  let specifications = asme.parseAssembly("1-1/4-7 x 5.50 Hex Bolt - Grade 8 Zinc Plated; B18.22.1 Wide Washer; B18.2.2 Heavy Hex Nut")
+  let specs = asme.parseAssembly("1-1/4-7 x 5.50 Hex Bolt - Grade 8 Zinc Plated; B18.22.1 Wide Washer; B18.2.2 Heavy Hex Nut")
 
-  let assembly = asme.generateAssembly(specifications)
+  let assembly = asme.generateAssembly(specs)
   expect(assembly.length).toStrictEqual(3)
 
   // bolt, washer
@@ -382,8 +382,9 @@ test('asme.generateAssembly', () => {
   // bolt, nut
 
   // bolt
-  specifications = asme.parseAssembly("1-1/4-7 x 5.50 Hex Bolt")
+  specs = asme.parseAssembly("1-1/4-7 x 5.50 Hex Bolt")
+  specs.segments = 18
 
-  assembly = asme.generateAssembly(specifications)
+  assembly = asme.generateAssembly(specs)
   expect(assembly.length).toStrictEqual(1)
 })

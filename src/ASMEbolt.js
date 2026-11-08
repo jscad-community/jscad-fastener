@@ -385,7 +385,7 @@ export const generateHexBolt = (spec) => {
     filletRadius,
     threadLength,
     unthreadedLength,
-    segments = 36
+    segments = 18
   } = spec
 
   // 1. Thread and Stress-Concentration Geometry (Strict 3 Decimals)
