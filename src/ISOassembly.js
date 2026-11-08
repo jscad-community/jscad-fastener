@@ -169,7 +169,7 @@ export const validateAssembly = (specifications) => {
     throw new Error("Invalid Assembly: Missing bolt specification")
   }
 
-  const { bolt, washer, nut, segments = 18 } = specifications
+  const { bolt, washer, nut } = specifications
   const nominalSize = bolt.size // e.g., "M12"
 
   // 1. DIAMETER CONSISTENCY CHECKS

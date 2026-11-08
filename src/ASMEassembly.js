@@ -233,7 +233,6 @@ export const generateAssembly = (specifications) => {
   const nutDims = nut ? getNutDimensions(nut) : null
 
   // 2. Generate the bolt mesh
-  const boltHeadBaseZ = washerDims ? washerDims.thickness : 0
   boltDims.segments = segments
   const boltMesh = generateHexBolt(boltDims)
 

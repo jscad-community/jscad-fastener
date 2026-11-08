@@ -1,4 +1,4 @@
-import { circle, cylinder, cylinderElliptic, extrudeLinear, intersect, union, rotate, translate, TAU } from '@jscad/modeling'
+import { cylinder, cylinderElliptic, union, translate } from '@jscad/modeling'
 
 import { Thread } from './threads.js'
 import { HexNut } from './nut.js'

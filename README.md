@@ -356,7 +356,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 ### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_STANDARD : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.16.6 Style NE Standard Nylon-Insert Lock Nuts
 
-Entries: ASME size: [widthAcrossFlats (W), height (H)]
+Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totaHeight]
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_THIN"></a>
@@ -364,7 +364,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 ### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_THIN : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.16.6 Style NE Thin Nylon-Insert Lock Nuts
 
-Entries: ASME size: [widthAcrossFlats (W), height (H)]
+Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totaHeight]
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.getNutDimensions"></a>

@@ -253,7 +253,7 @@ export const ASME_B18_2_6_HEX_STRUCTURAL = {
 /**
  * ASME B18.16.6 Style NE Standard Nylon-Insert Lock Nuts
  *
- * Entries: ASME size: [widthAcrossFlats (W), height (H)]
+ * Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totaHeight]
  *
  * @constant
  * @type {NutDimensions}
@@ -287,7 +287,7 @@ export const ASME_B18_16_6_HEX_LOCK_STANDARD = {
 /**
  * ASME B18.16.6 Style NE Thin Nylon-Insert Lock Nuts
  *
- * Entries: ASME size: [widthAcrossFlats (W), height (H)]
+ * Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totaHeight]
  *
  * @constant
  * @type {NutDimensions}
