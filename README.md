@@ -40,7 +40,7 @@ ASME/ISO fasteners are generally easier to understand and generate.</p>
 <dd><p>A static object with nut sizes and dimensions</p>
 </dd>
 <dt><a href="#WasherDimensions">WasherDimensions</a> : <code>Object</code></dt>
-<dd><p>A static object with nut sizes and dimensions</p>
+<dd><p>A static object with washer sizes and dimensions</p>
 </dd>
 <dt><a href="#ThreadDimensions">ThreadDimensions</a> : <code>Object</code></dt>
 <dd><p>A static object with thread sizes and dimensions</p>
@@ -356,7 +356,7 @@ Entries: ASME size: [widthAcrossFlats (W), height (H)]
 ### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_STANDARD : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.16.6 Style NE Standard Nylon-Insert Lock Nuts
 
-Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totaHeight]
+Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totalHeight]
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.ASME_B18_16_6_HEX_LOCK_THIN"></a>
@@ -364,7 +364,7 @@ Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totaHeight]
 ### jscad-fastener/asme.exports.ASME\_B18\_16\_6\_HEX\_LOCK\_THIN : [<code>NutDimensions</code>](#NutDimensions)
 ASME B18.16.6 Style NE Thin Nylon-Insert Lock Nuts
 
-Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totaHeight]
+Entries: ASME size: [widthAcrossFlats (W), hexHeight (H), totalHeight]
 
 **Kind**: static constant of [<code>jscad-fastener/asme</code>](#jscad-fastener/asme)  
 <a name="jscad-fastener/asme.exports.getNutDimensions"></a>
@@ -707,7 +707,7 @@ import {HexHead, Shank, HexNut, Thread, SpringWasher, Washer, StarWasher} from '
 <a name="jscad-fastener.exports.HexHead"></a>
 
 ### jscad-fastener.exports.HexHead ⇒ <code>Geom3</code>
-Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.
+Generate a Bolt Hex Head with beveled hex block and optional bearing shoulder.
 
 NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
 
@@ -1605,7 +1605,7 @@ A static object with nut sizes and dimensions
 <a name="WasherDimensions"></a>
 
 ## WasherDimensions : <code>Object</code>
-A static object with nut sizes and dimensions
+A static object with washer sizes and dimensions
 
 **Kind**: global typedef  
 **Properties**
