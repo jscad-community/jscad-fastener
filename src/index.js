@@ -19,7 +19,7 @@
  * @type {Object}
  * @property {String} size
  * @property {Array<Number>} dims
- * @description A static object with nut sizes and dimensions
+ * @description A static object with washer sizes and dimensions
  */
 
 /**

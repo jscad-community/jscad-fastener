@@ -4,7 +4,7 @@ import { Thread } from './threads.js'
 import { HexNut } from './nut.js'
 
 /**
- * Generate a Bolt Hex Head with beveled hex block and optional bearing sholder.
+ * Generate a Bolt Hex Head with beveled hex block and optional bearing shoulder.
  *
  * NOTE: ALL DIMENSIONS ARE IN MILLIMETERS
  * 

@@ -13,8 +13,8 @@
  * const parts = iso.generateAssembly(specs)
  */ 
 export * from './ISOassembly.js'
-export * from './ISOspecification.js'
 export * from './ISObolt.js'
 export * from './ISOnut.js'
+export * from './ISOspecification.js'
 export * from './ISOthreads.js'
-export * from './ISOWasher.js'
+export * from './ISOwasher.js'
