@@ -350,10 +350,17 @@ export const parseWasherSpec = (str) => {
   // Captures Prefix (1), Number (2), and optional single Form Letter (3) like DIN125A or DIN 127 B
   const standardMatch = str.match(/\b(ISO|DIN)\s*(\d{3,5})(?:\s*([A-Z]))?\b/)
 
-  if (str.includes("SPLIT") || str.includes("LOCK") || str.includes("HELICAL")) {
-    standard = str.includes("HIGH COLLAR") ? "DIN_7980" : "DIN_127_B"
+  if (standardMatch) {
+    // 1. Prioritize explicit DIN/ISO standards stated in the spec
+    const prefix = standardMatch.at(1)
+    const num = standardMatch.at(2)
+    const form = standardMatch.at(3)
+    standard = form ? `${prefix}_${num}_${form}` : `${prefix}_${num}`
   } else if (str.includes("STAR") || str.includes("TOOTH") || str.includes("SERRATED")) {
+    // 2. Check specific lock washer subtypes before generic "LOCK"
     standard = str.includes("INTERNAL") ? "DIN_6797_J" : "DIN_6797_A"
+  } else if (str.includes("SPLIT") || str.includes("LOCK") || str.includes("HELICAL")) {
+    standard = str.includes("HIGH COLLAR") ? "DIN_7980" : "DIN_127_B"
   } else if (str.includes("HEAVY STRUCTURAL") || str.includes("14399") || str.includes("6916")) {
     standard = "EN_14399_6_STRUCTURAL"
   } else if (str.includes("EXTRA WIDE") || str.includes("EXTRA LARGE") || str.includes("440")) {
@@ -362,11 +369,6 @@ export const parseWasherSpec = (str) => {
     standard = "ISO_7093" // Standard Wide/Large Washer
   } else if (str.includes("NARROW") || str.includes("SMALL")) {
     standard = "ISO_7092" // Small Series Washer
-  } else if (standardMatch) {
-    const prefix = standardMatch.at(1)
-    const num = standardMatch.at(2)
-    const form = standardMatch.at(3)
-    standard = form ? `${prefix}_${num}_${form}` : `${prefix}_${num}`
   }
 
   // 3. Dynamic Vickers Hardness (HV) Target Configuration
