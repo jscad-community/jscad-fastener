@@ -72,13 +72,15 @@ const extractMaterialAndCoating = (str) => {
  * @returns {Object} ISO bolt specification
  */
 export const parseBoltSpec = (str) => {
+  str = str.toUpperCase()
+
   // 1. Extract the Bolt Standard / Specification (e.g., ISO 4014, ISO 4017, DIN 931)
   // captures the group name (ISO/DIN) and the full numerical string cleanly
   const standardRegex = /(ISO|DIN)\s*(\d+)/i
   const match = str.match(standardRegex)
   
   // provide fallback defaults if the user didn't specify an exact standard
-  const prefix = match ? match[1].toUpperCase() : 'ISO'
+  const prefix = match ? match[1] : 'ISO'
   const specNumber = match ? match[2] : '4014' // Defaulting to standard hex bolt if anonymous
 
   let standard = 'ISO_4014_HEX_BOLT' // Unified engineering fallback
@@ -97,43 +99,39 @@ export const parseBoltSpec = (str) => {
   }
 
   // 2. Parse Thread Parameters
-  const threadRegex = /M(\d+(?:\.\d+)?)(?:\s*x\s*(\d+(?:\.\d+)?))?(?:\s*x\s*(\d+))?/i
-  const threadMatch = str.match(threadRegex)
-  if (!threadMatch) throw new Error("Failed to extract Metric Thread parameters from Bolt string.")
+  const clusterMatch = str.match(/M\d+(?:\.\d+)?(?:\s*[-X×]\s*\d+(?:\.\d+)?)?(?:\s*[X×]\s*\d+(?:\.\d+)?)?/);
+  if (!clusterMatch) throw new Error("Failed to extract Metric Thread parameters from Bolt string.");
 
-  const nominalDiameter = parseFloat(threadMatch[1])
-  const size = `M${nominalDiameter}`
+  const rawCluster = clusterMatch.at(0);
+  const parts = rawCluster.replace(/^M/, '').split(/\s*[-X×]\s*/).map(Number);
 
-  let spec = null
-  let pitch = null
-  let length = null
+  const nominalDiameter = parts.at(0);
+  const second = parts.at(1);
+  const third = parts.at(2);
 
-  if (threadMatch[2] && threadMatch[3]) {
-    // Scenario A: Three distinct numbers are present (e.g., M12 x 1.25 x 50)
-    spec = getThreadSpec(size, 'FINE')
-    pitch = parseFloat(threadMatch[2])
-    length = parseInt(threadMatch[3], 10)
-  } else if (threadMatch[2]) {
-    // Scenario B: Two distinct numbers are present (e.g., M12 x 50)
-    const secondValue = parseFloat(threadMatch[2])
-      
-    // Safety check: Is this second number a pitch or a length?
-    // Standard coarse/fine pitches don't exceed 6.0mm.
-    if (threadMatch[2].includes('.') && secondValue < 4.0) {
-      spec = getThreadSpec(size, 'FINE')
-      pitch = secondValue
-      length = null // No length specified in the callout string yet
-    } else {
-      spec = getThreadSpec(size, 'COARSE') 
-      pitch = spec ? spec.pitch : null // Pull pitch default from your thread lookup table
-      length = parseInt(threadMatch[2], 10)
+  const size = `M${nominalDiameter}`;
+  const coarseSpec = getThreadSpec(size, 'COARSE');
+
+  let pitch = coarseSpec?.pitch ?? null;
+  let length = null;
+
+  if (third !== undefined) {
+    // 3 numbers: Diameter, Pitch, Length (e.g., M24-3.0 x 60)
+    pitch = second;
+    length = third;
+  } else if (second !== undefined) {
+    // 2 numbers: Check if second is a valid pitch (<= coarse pitch) or a length
+    const isValidPitch = coarseSpec && second <= coarseSpec.pitch;
+    if (isValidPitch) {
+      pitch = second;
+    } else if (!rawCluster.includes('-')) {
+      // Only treat as length if separated by X/× (ignores grade suffixes like M16-8.8)
+      length = second;
     }
-  } else {
-    // Scenario C: Only one number present (e.g., "M12 Bolt")
-    spec = getThreadSpec(size, 'COARSE')
-    pitch = spec ? spec.pitch : null
-    length = null // No length specified in the callout string yet
   }
+  
+  const threadType = (coarseSpec && pitch === coarseSpec.pitch) ? 'COARSE' : 'FINE';
+  const spec = getThreadSpec(size, threadType);
 
   const toleranceMatch = str.match(/(?:\s|-)([4-7][a-h](?:[4-7][a-h])?)(?:\s|-|\$)/)
   const threadTolerance = toleranceMatch ? toleranceMatch[1] : '6g'
@@ -215,6 +213,8 @@ export const parseBoltSpec = (str) => {
  * @returns {Object} ISO nut specification
  */
 export const parseNutSpec = (str) => {
+  str = str.toUpperCase()
+
   const threadRegex = /M(\d+(?:\.\d+)?)(?:\s*x\s*(\d+(?:\.\d+)?))?/i
   const threadMatch = str.match(threadRegex)
   if (!threadMatch) throw new Error("Failed to extract Metric parameters from Nut string.")
@@ -233,28 +233,43 @@ export const parseNutSpec = (str) => {
   const toleranceMatch = str.match(/(?:\s|-)([4-7][G-H])(?:\s|-|\$)/)
   const threadTolerance = toleranceMatch ? toleranceMatch[1].toUpperCase() : '6H' 
 
-  const standardMatch = str.match(/ISO\s*(\d{4})/i)
-  const standardNum = standardMatch ? standardMatch[1] : "4032"
+  const standardMatch = str.match(/\b(ISO|DIN)\s*(\d{3,5})\b/);
+  const prefix = standardMatch ? standardMatch[1] : "ISO";
+  const standardNum = standardMatch ? standardMatch[2] : "4032";
 
-  let standard = "ISO_4032_HEX_STANDARD" // Default fallback
+  let standard = "ISO_4032_HEX_STANDARD"; // Default fallback
 
-  // 1. Plain & Structural Nuts
-  if (standardNum === "4033") {
-    standard = "ISO_4033_HEX_HIGH"
-  } else if (standardNum === "4035" || str.includes("THIN JAM")) {
-    standard = "ISO_4035_HEX_THIN_JAM"
-  } else if (standardNum === "7414" || str.includes("STRUCTURAL HEAVY")) {
-    standard = "ISO_7414_HEX_STRUCTURAL_HEAVY"
-  
-  // 2. Lock Nuts (Nylon Insert / Prevailing Torque)
-  } else if (standardNum === "7040" || standardNum === "10512" || (str.includes("LOCK") && str.includes("REGULAR"))) {
-    standard = "ISO_7040_LOCK_STANDARD"
-  } else if (standardNum === "10511" || (str.includes("LOCK") && str.includes("THIN"))) {
-    standard = "ISO_10511_LOCK_THIN"
-  } else if (standardNum === "7041" || (str.includes("LOCK") && str.includes("HIGH"))) {
-     standard = "ISO_7041_LOCK_HIGH"
+  if (prefix === "DIN") {
+    if (standardNum === "934") {
+      standard = "DIN_934_HEX_STANDARD";
+    } else if (standardNum === "557") {
+      standard = "DIN_557_SQUARE";
+    } else if (standardNum === "439") {
+      standard = "ISO_4035_HEX_THIN_JAM"; // DIN 439 maps to thin jam nut
+    } else if (standardNum === "985") {
+      standard = "ISO_10511_LOCK_THIN"; // DIN 985 maps to thin nylon lock nut
+    } else if (standardNum === "982") {
+      standard = "ISO_7040_LOCK_STANDARD"; // DIN 982 maps to standard nylon lock nut
+    }
+  } else {
+    // 1. Plain & Structural Nuts (ISO)
+    if (standardNum === "4033") {
+      standard = "ISO_4033_HEX_HIGH";
+    } else if (standardNum === "4035" || str.includes("THIN JAM")) {
+      standard = "ISO_4035_HEX_THIN_JAM";
+    } else if (standardNum === "7414" || str.includes("STRUCTURAL HEAVY")) {
+      standard = "ISO_7414_HEX_STRUCTURAL_HEAVY";
+
+    // 2. Lock Nuts (Nylon Insert / Prevailing Torque)
+    } else if (standardNum === "7040" || standardNum === "10512" || (str.includes("LOCK") && str.includes("REGULAR"))) {
+      standard = "ISO_7040_LOCK_STANDARD";
+    } else if (standardNum === "10511" || (str.includes("LOCK") && str.includes("THIN"))) {
+      standard = "ISO_10511_LOCK_THIN";
+    } else if (standardNum === "7041" || (str.includes("LOCK") && str.includes("HIGH"))) {
+      standard = "ISO_7041_LOCK_HIGH";
+    }
   }
-  
+
   const { material, coating } = extractMaterialAndCoating(str)
 
   // --- ISO 965-1 Sizing and Tolerance Formulas ---
@@ -320,7 +335,7 @@ export const parseWasherSpec = (str) => {
     throw new Error("Missing string parameter; str")
   }
 
-  const upperStr = str.toUpperCase()
+  str = str.toUpperCase()
 
   // 1. Structural Sizing Match (Extracts numbers like 12 from "M12" or "M12.5")
   const sizeMatch = str.match(/M\s*(\d+(?:\.\d+)?)/i)
@@ -331,24 +346,27 @@ export const parseWasherSpec = (str) => {
 
   // 2. Resolve Precise Engineering Standards & Default Mappings
   let standard = "ISO_7090" // System baseline default fallback
-  
-  const standardMatch = str.match(/(?:ISO|DIN)\s*(\d+)/i)
 
-  if (upperStr.includes("SPLIT") || upperStr.includes("LOCK") || upperStr.includes("HELICAL")) {
-    standard = upperStr.includes("HIGH COLLAR") ? "DIN_7980" : "DIN_127_B"
-  } else if (upperStr.includes("STAR") || upperStr.includes("TOOTH") || upperStr.includes("SERRATED")) {
-    standard = upperStr.includes("INTERNAL") ? "DIN_6797_J" : "DIN_6797_A"
-  } else if (upperStr.includes("HEAVY STRUCTURAL") || upperStr.includes("14399") || upperStr.includes("6916")) {
-    standard =  "EN_14399_6_STRUCTURAL"
-  } else if (upperStr.includes("EXTRA WIDE") || upperStr.includes("EXTRA LARGE") || upperStr.includes("440")) {
+  // Captures Prefix (1), Number (2), and optional single Form Letter (3) like DIN125A or DIN 127 B
+  const standardMatch = str.match(/\b(ISO|DIN)\s*(\d{3,5})(?:\s*([A-Z]))?\b/)
+
+  if (str.includes("SPLIT") || str.includes("LOCK") || str.includes("HELICAL")) {
+    standard = str.includes("HIGH COLLAR") ? "DIN_7980" : "DIN_127_B"
+  } else if (str.includes("STAR") || str.includes("TOOTH") || str.includes("SERRATED")) {
+    standard = str.includes("INTERNAL") ? "DIN_6797_J" : "DIN_6797_A"
+  } else if (str.includes("HEAVY STRUCTURAL") || str.includes("14399") || str.includes("6916")) {
+    standard = "EN_14399_6_STRUCTURAL"
+  } else if (str.includes("EXTRA WIDE") || str.includes("EXTRA LARGE") || str.includes("440")) {
     standard = "ISO_7094" // Extra Large Timber Washer
-  } else if (upperStr.includes("WIDE") || upperStr.includes("LARGE") || upperStr.includes("9021")) {
+  } else if (str.includes("WIDE") || str.includes("LARGE") || str.includes("9021")) {
     standard = "ISO_7093" // Standard Wide/Large Washer
-  } else if (upperStr.includes("NARROW") || upperStr.includes("SMALL")) {
+  } else if (str.includes("NARROW") || str.includes("SMALL")) {
     standard = "ISO_7092" // Small Series Washer
   } else if (standardMatch) {
-    const prefix = standardMatch[0].startsWith('DIN') ? 'DIN' : 'ISO'
-    standard = `${prefix}_${standardMatch[1]}`
+    const prefix = standardMatch.at(1)
+    const num = standardMatch.at(2)
+    const form = standardMatch.at(3)
+    standard = form ? `${prefix}_${num}_${form}` : `${prefix}_${num}`
   }
 
   // 3. Dynamic Vickers Hardness (HV) Target Configuration
@@ -372,14 +390,14 @@ export const parseWasherSpec = (str) => {
 
   // 4. Resolve Materials & Plating Coatings
   let material = "Carbon Steel"
-  if (upperStr.includes("STAINLESS") || upperStr.includes("A2") || upperStr.includes("A4")) {
+  if (str.includes("STAINLESS") || str.includes("A2") || str.includes("A4")) {
     material = "Stainless Steel"
   }
 
   let coating = "Bare Metal"
-  if (upperStr.includes("ZINC") || upperStr.includes("GALVANIZED") || upperStr.includes("HDG")) {
-    coating = upperStr.includes("HDG") ? "Hot Dip Galvanized" : "Zinc Plated"
-  } else if (upperStr.includes("BLACK OXIDE")) {
+  if (str.includes("ZINC") || str.includes("GALVANIZED") || str.includes("HDG")) {
+    coating = str.includes("HDG") ? "Hot Dip Galvanized" : "Zinc Plated"
+  } else if (str.includes("BLACK OXIDE")) {
     coating = "Black Oxide"
   }
 

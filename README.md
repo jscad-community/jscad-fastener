@@ -883,6 +883,7 @@ const parts = iso.generateAssembly(specs)
     * [.exports.ISO_10511_LOCK_THIN](#jscad-fastener/iso.exports.ISO_10511_LOCK_THIN) : [<code>NutDimensions</code>](#NutDimensions)
     * [.exports.ISO_7041_LOCK_HIGH](#jscad-fastener/iso.exports.ISO_7041_LOCK_HIGH) : [<code>NutDimensions</code>](#NutDimensions)
     * [.exports.DIN_557_SQUARE](#jscad-fastener/iso.exports.DIN_557_SQUARE) : [<code>NutDimensions</code>](#NutDimensions)
+    * [.exports.DIN_934_HEX_STANDARD](#jscad-fastener/iso.exports.DIN_934_HEX_STANDARD) : [<code>NutDimensions</code>](#NutDimensions)
     * [.exports.getNutDimensions](#jscad-fastener/iso.exports.getNutDimensions) ⇒ <code>Object</code>
     * [.exports.generateNut](#jscad-fastener/iso.exports.generateNut) ⇒ <code>Geom3</code>
     * [.exports.parseBoltSpec](#jscad-fastener/iso.exports.parseBoltSpec) ⇒ <code>Object</code>
@@ -1270,6 +1271,22 @@ DESIGN NOTES:
 - Width across flats (s) requirements remain identical to early companion DIN hex standards to utilize matching open-ended spanners.
 
 Entries: ISO size: [Width Across Flats (s), Hex Height (m_min)]
+
+**Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
+<a name="jscad-fastener/iso.exports.DIN_934_HEX_STANDARD"></a>
+
+### jscad-fastener/iso.exports.DIN\_934\_HEX\_STANDARD : [<code>NutDimensions</code>](#NutDimensions)
+DIN 934: Hexagon nuts with metric coarse and fine pitch thread - Product grades A and B.
+
+DESIGN NOTES:
+- Governs standard six-sided full-height hexagon nuts engineered for general mechanical and structural fastening.
+- Widely utilized across machinery, automotive, and construction assemblies where standard open-ended or socket wrenches apply torque.
+- Features double-sided external chamfers (typically 15° to 30°) on both top and bottom bearing faces to allow bidirectional installation.
+- Largely superseded by ISO 4032 (Style 1), though DIN 934 retains slightly smaller nut heights across most sizes and distinct
+  legacy widths across flats (s) for M10 (17 mm vs 16 mm), M12 (19 mm vs 18 mm), M14 (22 mm vs 21 mm), and M22 (32 mm vs 34 mm).
+- Covers nominal thread sizes from M1 up to M100 (Product grade A up to M16; Product grade B above M16).
+
+Entries: ISO size: [Width Across Flats (s), Hex Height (m), Total Height (m)]
 
 **Kind**: static constant of [<code>jscad-fastener/iso</code>](#jscad-fastener/iso)  
 <a name="jscad-fastener/iso.exports.getNutDimensions"></a>

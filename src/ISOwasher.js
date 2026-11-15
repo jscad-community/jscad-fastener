@@ -468,8 +468,8 @@ export const ISO_7094 = {
 }
 
 const standards = {
-  'DIN_6797_J': DIN_6797_J,
   'DIN_6797_A': DIN_6797_A,
+  'DIN_6797_J': DIN_6797_J,
   'EN_14399_6_STRUCTURAL': EN_14399_6,
   'ISO_7090': ISO_7090,
   'ISO_7091': ISO_7091,
@@ -478,6 +478,11 @@ const standards = {
   'ISO_7094': ISO_7094,
   'DIN_7980': DIN_7980,
   'DIN_127_B': DIN_127_B,
+
+  // DIN 125 Aliases
+  'DIN_125': ISO_7091,     // Default DIN 125 (Form A, unchamfered)
+  'DIN_125_A': ISO_7091,   // Form A (unchamfered) -> ISO 7089 / ISO 7091
+  'DIN_125_B': ISO_7090,   // Form B (chamfered) -> ISO 7090
 }
 
 /**

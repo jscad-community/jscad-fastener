@@ -296,6 +296,59 @@ export const DIN_557_SQUARE = {
   "M16": [24.000, 13.000]
 }
 
+/**
+ * DIN 934: Hexagon nuts with metric coarse and fine pitch thread - Product grades A and B.
+ *
+ * DESIGN NOTES:
+ * - Governs standard six-sided full-height hexagon nuts engineered for general mechanical and structural fastening.
+ * - Widely utilized across machinery, automotive, and construction assemblies where standard open-ended or socket wrenches apply torque.
+ * - Features double-sided external chamfers (typically 15° to 30°) on both top and bottom bearing faces to allow bidirectional installation.
+ * - Largely superseded by ISO 4032 (Style 1), though DIN 934 retains slightly smaller nut heights across most sizes and distinct
+ *   legacy widths across flats (s) for M10 (17 mm vs 16 mm), M12 (19 mm vs 18 mm), M14 (22 mm vs 21 mm), and M22 (32 mm vs 34 mm).
+ * - Covers nominal thread sizes from M1 up to M100 (Product grade A up to M16; Product grade B above M16).
+ *
+ * Entries: ISO size: [Width Across Flats (s), Hex Height (m), Total Height (m)]
+ *
+ * @constant
+ * @type {NutDimensions}
+ * @memberof jscad-fastener/iso
+ */
+export const DIN_934_HEX_STANDARD = {
+  "M1":    [2.5,   0.8,  0.8],
+  "M1.2":  [3.0,   1.0,  1.0],
+  "M1.4":  [3.0,   1.2,  1.2],
+  "M1.6":  [3.2,   1.3,  1.3],
+  "M2":    [4.0,   1.6,  1.6],
+  "M2.5":  [5.0,   2.0,  2.0],
+  "M3":    [5.5,   2.4,  2.4],
+  "M3.5":  [6.0,   2.8,  2.8],
+  "M4":    [7.0,   3.2,  3.2],
+  "M5":    [8.0,   4.0,  4.0],
+  "M6":    [10.0,  5.0,  5.0],
+  "M7":    [11.0,  5.5,  5.5],
+  "M8":    [13.0,  6.5,  6.5],
+  "M10":   [17.0,  8.0,  8.0],
+  "M12":   [19.0,  10.0, 10.0],
+  "M14":   [22.0,  11.0, 11.0],
+  "M16":   [24.0,  13.0, 13.0],
+  "M18":   [27.0,  15.0, 15.0],
+  "M20":   [30.0,  16.0, 16.0],
+  "M22":   [32.0,  18.0, 18.0],
+  "M24":   [36.0,  19.0, 19.0],
+  "M27":   [41.0,  22.0, 22.0],
+  "M30":   [46.0,  24.0, 24.0],
+  "M33":   [50.0,  26.0, 26.0],
+  "M36":   [55.0,  29.0, 29.0],
+  "M39":   [60.0,  31.0, 31.0],
+  "M42":   [65.0,  34.0, 34.0],
+  "M45":   [70.0,  36.0, 36.0],
+  "M48":   [75.0,  38.0, 38.0],
+  "M52":   [80.0,  42.0, 42.0],
+  "M56":   [85.0,  45.0, 45.0],
+  "M60":   [90.0,  48.0, 48.0],
+  "M64":   [95.0,  51.0, 51.0],
+}
+
 // TBD Support square nuts
 // TBD Support flange nuts
 
@@ -307,6 +360,8 @@ const standards = {
   'ISO_7040_LOCK_STANDARD': ISO_7040_LOCK_STANDARD,
   'ISO_10511_LOCK_THIN': ISO_10511_LOCK_THIN,
   'ISO_7041_LOCK_HIGH': ISO_7041_LOCK_HIGH,
+  'DIN_934_HEX_STANDARD': DIN_934_HEX_STANDARD,
+  'DIN_557_SQUARE': DIN_557_SQUARE,
 }
 
 /**
