@@ -491,5 +491,9 @@ export const generateNut = (spec = {}) => {
   // FIXME this should be a parameter
   const bearingFaceDiameter = +(widthAcrossFlats * 0.95).toFixed(3)
 
-  return HexNut({widthAcrossFlats, height, bearingFaceHeight, bearingFaceDiameter, zOffset, segments})
+  const nutSpec = {widthAcrossFlats, height, bearingFaceHeight, bearingFaceDiameter, zOffset, segments}
+
+  const nut = HexNut(nutSpec)
+  nut.spec = nutSpec
+  return nut
 }
