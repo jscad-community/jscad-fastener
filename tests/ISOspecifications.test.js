@@ -61,7 +61,7 @@ test('iso.parseBoltSpec parsing', () => {
     "propertyClass": "8.8",
     "size": "M20",
     "standard": "ISO_4014_HEX_BOLT",
-    "threadSeries": "FINE",
+    "threadSeries": "COARSE",
     "threadTolerance": "6g",
   }
   )
@@ -352,7 +352,7 @@ test('iso.parseBoltSpec parsing', () => {
     "propertyClass": "8.8",
     "size": "M4",
     "standard": "ISO_7045_PAN_MACHINE",
-    "threadSeries": "FINE",
+    "threadSeries": "COARSE",
     "threadTolerance": "6g",
   }
   )
