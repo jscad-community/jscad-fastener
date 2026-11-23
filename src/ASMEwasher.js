@@ -495,17 +495,26 @@ export const ASME_B18_21_1_TYPE_B_WIDE = {
 }
 
 const standards = {
-  'ASME_B18_21_1_TYPE_A_NARROW': ASME_B18_21_1_TYPE_A_NARROW,
-  'ASME_B18_21_1_TYPE_A_WIDE': ASME_B18_21_1_TYPE_A_WIDE,
-  'ASTM_F436_STRUCTURAL': ASTM_F436_STRUCTURAL,
-  'ASME_B18_21_1_LOCK_REGULAR': ASME_B18_21_1_LOCK_REGULAR,
-  'ASME_B18_21_1_LOCK_HEAVY': ASME_B18_21_1_LOCK_HEAVY,
-  'ASME_B18_21_1_TOOTH_INTERNAL': ASME_B18_21_1_TOOTH_INTERNAL,
-  'ASME_B18_21_1_TOOTH_EXTERNAL': ASME_B18_21_1_TOOTH_EXTERNAL,
-  'ASME_B18_21_1_TYPE_B_NARROW': ASME_B18_21_1_TYPE_B_NARROW,
-  'ASME_B18_21_1_TYPE_B_WIDE': ASME_B18_21_1_TYPE_B_WIDE,
-  'ASME_B18_21_1_TYPE_B_REGULAR': ASME_B18_21_1_TYPE_B_REGULAR,
+  // Plain Flat Washers (ASME B18.21.1, formerly B18.22.1)
+  'ASME_B18_21_1_TYPE_A_NARROW':  { dims: ASME_B18_21_1_TYPE_A_NARROW,  type: 'FLAT_NARROW' },
+  'ASME_B18_21_1_TYPE_A_WIDE':    { dims: ASME_B18_21_1_TYPE_A_WIDE,    type: 'FLAT_WIDE' },
+
+  'ASME_B18_21_1_TYPE_B_NARROW':  { dims: ASME_B18_21_1_TYPE_B_NARROW,  type: 'FLAT_NARROW' },
+  'ASME_B18_21_1_TYPE_B_REGULAR': { dims: ASME_B18_21_1_TYPE_B_REGULAR, type: 'FLAT' },
+  'ASME_B18_21_1_TYPE_B_WIDE':    { dims: ASME_B18_21_1_TYPE_B_WIDE,    type: 'FLAT_WIDE' },
+
+  // Structural Flat Washers
+  'ASTM_F436_STRUCTURAL':         { dims: ASTM_F436_STRUCTURAL,         type: 'FLAT_STRUCTURAL' },
+
+  // Helical Spring Lock Washers
+  'ASME_B18_21_1_LOCK_REGULAR':   { dims: ASME_B18_21_1_LOCK_REGULAR,   type: 'SPLIT_LOCK' },
+  'ASME_B18_21_1_LOCK_HEAVY':     { dims: ASME_B18_21_1_LOCK_HEAVY,     type: 'SPLIT_LOCK_HEAVY' },
+
+  // Tooth Lock Washers
+  'ASME_B18_21_1_TOOTH_INTERNAL': { dims: ASME_B18_21_1_TOOTH_INTERNAL, type: 'INTERNAL_TOOTH' },
+  'ASME_B18_21_1_TOOTH_EXTERNAL': { dims: ASME_B18_21_1_TOOTH_EXTERNAL, type: 'EXTERNAL_TOOTH' },
 }
+
 
 /**
  * Get the overall washer dimensions for the given specification.
@@ -572,8 +581,10 @@ export const getWasherDimensions = (spec) => {
     }
   }
 
-  let dataset = standards[standard]
-  if (!dataset) return null
+  let metadata = standards[standard]
+  if (!metadata) return null
+
+  const dataset = metadata.dims
 
   // get the dimensions for the requested size
   const dims = dataset[size]
@@ -582,12 +593,12 @@ export const getWasherDimensions = (spec) => {
   let innerDiameter = dims[ID_INDEX] + (idOffset * 2)
   let outerDiameter = dims[OD_INDEX] + (odOffset * 2)
   let thickness = dims[TH_INDEX] + (thicknessOffset * 2)
+  type = metadata.type
 
   return {
     // spec
     size,
     standard,
-    isLocking,
     type,
     // dimensions
     innerDiameter,
@@ -605,8 +616,7 @@ export const getWasherDimensions = (spec) => {
  * 
  * @memberof jscad-fastener/asme
  * @param {object} spec - full washer specifications with dimensions
- * @param {String} spec.type - type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL)
- * @param {Boolean} spec.isLocking - true to generate locking washer
+ * @param {String} spec.type - type of washer (FLAT, SPLIT, TOOTH_EXTERNAL, TOOTH_INTERNAL)
  * @param {Number} spec.innerDiameter - diameter of inside of washer
  * @param {Number} spec.outerDiameter - diameter of outside of washer
  * @param {Number} spec.thickness - thickness of washer
@@ -619,7 +629,6 @@ export const getWasherDimensions = (spec) => {
  */
 export const generateWasher = (spec) => {
   let {
-    isLocking,
     type,
     innerDiameter,
     outerDiameter,
@@ -632,22 +641,24 @@ export const generateWasher = (spec) => {
   outerDiameter = Number((outerDiameter * MM_PER_INCH).toFixed(2))
   thickness = Number((thickness * MM_PER_INCH).toFixed(2))
 
-  const washerSpec = { innerDiameter, outerDiameter, thickness, segments }
+  const washerSpec = { type, innerDiameter, outerDiameter, thickness, segments }
 
   // lock washers
-  if (isLocking) {
-    if (type === 'INTERNAL') {
-      washerSpec['isInternal'] = true
-      return StarWasher(washerSpec)
-    } else if (type === 'EXTERNAL') {
-      washerSpec['isInternal'] = false
-      return StarWasher(washerSpec)
-    } else {
-      return SpringWasher(washerSpec)
-    }
+  let washer
+  if (type.includes('INTERNAL')) {
+    washerSpec['isInternal'] = true
+    washer = StarWasher(washerSpec)
+  } else if (type.includes('EXTERNAL')) {
+    washerSpec['isInternal'] = false
+    washer = StarWasher(washerSpec)
+  } else if (type.includes('SPLIT')) {
+    washer = SpringWasher(washerSpec)
+  } else {
+    // regular flat washers
+    washer = Washer(washerSpec)
   }
 
-  // standard washers
-  return Washer(washerSpec)
+  washer.spec = washerSpec
+  return washer
 }
 
