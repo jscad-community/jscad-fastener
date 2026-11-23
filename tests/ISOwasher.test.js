@@ -18,7 +18,7 @@ test('iso.getWasherDimensions', () => {
     "size": "M4",
     "standard": "ISO_7090",
     "thickness": 0.8,
-    "type": "FLAT",
+    "type": "FLAT_CHAMFERED",
   }
   )
   expect(iso.getWasherDimensions({size: "M14", type: 'HEAVY'})).toStrictEqual(
@@ -81,7 +81,7 @@ test('iso.getWasherDimensions', () => {
     "size": "M16",
     "standard": "ISO_7090",
     "thickness": 3,
-    "type": "FLAT",
+    "type": "FLAT_CHAMFERED",
   }
   )
 })

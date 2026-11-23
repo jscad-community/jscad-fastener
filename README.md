@@ -630,8 +630,7 @@ NOTE: All dimensions are inches
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | spec | <code>object</code> |  | full washer specifications with dimensions |
-| spec.type | <code>String</code> |  | type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL) |
-| spec.isLocking | <code>Boolean</code> |  | true to generate locking washer |
+| spec.type | <code>String</code> |  | type of washer (FLAT, SPLIT, TOOTH_EXTERNAL, TOOTH_INTERNAL) |
 | spec.innerDiameter | <code>Number</code> |  | diameter of inside of washer |
 | spec.outerDiameter | <code>Number</code> |  | diameter of outside of washer |
 | spec.thickness | <code>Number</code> |  | thickness of washer |
@@ -1581,8 +1580,7 @@ NOTE: All dimensions are millimeters
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | spec | <code>object</code> |  | full washer specifications with dimensions |
-| spec.type | <code>String</code> |  | type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL) |
-| spec.isLocking | <code>Boolean</code> |  | true to generate locking washer |
+| spec.type | <code>String</code> |  | type of washer (FLAT, SPLIT, TOOTH_EXTERNAL, TOOTH_INTERNAL) |
 | spec.innerDiameter | <code>Number</code> |  | diameter of inside of washer |
 | spec.outerDiameter | <code>Number</code> |  | diameter of outside of washer |
 | spec.thickness | <code>Number</code> |  | thickness of washer |
