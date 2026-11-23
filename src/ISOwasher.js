@@ -468,21 +468,42 @@ export const ISO_7094 = {
 }
 
 const standards = {
-  'DIN_6797_A': DIN_6797_A,
-  'DIN_6797_J': DIN_6797_J,
-  'EN_14399_6_STRUCTURAL': EN_14399_6,
-  'ISO_7090': ISO_7090,
-  'ISO_7091': ISO_7091,
-  'ISO_7092': ISO_7092,
-  'ISO_7093': ISO_7093,
-  'ISO_7094': ISO_7094,
-  'DIN_7980': DIN_7980,
-  'DIN_127_B': DIN_127_B,
+  'EN_14399_6_STRUCTURAL': {dims: EN_14399_6, type: 'FLAT_STRUCTURAL_CHAMFERED'},
 
-  // DIN 125 Aliases
-  'DIN_125': ISO_7091,     // Default DIN 125 (Form A, unchamfered)
-  'DIN_125_A': ISO_7091,   // Form A (unchamfered) -> ISO 7089 / ISO 7091
-  'DIN_125_B': ISO_7090,   // Form B (chamfered) -> ISO 7090
+  'ISO_7089': {dims: ISO_7089, type: 'FLAT'},
+  'ISO_7090': {dims: ISO_7090, type: 'FLAT_CHAMFERED'},
+  'ISO_7091': {dims: ISO_7091, type: 'FLAT'},
+  'ISO_7092': {dims: ISO_7092, type: 'FLAT_NARROW'},
+  'ISO_7093': {dims: ISO_7093, type: 'FLAT_WIDE'},
+  'ISO_7094': {dims: ISO_7094, type: 'FLAT_EXTRA_WIDE'},
+
+  // DIN 125
+  'DIN_125': {dims: ISO_7091, type: 'FLAT'},   // Form A unchamfered
+  'DIN_125_A': {dims: ISO_7091, type: 'FLAT'}, // Form A unchamfered
+  'DIN_125_B': {dims: ISO_7090, type: 'FLAT_CHAMFERED'}, // Form B chamfered
+
+  // DIN 127
+  'DIN_127': {dims: DIN_127_B, type: 'SPLIT_LOCK'},   // split lock
+  'DIN_127_B': {dims: DIN_127_B, type: 'SPLIT_LOCK'}, // split lock
+  'DIN_127_A': {dims: DIN_127_B, type: 'SPLIT_LOCK'}, // split lock
+
+  // DIN 433
+  'DIN_433':   {dims: ISO_7092, type: 'FLAT_NARROW'},
+  'DIN_433_A': {dims: ISO_7092, type: 'FLAT_NARROW'}, // Form A unchamfered
+  'DIN_433_B': {dims: ISO_7092, type: 'FLAT_NARROW_CHAMFERED'}, // Form B chamfered
+
+  // DIN 440
+  'DIN_440':   {dims: ISO_7094, type: 'FLAT'},
+  'DIN_440_R': {dims: ISO_7094, type: 'FLAT'},
+
+  // DIN 6797
+  'DIN_6797_A': {dims: DIN_6797_A, type: 'EXTERNAL_TOOTH'},
+  'DIN_6797_J': {dims: DIN_6797_J, type: 'INTERNAL_TOOTH'},
+
+  // DIN 6798 serrated
+
+  // DIN 7980
+  'DIN_7980': {dims: DIN_7980, type: 'SPLIT_LOCK_HIGH_COLLAR'},
 }
 
 /**
@@ -550,8 +571,10 @@ export const getWasherDimensions = (spec) => {
     }
   }
 
-  let dataset = standards[standard]
-  if (!dataset) return null
+  const metadata = standards[standard]
+  if (!metadata) return null
+
+  const dataset = metadata.dims
 
   // get the dimensions for the requested size
   const dims = dataset[size]
@@ -560,12 +583,12 @@ export const getWasherDimensions = (spec) => {
   const innerDiameter = dims[ID_INDEX] + (idOffset * 2)
   const outerDiameter = dims[OD_INDEX] + (odOffset * 2)
   const thickness = dims[TH_INDEX] + (thicknessOffset * 2)
+  type = metadata.type
 
   return {
     // spec
     size,
     standard,
-    isLocking,
     type,
     // dimensions
     innerDiameter,
@@ -583,8 +606,7 @@ export const getWasherDimensions = (spec) => {
  * 
  * @memberof jscad-fastener/iso
  * @param {object} spec - full washer specifications with dimensions
- * @param {String} spec.type - type of washer (REGULAR, HEAVY, WIDE, STRUCTURAL) / lock washer (REGULAR, HEAVY, INTERNAL, EXTERNAL)
- * @param {Boolean} spec.isLocking - true to generate locking washer
+ * @param {String} spec.type - type of washer (FLAT, SPLIT, TOOTH_EXTERNAL, TOOTH_INTERNAL)
  * @param {Number} spec.innerDiameter - diameter of inside of washer
  * @param {Number} spec.outerDiameter - diameter of outside of washer
  * @param {Number} spec.thickness - thickness of washer
@@ -597,7 +619,6 @@ export const getWasherDimensions = (spec) => {
  */
 export const generateWasher = (spec) => {
   const {
-    isLocking,
     type,
     innerDiameter,
     outerDiameter,
@@ -605,22 +626,20 @@ export const generateWasher = (spec) => {
     segments = 18
   } = spec
 
-  const washerSpec = { innerDiameter, outerDiameter, thickness, segments }
+  const washerSpec = { type, innerDiameter, outerDiameter, thickness, segments }
 
   // lock washers
   let washer
-  if (isLocking) {
-    if (type === 'INTERNAL') {
-      washerSpec['isInternal'] = true
-      washer = StarWasher(washerSpec)
-    } else if (type === 'EXTERNAL') {
-      washerSpec['isInternal'] = false
-      washer = StarWasher(washerSpec)
-    } else {
-      washer = SpringWasher(washerSpec)
-    }
+  if (type.includes('INTERNAL')) {
+    washerSpec['isInternal'] = true
+    washer = StarWasher(washerSpec)
+  } else if (type.includes('EXTERNAL')) {
+    washerSpec['isInternal'] = false
+    washer = StarWasher(washerSpec)
+  } else if (type.includes('SPLIT')) {
+    washer = SpringWasher(washerSpec)
   } else {
-    // standard washers
+    // regular flat washers
     washer = Washer(washerSpec)
   }
 

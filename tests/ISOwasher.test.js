@@ -14,67 +14,61 @@ test('iso.getWasherDimensions', () => {
   expect(iso.getWasherDimensions({size: "M4"})).toStrictEqual(
   {
     "innerDiameter": 4.3,
-    "isLocking": false,
     "outerDiameter": 9,
     "size": "M4",
     "standard": "ISO_7090",
     "thickness": 0.8,
-    "type": "REGULAR",
+    "type": "FLAT_CHAMFERED",
   }
   )
   expect(iso.getWasherDimensions({size: "M14", type: 'HEAVY'})).toStrictEqual(
   {
     "innerDiameter": 15,
-    "isLocking": false,
     "outerDiameter": 44,
     "size": "M14",
     "standard": "ISO_7093",
     "thickness": 3,
-    "type": "HEAVY",
+    "type": "FLAT_WIDE",
   }
   )
   expect(iso.getWasherDimensions({size: "M14", type: 'wide'})).toStrictEqual(
   {
     "innerDiameter": 15,
-    "isLocking": false,
     "outerDiameter": 44,
     "size": "M14",
     "standard": "ISO_7093",
     "thickness": 3,
-    "type": "WIDE",
+    "type": "FLAT_WIDE",
   }
   )
   expect(iso.getWasherDimensions({size: "M14", isLocking: true})).toStrictEqual(
   {
     "innerDiameter": 14.2,
-    "isLocking": true,
     "outerDiameter": 24.1,
     "size": "M14",
     "standard": "DIN_127_B",
     "thickness": 3,
-    "type": "REGULAR",
+    "type": "SPLIT_LOCK",
   }
   )
   expect(iso.getWasherDimensions({size: "M14", isLocking: true, type: 'internal'})).toStrictEqual(
   {
     "innerDiameter": 15,
-    "isLocking": true,
     "outerDiameter": 24,
     "size": "M14",
     "standard": "DIN_6797_J",
     "thickness": 1,
-    "type": "INTERNAL",
+    "type": "INTERNAL_TOOTH",
   }
   )
   expect(iso.getWasherDimensions({size: "M14", isLocking: true, type: 'EXTERNAL'})).toStrictEqual(
   {
     "innerDiameter": 15,
-    "isLocking": true,
     "outerDiameter": 24,
     "size": "M14",
     "standard": "DIN_6797_A",
     "thickness": 1,
-    "type": "EXTERNAL",
+    "type": "EXTERNAL_TOOTH",
   }
   )
 
@@ -83,37 +77,35 @@ test('iso.getWasherDimensions', () => {
   expect(iso.getWasherDimensions(spec)).toStrictEqual(
   {
     "innerDiameter": 17,
-    "isLocking": false,
     "outerDiameter": 30,
     "size": "M16",
     "standard": "ISO_7090",
     "thickness": 3,
-    "type": "REGULAR",
+    "type": "FLAT_CHAMFERED",
   }
   )
 })
 
 test('iso.generateWasher', () => {
-  let w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8})
+  let w = iso.generateWasher({type: 'FLAT', innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8})
   expect(geom3.isA(w)).toBe(true)
 
-  w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true, type: 'INTERNAL'})
+  w = iso.generateWasher({type: 'INTERNAL_TOOTH', innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true, type: 'INTERNAL'})
   expect(geom3.isA(w)).toBe(true)
 
-  w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true, type: 'EXTERNAL'})
+  w = iso.generateWasher({type: 'EXTERNAL_TOOTH', innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true, type: 'EXTERNAL'})
   expect(geom3.isA(w)).toBe(true)
 
-  w = iso.generateWasher({innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true})
+  w = iso.generateWasher({type: 'SPLIT_LOCK', innerDiameter: 4.3, outerDiameter: 9, thickness: 0.8, isLocking: true})
   expect(geom3.isA(w)).toBe(true)
 
   let dims = {
     "innerDiameter": 17,
-    "isLocking": false,
     "outerDiameter": 30,
     "size": "M16",
     "standard": "ISO_7090",
     "thickness": 3,
-    "type": "REGULAR",
+    "type": "FLAT",
   }
   w = iso.generateWasher(dims)
   expect(geom3.isA(w)).toBe(true)
