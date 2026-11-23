@@ -11,10 +11,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Cap Screw, ASME B18.2.1, 1/4-20 UNC x 1-1/2, Grade 5 Zinc")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.312,
-      "fineFitHole": 0.265,
-      "mediumFitHole": 0.282,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.297,
+      "fineFitHole": 0.266,
+      "mediumFitHole": 0.281,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 1.5,
@@ -30,10 +30,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Head Cap Screw 5/16-18 UNC x 2, Grade 8, Yellow Zinc")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.374,
+      "coarseFitHole": 0.359,
       "fineFitHole": 0.328,
-      "mediumFitHole": 0.345,
-      "standardBody": "ASME B1.1",
+      "mediumFitHole": 0.344,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 2,
@@ -49,10 +49,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Finished Hex Cap Screw - 1/2-13 UNC x 3.5 - Grade 2 Bare Metal")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.562,
-      "fineFitHole": 0.515,
-      "mediumFitHole": 0.532,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.609,
+      "fineFitHole": 0.531,
+      "mediumFitHole": 0.562,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 3.5,
@@ -68,10 +68,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("ASME B18.2.1 Hex Cap Screw 3/4-10 UNC x 4-1/2, Grade 8, Black Oxide")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.812,
-      "fineFitHole": 0.765,
-      "mediumFitHole": 0.782,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.875,
+      "fineFitHole": 0.781,
+      "mediumFitHole": 0.812,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Black Oxide",
     "length": 4.5,
@@ -87,10 +87,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Cap Screw 3/8-16 UNC x 1-1/4, Stainless Steel 304, Passivated")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.437,
-      "fineFitHole": 0.39,
-      "mediumFitHole": 0.407,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.422,
+      "fineFitHole": 0.391,
+      "mediumFitHole": 0.406,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 1.25,
@@ -108,10 +108,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Cap Screw 5/16-24 UNF x 1, Grade 8 Zinc Plated")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.374,
+      "coarseFitHole": 0.359,
       "fineFitHole": 0.328,
-      "mediumFitHole": 0.345,
-      "standardBody": "ASME B1.1",
+      "mediumFitHole": 0.344,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 1,
@@ -127,10 +127,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("ASME B18.2.1 Hex Head Bolt, 1/2-20 UNF x 2.5, Grade 5, Bare")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.562,
-      "fineFitHole": 0.515,
-      "mediumFitHole": 0.532,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.609,
+      "fineFitHole": 0.531,
+      "mediumFitHole": 0.562,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 2.5,
@@ -148,10 +148,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Heavy Hex Bolt, ASME B18.2.1, 5/8-11 UNC x 3, Grade 8, Zinc")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.687,
-      "fineFitHole": 0.64,
-      "mediumFitHole": 0.657,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.734,
+      "fineFitHole": 0.656,
+      "mediumFitHole": 0.688,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 3,
@@ -167,10 +167,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Tap Bolt, ASME B18.2.1, 3/8-16 UNC x 2, Fully Threaded, Grade 5")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.437,
-      "fineFitHole": 0.39,
-      "mediumFitHole": 0.407,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.422,
+      "fineFitHole": 0.391,
+      "mediumFitHole": 0.406,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 2,
@@ -186,10 +186,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Heavy Hex Tap Bolt 1-8 UNC x 4, Grade 2, Hot Dip Galvanized")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 1.062,
-      "fineFitHole": 1.015,
-      "mediumFitHole": 1.032,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 1.125,
+      "fineFitHole": 1.031,
+      "mediumFitHole": 1.062,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Hot Dip Galvanized",
     "length": 4,
@@ -207,10 +207,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Heavy Hex Structural Bolt, ASME B18.2.6, A325, 1/2-13 UNC x 2, Zinc Plated")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.562,
-      "fineFitHole": 0.515,
-      "mediumFitHole": 0.532,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.609,
+      "fineFitHole": 0.531,
+      "mediumFitHole": 0.562,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 2,
@@ -226,10 +226,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Structural Bolt, ASTM F3125 Grade A325, 3/4-10 UNC x 3-1/2, HDG")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.812,
-      "fineFitHole": 0.765,
-      "mediumFitHole": 0.782,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.875,
+      "fineFitHole": 0.781,
+      "mediumFitHole": 0.812,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Hot Dip Galvanized",
     "length": 3.5,
@@ -245,10 +245,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Heavy Hex Structural Bolt ASME B18.2.6 - A490 - 7/8-9 UNC x 4 - Black Oxide")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.937,
-      "fineFitHole": 0.89,
-      "mediumFitHole": 0.907,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 1,
+      "fineFitHole": 0.906,
+      "mediumFitHole": 0.938,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Black Oxide",
     "length": 4,
@@ -266,10 +266,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Washer Head Machine Screw, ASME B18.6.3, #4-40 UNC x 1/2, Steel Zinc")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.174,
-      "fineFitHole": 0.127,
-      "mediumFitHole": 0.144,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.144,
+      "fineFitHole": 0.12,
+      "mediumFitHole": 0.128,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 0.5,
@@ -285,10 +285,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Machine Screw #6-32 UNC x 3/4, Hex Washer Head, Stainless Steel")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.2,
-      "fineFitHole": 0.153,
+      "coarseFitHole": 0.185,
+      "fineFitHole": 0.154,
       "mediumFitHole": 0.17,
-      "standardBody": "ASME B1.1",
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 0.75,
@@ -304,10 +304,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("ASME B18.6.3 Hex Head Machine Screw #10-24 UNC x 1, Grade 2 Zinc")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.252,
-      "fineFitHole": 0.205,
-      "mediumFitHole": 0.222,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.238,
+      "fineFitHole": 0.206,
+      "mediumFitHole": 0.221,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 1,
@@ -323,10 +323,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Washer Head Machine Screw #12-24 UNC x 5/8, Case Hardened")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.278,
-      "fineFitHole": 0.231,
-      "mediumFitHole": 0.248,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.266,
+      "fineFitHole": 0.228,
+      "mediumFitHole": 0.25,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 0.625,
@@ -344,10 +344,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Hex Cap Screw, ASME B18.2.1, 1-3/4-5 UNC x 8, Grade 8 Alloy Steel")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 1.812,
-      "fineFitHole": 1.765,
-      "mediumFitHole": 1.782,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 1.969,
+      "fineFitHole": 1.813,
+      "mediumFitHole": 1.875,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 8,
@@ -363,10 +363,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Heavy Hex Bolt 2-4.5 UNC x 12, ASTM A307 Grade A, Hot Dip Galvanized")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.148,
-      "fineFitHole": 0.101,
-      "mediumFitHole": 0.118,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.116,
+      "fineFitHole": 0.094,
+      "mediumFitHole": 0.102,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Hot Dip Galvanized",
     "length": 12,
@@ -382,10 +382,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("Large Hex Head Cap Screw 3-4 UNC x 10, Grade 8, Bare Metal")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.161,
-      "fineFitHole": 0.114,
-      "mediumFitHole": 0.131,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.128,
+      "fineFitHole": 0.106,
+      "mediumFitHole": 0.116,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Bare Metal",
     "length": 10,
@@ -401,10 +401,10 @@ test('asme.parseBoltSpec parsing', () => {
   expect(asme.parseBoltSpec("ASME B18.2.1 Hex Cap Screw 4-4 UNC x 16, Structural Grade 5, Zinc")).toStrictEqual(
   {
     "clearanceSpecifications": {
-      "coarseFitHole": 0.174,
-      "fineFitHole": 0.127,
-      "mediumFitHole": 0.144,
-      "standardBody": "ASME B1.1",
+      "coarseFitHole": 0.144,
+      "fineFitHole": 0.12,
+      "mediumFitHole": 0.128,
+      "standardBody": "ASME B18.2.8",
     },
     "coating": "Zinc Plated",
     "length": 16,
@@ -412,6 +412,25 @@ test('asme.parseBoltSpec parsing', () => {
     "pitch": 4,
     "propertyClass": "GRADE 5",
     "size": "#4",
+    "standard": "ASME_B18_2_1_CAP_SCREW",
+    "threadSeries": "UNC",
+    "threadTolerance": "2A",
+  }
+  )
+  expect(asme.parseBoltSpec('9/16-12 x 1 1/2" Hex Cap Screws / Grade 8 / Zinc Yellow')).toStrictEqual(
+  {
+    "clearanceSpecifications": {
+      "coarseFitHole": 0.672,
+      "fineFitHole": 0.594,
+      "mediumFitHole": 0.625,
+      "standardBody": "ASME B18.2.8",
+    },
+    "coating": "Zinc Plated",
+    "length": 1.5,
+    "material": "Carbon Steel",
+    "pitch": 12,
+    "propertyClass": "GRADE 8",
+    "size": "9/16",
     "standard": "ASME_B18_2_1_CAP_SCREW",
     "threadSeries": "UNC",
     "threadTolerance": "2A",
@@ -917,6 +936,17 @@ test('asme.parseWasherSpec parsing', () => {
     "material": "Carbon Steel",
     "size": "#12",
     "standard": "ASME_B18_21_1_LOCK_REGULAR",
+  }
+  )
+
+  // from external sources
+  expect(asme.parseWasherSpec('1/4" Countersunk External Tooth Lock Washers / 18-8 Stainless Steel')).toStrictEqual(
+  {
+    "coating": "Bare Metal",
+    "hardnessHV": 180,
+    "material": "Stainless Steel",
+    "size": "1/4",
+    "standard": "ASME_B18_21_1_TOOTH_EXTERNAL",
   }
   )
 })

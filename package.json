@@ -1,6 +1,6 @@
 {
   "name": "jscad-fastener",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "JSCAD Fastener Library",
   "main": "./src/index.js",
   "exports": {
