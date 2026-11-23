@@ -15,10 +15,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 0.562,
-        "fineFitHole": 0.515,
-        "mediumFitHole": 0.532,
-        "standardBody": "ASME B1.1",
+        "coarseFitHole": 0.609,
+        "fineFitHole": 0.531,
+        "mediumFitHole": 0.562,
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Bare Metal",
       "length": 2.5,
@@ -57,10 +57,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 0.937,
-        "fineFitHole": 0.89,
-        "mediumFitHole": 0.907,
-        "standardBody": "ASME B1.1",
+        "coarseFitHole": 1,
+        "fineFitHole": 0.906,
+        "mediumFitHole": 0.938,
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Bare Metal",
       "length": 4,
@@ -99,10 +99,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 0.374,
+        "coarseFitHole": 0.359,
         "fineFitHole": 0.328,
-        "mediumFitHole": 0.345,
-        "standardBody": "ASME B1.1",
+        "mediumFitHole": 0.344,
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Bare Metal",
       "length": 1.5,
@@ -143,10 +143,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 0.252,
-        "fineFitHole": 0.205,
-        "mediumFitHole": 0.222,
-        "standardBody": "ASME B1.1",
+        "coarseFitHole": 0.238,
+        "fineFitHole": 0.206,
+        "mediumFitHole": 0.221,
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Bare Metal",
       "length": 1.25,
@@ -185,10 +185,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 0.226,
-        "fineFitHole": 0.179,
+        "coarseFitHole": 0.213,
+        "fineFitHole": 0.18,
         "mediumFitHole": 0.196,
-        "standardBody": "ASME B1.1",
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Bare Metal",
       "length": 0.75,
@@ -229,10 +229,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 0.812,
-        "fineFitHole": 0.765,
-        "mediumFitHole": 0.782,
-        "standardBody": "ASME B1.1",
+        "coarseFitHole": 0.875,
+        "fineFitHole": 0.781,
+        "mediumFitHole": 0.812,
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Bare Metal",
       "length": 2,
@@ -252,10 +252,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 0.437,
-        "fineFitHole": 0.39,
-        "mediumFitHole": 0.407,
-        "standardBody": "ASME B1.1",
+        "coarseFitHole": 0.422,
+        "fineFitHole": 0.391,
+        "mediumFitHole": 0.406,
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Bare Metal",
       "length": 1.5,
@@ -294,10 +294,10 @@ test('asme.parseAssembly', () => {
   {
     "bolt": {
       "clearanceSpecifications": {
-        "coarseFitHole": 1.312,
-        "fineFitHole": 1.265,
-        "mediumFitHole": 1.282,
-        "standardBody": "ASME B1.1",
+        "coarseFitHole": 1.406,
+        "fineFitHole": 1.281,
+        "mediumFitHole": 1.344,
+        "standardBody": "ASME B18.2.8",
       },
       "coating": "Zinc Plated",
       "length": 5.5,

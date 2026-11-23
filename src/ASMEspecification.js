@@ -12,16 +12,16 @@
  */
 const ASME_B18_2_8_CLEARANCE_HOLES = {
   // Numbered Machine Screw Sizes (#0 to #12)
-  "0":  { close: 0.067, normal: 0.076, loose: 0.094 },
-  "1":  { close: 0.081, normal: 0.089, loose: 0.104 },
-  "2":  { close: 0.094, normal: 0.102, loose: 0.116 },
-  "3":  { close: 0.106, normal: 0.116, loose: 0.128 },
-  "4":  { close: 0.120, normal: 0.128, loose: 0.144 },
-  "5":  { close: 0.141, normal: 0.156, loose: 0.172 },
-  "6":  { close: 0.154, normal: 0.170, loose: 0.185 },
-  "8":  { close: 0.180, normal: 0.196, loose: 0.213 },
-  "10": { close: 0.206, normal: 0.221, loose: 0.238 },
-  "12": { close: 0.228, normal: 0.250, loose: 0.266 },
+  "#0":  { close: 0.067, normal: 0.076, loose: 0.094 },
+  "#1":  { close: 0.081, normal: 0.089, loose: 0.104 },
+  "#2":  { close: 0.094, normal: 0.102, loose: 0.116 },
+  "#3":  { close: 0.106, normal: 0.116, loose: 0.128 },
+  "#4":  { close: 0.120, normal: 0.128, loose: 0.144 },
+  "#5":  { close: 0.141, normal: 0.156, loose: 0.172 },
+  "#6":  { close: 0.154, normal: 0.170, loose: 0.185 },
+  "#8":  { close: 0.180, normal: 0.196, loose: 0.213 },
+  "#10": { close: 0.206, normal: 0.221, loose: 0.238 },
+  "#12": { close: 0.228, normal: 0.250, loose: 0.266 },
   // Standard Fractional Bolt Sizes (1/4" to 4")
   "1/4":   { close: 0.266, normal: 0.281, loose: 0.297 },
   "5/16":  { close: 0.328, normal: 0.344, loose: 0.359 },
@@ -125,18 +125,18 @@ export const parseBoltSpec = (spec) => {
 
   // Step B: Extract the raw numeric length token from the start of the length side string chunk
   // Ordering ensures fractions and decimals match completely before looking for raw integers
-  const lengthRegex = /^(\d+-\d+\/\d+|\d+\/\d+|\d+\.\d+|\d+)/
+  const lengthRegex = /^(\d+[\s-]\d+\/\d+|\d+\/\d+|\d+\.\d+|\d+)/
   const lengthMatch = lengthPart.match(lengthRegex)
   if (!lengthMatch) {
     throw new Error("Failed to parse structural length token from bolt string.")
   }
   const lengthRaw = lengthMatch[1]
 
-  // Step C: Translate the isolated length token string into a numeric float representation
+  // Step C: Split on either space or hyphen
   let length = null
   if (lengthRaw) {
-    if (lengthRaw.includes("-")) { 
-      const lengthParts = lengthRaw.split("-")
+    if (/[\s-]/.test(lengthRaw)) {
+      const lengthParts = lengthRaw.split(/[\s-]/)
       const fracParts = lengthParts[1].split("/")
       length = parseFloat(lengthParts[0]) + (parseFloat(fracParts[0]) / parseFloat(fracParts[1]))
     } else if (lengthRaw.includes("/")) { 
@@ -146,7 +146,6 @@ export const parseBoltSpec = (spec) => {
       length = parseFloat(lengthRaw)
     }
   }
-
 
   // Extract thread series classification cleanly
   const seriesMatch = upperStr.match(/\b(UNC|UNF)\b/)
@@ -190,6 +189,14 @@ export const parseBoltSpec = (spec) => {
     d = parseFloat(size)
   }
 
+  // Normalize size to match ASME_B18_2_8_CLEARANCE_HOLES keys ("#10" -> "10", "1 1/4" -> "1-1/4")
+  const lookupKey = size.replace(/\s+/g, '-')
+  const b18Clearance = ASME_B18_2_8_CLEARANCE_HOLES[lookupKey]
+
+  const clearanceSpecifications = b18Clearance
+    ? { standardBody: "ASME B18.2.8", fineFitHole: b18Clearance.close, mediumFitHole: b18Clearance.normal, coarseFitHole: b18Clearance.loose }
+    : { standardBody: "ASME B18.2.8", fineFitHole: Number((d + 0.015).toFixed(3)), mediumFitHole: Number((d + 0.032).toFixed(3)), coarseFitHole: Number((d + 0.062).toFixed(3)) }
+
   // Calculate standard fractional clearance boundary layers relative to the true decimal diameter
   const fineHole = d + 0.015
   const mediumHole = d + 0.032 
@@ -205,12 +212,7 @@ export const parseBoltSpec = (spec) => {
     propertyClass,
     material,
     coating,
-    clearanceSpecifications: {
-      standardBody: "ASME B1.1",
-      fineFitHole: Number(fineHole.toFixed(3)),
-      mediumFitHole: Number(mediumHole.toFixed(3)), 
-      coarseFitHole: Number(coarseHole.toFixed(3))
-    }
+    clearanceSpecifications,
   }
 }
 
@@ -336,7 +338,6 @@ export const parseNutSpec = (spec) => {
   }
 }
 
-
 /**
  * Parses ASME washer specification.
  *
@@ -357,49 +358,48 @@ export const parseWasherSpec = (spec) => {
   let standard = "ASME_B18_21_1_TYPE_A_NARROW"
   if (spec.includes("F436") || spec.includes("STRUCTURAL")) {
     standard = "ASTM_F436_STRUCTURAL"
-  } else if (spec.includes("LOCK") || spec.includes("SPLIT") || spec.includes("SPRING")) {
-    if (spec.includes("HEAVY")) {
-      standard = "ASME_B18_21_1_LOCK_HEAVY"
-    } else {
-      standard = "ASME_B18_21_1_LOCK_REGULAR"
-    }
   } else if (spec.includes("STAR") || spec.includes("TOOTH")) {
+    // Must come BEFORE "LOCK" because these are called "Tooth Lock Washers"!
+    //if (spec.includes("COUNTERSUNK")) {
+    //  standard = "ASME_B18_21_1_TOOTH_COUNTERSUNK" // or ASME_B18_21_1_TOOTH_EXTERNAL if not modeled separately
     if (spec.includes("INTERNAL")) {
-      standard = "ASME_B18_21_1_TOOTH_INTERNAL" // Inside teeth star
+      standard = "ASME_B18_21_1_TOOTH_INTERNAL"
     } else {
-      standard = "ASME_B18_21_1_TOOTH_EXTERNAL" // Outside teeth star (default fallback)
+      standard = "ASME_B18_21_1_TOOTH_EXTERNAL"
     }
+  } else if (spec.includes("LOCK") || spec.includes("SPLIT") || spec.includes("SPRING")) {
+    standard = spec.includes("HEAVY")
+      ? "ASME_B18_21_1_LOCK_HEAVY"
+      : "ASME_B18_21_1_LOCK_REGULAR"
   } else if (spec.includes("TYPE B") || spec.includes("TYPE-B")) {
-    // Catch the tight-tolerance precision series!
     if (spec.includes("NARROW")) {
       standard = "ASME_B18_21_1_TYPE_B_NARROW"
     } else if (spec.includes("WIDE")) {
       standard = "ASME_B18_21_1_TYPE_B_WIDE"
     } else {
-      standard = "ASME_B18_21_1_TYPE_B_REGULAR" // Default for generic Type B
+      standard = "ASME_B18_21_1_TYPE_B_REGULAR"
     }
-  } else {
-    // If it's Type A or generic flat, split via legacy terms
-    if (spec.includes("WIDE") || spec.includes("USS")) {
-      standard = "ASME_B18_21_1_TYPE_A_WIDE"
-    } else {
-      standard = "ASME_B18_21_1_TYPE_A_NARROW"
-    }
+  } else if (spec.includes("WIDE") || spec.includes("USS")) {
+    standard = "ASME_B18_21_1_TYPE_A_WIDE"
+  } else if (spec.includes("NARROW") || spec.includes("SAE")) {
+    standard = "ASME_B18_21_1_TYPE_A_NARROW"
   }
 
-  // 2. Erase the standard numbers entirely so they can't poison our sizes
-  // This cleanly deletes things like "B18.21.1", "B18.22.1", etc.
-  const cleanSpec = spec.replace(/B\d{2}\.\d{2}\.\d+/i, '')
+  // 2. Sanitize standard numbers, stainless grades (18-8), and trailing OD ("x 1\"")
+  const cleanSpec = spec
+    .replace(/B\d{2}\.\d{2}\.\d+/g, '')
+    .replace(/\b18-8\b/g, '')
+    .replace(/\s+X\s+\d+(?:[\s-]\d+\/\d+|\.\d+|\/\d+)?\s*(?:INCH|IN|\")?/g, '')
 
   // 3. Define small, distinct, readable regex patterns
-  const numberedPattern = /(?:#|NO\.?)\s*(\d+)/i
-  const anchoredPattern = /\b(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)\s*(?:INCH|IN|\"|\$|SCREW\s+SIZE)\b/i
-  const leadingPattern  = /^(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)(?:\s|\$)/i
+  const numberedPattern = /(?:(?:#|NO\.?)\s*(\d+))\b/i
+  const anchoredPattern = /\b(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)\s*(?:(?:INCH|IN|SCREW\s+SIZE)\b|\"|$)/i
+  const leadingPattern  = /^(\d+(?:[\s-]\d+\/\d+)?|\d+\/\d+)(?:\s|$)/i
 
   let rawSize = ""
 
   // 4. Run matching sequentially (Highest priority first)
-  const numMatch = cleanSpec.match(numberedPattern)
+  const numMatch  = cleanSpec.match(numberedPattern)
   const anchMatch = cleanSpec.match(anchoredPattern)
   const leadMatch = cleanSpec.match(leadingPattern)
 
@@ -416,7 +416,9 @@ export const parseWasherSpec = (spec) => {
   // 5. Final Key Normalization Layer
   let size = rawSize.replace(/-/g, ' ').trim()
 
-  // Enforce the consistent # prefix for raw numbered sizes (0 to 12)
+  // Enforce the consistent # prefix for unprefixed numbered sizes (0, 2..12).
+  // IMPORTANT: Intentionally exclude '1' here—an unprefixed "1" means 1 inch (e.g., "1 inch", "1\""),
+  // whereas an explicit "#1" or "No. 1" is already handled and prefixed by `numberedPattern` above.
   if (/^\d+$/.test(size)) {
     const validNumberedSizes = ['0', '2', '3', '4', '5', '6', '8', '10', '12']
     if (validNumberedSizes.includes(size)) {
@@ -424,30 +426,31 @@ export const parseWasherSpec = (spec) => {
     }
   }
 
-  // 3. Dynamic Material, Coating & Vickers Hardness (HV) Mapping
+  // 6. Dynamic Material, Coating & Vickers Hardness (HV) Mapping
   let material = "Carbon Steel"
   let coating = "Bare Metal"
-  let hardnessHV = 110 // Baseline for standard soft commercial Type A steel washers
+  let hardnessHV = 110
 
   if (spec.includes("STAINLESS")) {
     material = "Stainless Steel"
-    hardnessHV = 180 // Standard 300-series stainless washer hardness
+    hardnessHV = 180
+  } else if (spec.includes("ALUMINUM") || spec.includes("ALUMINIUM")) {
+    material = "Aluminum"
+    hardnessHV = 95
   } else if (standard === "ASTM_F436_STRUCTURAL") {
     material = "Hardened Carbon Steel"
-    hardnessHV = 360 // ASTM F436 structural through-hardened steel washer specs (~38-45 HRC / ~360+ HV)
+    hardnessHV = 360
   }
 
-  // Extract common plating surface treatments
   if (spec.includes("ZINC")) coating = "Zinc Plated"
   else if (spec.includes("GALVANIZED") || spec.includes("HDG")) coating = "Hot Dip Galvanized"
   else if (spec.includes("BLACK OXIDE")) coating = "Black Oxide"
 
-  // 5. Output Unified Structural Token Framework matching your ISO standard perfectly
   return {
-    size,         // Required Core Key -> "1/2"
-    standard,     // Required Core Key -> "ASTM_F436_STRUCTURAL"
-    hardnessHV,   // Required Core Key -> 360
-    material,     // Required Core Key -> "Hardened Carbon Steel"
-    coating,      // Required Core Key -> "Bare Metal"
+    size,
+    standard,
+    hardnessHV,
+    material,
+    coating,
   }
 }
