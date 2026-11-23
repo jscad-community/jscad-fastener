@@ -468,19 +468,19 @@ export const ISO_7094 = {
 }
 
 const standards = {
-  'EN_14399_6_STRUCTURAL': {dims: EN_14399_6, type: 'FLAT_STRUCTURAL'},
+  'EN_14399_6_STRUCTURAL': {dims: EN_14399_6, type: 'FLAT_STRUCTURAL_CHAMFERED'},
 
   'ISO_7089': {dims: ISO_7089, type: 'FLAT'},
-  'ISO_7090': {dims: ISO_7090, type: 'FLAT'},
+  'ISO_7090': {dims: ISO_7090, type: 'FLAT_CHAMFERED'},
   'ISO_7091': {dims: ISO_7091, type: 'FLAT'},
   'ISO_7092': {dims: ISO_7092, type: 'FLAT_NARROW'},
   'ISO_7093': {dims: ISO_7093, type: 'FLAT_WIDE'},
   'ISO_7094': {dims: ISO_7094, type: 'FLAT_EXTRA_WIDE'},
 
   // DIN 125
-  'DIN_125': {dims: ISO_7091, type: 'FLAT'},     // Form A unchamfered
-  'DIN_125_A': {dims: ISO_7091, type: 'FLAT'},   // Form A unchamfered
-  'DIN_125_B': {dims: ISO_7090, type: 'FLAT'},   // Form B chamfered
+  'DIN_125': {dims: ISO_7091, type: 'FLAT'},   // Form A unchamfered
+  'DIN_125_A': {dims: ISO_7091, type: 'FLAT'}, // Form A unchamfered
+  'DIN_125_B': {dims: ISO_7090, type: 'FLAT_CHAMFERED'}, // Form B chamfered
 
   // DIN 127
   'DIN_127': {dims: DIN_127_B, type: 'SPLIT_LOCK'},   // split lock
@@ -490,7 +490,7 @@ const standards = {
   // DIN 433
   'DIN_433':   {dims: ISO_7092, type: 'FLAT_NARROW'},
   'DIN_433_A': {dims: ISO_7092, type: 'FLAT_NARROW'}, // Form A unchamfered
-  'DIN_433_B': {dims: ISO_7092, type: 'FLAT_NARROW'}, // Form B chamfered
+  'DIN_433_B': {dims: ISO_7092, type: 'FLAT_NARROW_CHAMFERED'}, // Form B chamfered
 
   // DIN 440
   'DIN_440':   {dims: ISO_7094, type: 'FLAT'},
